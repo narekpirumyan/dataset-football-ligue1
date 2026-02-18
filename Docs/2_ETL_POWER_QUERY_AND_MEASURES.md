@@ -6,6 +6,10 @@
 - [0_POWER_BI_DASHBOARD_SPECIFICATION.md](./0_POWER_BI_DASHBOARD_SPECIFICATION.md) — data quality issues by file  
 - [1_POWER_BI_STAR_SCHEMA_DESIGN.md](./1_POWER_BI_STAR_SCHEMA_DESIGN.md) — target schema and relationships  
 
+**Data sources:** CSV/TSV files in Dataset; **clubs.xlsx** (when present) for club list and attributes (Staging_Clubs → DimClub); **players.xlsx** (when present) for player age, nationality, salary, and market value (Staging_Players → DimPlayer). See dashboard spec “Available Data Files” and “Gaps and data sources”.
+
+**Scope (squad/players):** The model supports **both field players and goalkeepers**. Do not filter out any position in staging or dimensions. **Position** is stored as an attribute on **DimPlayer** (from `position` in player_stats) and includes "Goalkeeper" and all field positions; use it in reports to scope visuals (e.g. goals/assists for outfield, clean_sheets/saves for goalkeepers). See dashboard spec Page 2 for per-visual scope.
+
 ---
 
 ## Part A — Power Query (M) for Python users
@@ -31,7 +35,7 @@
 ### A.3 Execution order and dependencies
 
 - Queries run in **dependency order**: if Query B references Query A, A runs first.
-- Build **dimensions first** (DimClub, DimPosition, DimPlayer, DimDate), then **facts** that reference them via Merge.
+- Build **dimensions first** (DimClub, DimPlayer, DimDate), then **facts** that reference them via Merge.
 - **Staging (raw) queries** that only clean data (no merge) can be created first; then dimension/fact queries reference staging and merge to dimensions.
 
 ### A.4 Data types in Power Query
@@ -64,7 +68,7 @@ These issues come from [0_POWER_BI_DASHBOARD_SPECIFICATION.md](./0_POWER_BI_DASH
 | **minutes_played** mixed: `1572` vs `289 min`, `2754 min` | **Custom Column**: extract number only. Example: `Number.FromText(Text.Replace(Text.Trim([minutes_played]), " min", ""))` — if some values are already number, use `if [minutes_played] is number then [minutes_played] else Number.FromText(Text.Replace(Text.Trim(Text.From([minutes_played])), " min", ""))`. Then set data type **Whole Number**. |
 | **Spaces in numbers** (e.g. assists `8 ,2`) | **Transform** → Format → **Trim** on text columns; for numeric columns that are currently text: **Custom Column** `Number.FromText(Text.Replace(Text.Trim(Text.From([assists])), " ", ""))` (repeat for goals, and any other numeric fields that may have spaces). Then set type to **Whole Number** or **Decimal**. |
 | **Empty clean_sheets, saves** for non-GK | Leave as null; type **Whole Number** (or Decimal). Do not fill with 0 if it means “not applicable”. |
-| **Position** consistency | **Trim** position; optionally **Replace Values** for known typos (e.g. "Left Back" → "Left back") so DimPosition has consistent names. |
+| **Position** consistency | **Trim** position; optionally **Replace Values** for known typos (e.g. "Left Back" → "Left back") so DimPlayer has consistent position names. Keep **Goalkeeper** and all field positions (do not filter out any position). |
 
 **Recommended staging query name:** `Staging_PlayerStats`
 
@@ -88,7 +92,7 @@ These issues come from [0_POWER_BI_DASHBOARD_SPECIFICATION.md](./0_POWER_BI_DASH
 | Issue | Fix in Power Query |
 |-------|--------------------|
 | **Semicolon delimiter** | **Get Data** → Text/CSV → set **Delimiter** to **Semicolon**. |
-| **fill_rate** European decimal: `96,6` | **Custom Column**: `Number.FromText(Text.Replace(Text.From([fill_rate]), ",", "."))` then set type **Decimal** (or Percentage if you prefer). |
+| **fill_rate** European decimal: `96,6` | **Do not** set the column type to Number/Decimal before fixing: Power Query will interpret `96,6` as `966` (comma dropped). **Fix first:** Add a **Custom Column** (e.g. FillRatePct) with formula `Number.FromText(Text.Replace(Text.Trim(Text.From([fill_rate])), ",", "."))` so `96,6` → `96.6`. Remove the original **fill_rate** column, rename the new column to **fill_rate** (or **FillRatePct**), then set type **Decimal**. **If already 966:** Add Custom Column `if [fill_rate] > 100 then [fill_rate] / 10 else [fill_rate]`, then replace/rename and set type Decimal. |
 | **date** format | Same as match_date: normalise to **Date**. |
 | **Consistency with match_results** | Use stadium_attendance as the single source for attendance/capacity/fill_rate; no need to merge match_results attendance into this table. |
 
@@ -102,15 +106,33 @@ These issues come from [0_POWER_BI_DASHBOARD_SPECIFICATION.md](./0_POWER_BI_DASH
 |-------|--------------------|
 | **sanction_date** | Normalise to **Date** (same as above). |
 | **Empty suspension_matches, fine_euros** | Replace null with 0 for **SuspensionMatches** (Whole Number); leave **FineEuros** as null or 0, type **Decimal**/Currency. |
+| **All columns** | Keep **player** (player name from source), player_id, club, sanction_id, sanction_type, reason, sanction_date, suspension_matches, fine_euros. Do not drop any column. |
 
 **Recommended staging query name:** `Staging_Sanctions`
 
 ---
 
-### B.6 Cross-file consistency
+### B.6 players.xlsx (player dimension enrichment)
+
+**Structure:** `players.xlsx` contains **separate sheets** for **field players** and **goalkeepers** (e.g. "FieldPlayers" and "Goalkeepers", or similar names). Both must be loaded and **combined into one table** so DimPlayer can be enriched for all players (field + goalkeepers) in a single merge.
+
+| Issue | Fix in Power Query |
+|-------|--------------------|
+| **Multiple sheets** | Load **each sheet** as a separate query (e.g. `Players_Field`, `Players_Goalkeepers`), or use **Get Data** → **Excel** → select **multiple worksheets** and combine. Ensure both tables end up with the **same column set**: at least **player_id**, and whichever of Age, Nationality, Salary, MarketValue exist. If one sheet has different column names, rename to match the other (e.g. both must have **player_id**, **Age**, **Nationality**, **Salary**, **MarketValue**). Then **Append** (Ajouter des requêtes) the two tables into one — field players first, goalkeepers second (or vice versa). **Remove Duplicates** on **player_id** if a player appears in both (keep one row). |
+| **player_id** | Must match `player_stats_season` and other sources (e.g. "J0001"). **Trim** the column on the combined table; ensure no leading/trailing spaces so the merge with DimPlayer base succeeds. |
+| **Column names** | Standardise across sheets: rename to **player_id**, **Age**, **Nationality**, **Salary**, **MarketValue** for consistency with the schema. If a sheet lacks a column (e.g. no MarketValue for goalkeepers), add a column with **null** so the combined table has the same columns. |
+| **Types** | Age → Whole Number; Nationality → Text; Salary, MarketValue → Decimal. Nulls allowed for missing values. |
+
+**Recommended staging query name:** `Staging_Players` (one table = all players from both sheets).  
+
+**Note:** If your workbook uses different sheet names (e.g. "Joueurs", "Gardiens"), use those when selecting worksheets; the steps are the same (load both → same column layout → append → dedupe on player_id → trim and set types).
+
+---
+
+### B.7 Cross-file consistency
 
 - **Club names:** Build DimClub from **distinct** names collected from all staging queries; use **Trim** and **Replace Values** once in DimClub so spelling is unique (e.g. "Paris SG" everywhere). All facts then resolve club via Merge to DimClub, so no need to change club names in each source.
-- **player_id:** Use as natural key; ensure Trim so "J0001" does not become " J0001 ". Staging_PlayerStats, Staging_Transfers, Staging_Sanctions should all use the same player_id list when building DimPlayer.
+- **player_id:** Use as natural key; ensure Trim so "J0001" does not become " J0001 ". Staging_PlayerStats, Staging_Transfers, Staging_Sanctions, and Staging_Players (players.xlsx) should use consistent player_id so the DimPlayer merge succeeds.
 
 ---
 
@@ -152,7 +174,7 @@ Alternatively, use **Transform** → **Date** → **Using Locale** with a locale
 
 ## Part D — Build order and steps (Power Query)
 
-Follow this order so that every query that does a **Merge** has the referenced query already built.
+Follow this order so that every query that does a **Merge** has the referenced query already built. Target schema and all source columns are defined in [1_POWER_BI_STAR_SCHEMA_DESIGN.md](./1_POWER_BI_STAR_SCHEMA_DESIGN.md) (Section 3 — Available sources; Sections 3.1–3.4 dimensions; Section 4 — Fact tables). **Do not drop columns** from source files; keep all attributes in dimensions and facts even if not used in the dashboard.
 
 ### D.1 Staging queries (data quality only)
 
@@ -166,37 +188,58 @@ Create these first; no Merge to dimensions.
 2. **Staging_PlayerStats**  
    - Source: `player_stats_season.csv`.  
    - Steps: Promote headers; trim all text columns; fix **minutes_played** (strip " min", number); fix **goals**, **assists**, **matches_played**, **starts**, **yellow_cards**, **red_cards** (trim spaces, then Number.FromText); set correct types; trim **position**.  
-   - Keep all columns needed for FactPlayerSeason and for DimPlayer/DimPosition source.
+   - **Keep all players** (field players and goalkeepers); do not filter by position. **position** must include "Goalkeeper" and all outfield positions. Keep **clean_sheets** and **saves** (null for non-GK is expected; used for goalkeeper-specific visuals).  
+   - Keep all columns needed for FactPlayerSeason and for DimPlayer source (including position).
 
 3. **Staging_Transfers**  
    - Source: `transfers_2023_2024.txt` (Tab).  
-   - Steps: Trim text; parse **amount_ME** (helper or Custom Column); parse **transfer_date** → Date; keep transfer_id, player, player_id, departure_club, arrival_club, transfer_type, amount_ME (cleaned), transfer_date (as date).
+   - Steps: Trim text; parse **amount_ME** (helper or Custom Column); parse **transfer_date** → Date; keep **all** source columns: transfer_id, **player**, player_id, departure_club, arrival_club, transfer_type, amount_ME (cleaned), transfer_date (as date), **agent**. Do not drop any column.
 
 4. **Staging_StadiumAttendance**  
    - Source: `stadium_attendance.csv` (Semicolon).  
-   - Steps: Trim; fix **fill_rate** (comma → dot, Decimal); fix **date** → Date; set **attendance**, **stadium_capacity** Whole Number.
+   - Steps: Trim text columns. **fill_rate:** do **not** change type to Number before fixing — otherwise `96,6` becomes `966`. Add **Custom Column** (e.g. FillRatePct) with `Number.FromText(Text.Replace(Text.Trim(Text.From([fill_rate])), ",", "."))`, remove original **fill_rate**, rename new column to **fill_rate** or **FillRatePct**, set type **Decimal**. Fix **date** → Date (same as match_date). Set **attendance**, **stadium_capacity** to Whole Number.
 
 5. **Staging_Sanctions**  
    - Source: `disciplinary_sanctions.csv`.  
    - Steps: Trim; **sanction_date** → Date; **suspension_matches** → Whole Number (null → 0); **fine_euros** → Decimal (null allowed).
 
+6. **Staging_Clubs** (when `clubs.xlsx` is present)  
+   - **Source:** `clubs.xlsx` (Excel).  
+   - **Goal:** One table with club list and attributes for DimClub (single source of truth).  
+   - **Steps:** Get Data → Excel → `clubs.xlsx` → select the worksheet. Promote first row as headers. Select/rename columns to **ClubName**, **StadiumName** (or Stadium), **Capacity** (or equivalent). **Trim** ClubName. Set types: ClubName Text, StadiumName Text, Capacity Whole Number.  
+   - **Output:** One table **Staging_Clubs** with columns ClubName, StadiumName, Capacity. Used in **D.2 DimClub** when the file is present.
+
+7. **Staging_Players** (enriches DimPlayer — **field players and goalkeepers**)  
+   - **Source:** `players.xlsx` (Excel) with **two sheets**: one for field players, one for goalkeepers (sheet names may vary, e.g. "FieldPlayers", "Goalkeepers").  
+   - **Goal:** One combined table with all players (field + goalkeepers) and columns: **player_id**, **Age**, **Nationality**, **Salary**, **MarketValue**, so DimPlayer can be enriched in a single merge.  
+   - **Steps:**  
+     1. **Load the field players sheet:** Get Data → Excel → `players.xlsx` → select the **field players** worksheet. Promote first row as headers. Select/keep columns that map to player_id, Age, Nationality, Salary, MarketValue; rename to standard names if needed. Optionally add a column **SourceSheet** = "Field" (for traceability; not required for DimPlayer).  
+     2. **Load the goalkeepers sheet:** New query or Get Data again → same file → select the **goalkeepers** worksheet. Promote first row as headers. **Ensure the same column names** as the field players table (rename columns if the sheet uses different names). If the goalkeepers sheet is missing a column (e.g. MarketValue), add a **Custom Column** with value null. Optionally add **SourceSheet** = "Goalkeeper".  
+     3. **Combine:** **Append** (Ajouter des requêtes) the goalkeepers table to the field players table (or the other way around). Result = one table with all players from both sheets.  
+     4. **Remove Duplicates** on **player_id** (in case a player appears in both sheets; keep one row).  
+     5. **Trim** the **player_id** column so it matches `Staging_PlayerStats` (e.g. "J0001").  
+     6. Set types: **player_id** Text, **Age** Whole Number, **Nationality** Text, **Salary** Decimal, **MarketValue** Decimal.  
+   - **Output:** One table **Staging_Players** with columns player_id, Age, Nationality, Salary, MarketValue (and optionally SourceSheet). Used in **D.3 DimPlayer** (merge on player_id to add Age, Nationality, Salary, MarketValue for all players).
+
 ---
 
 ### D.2 DimClub
 
-- **Source:** Combine distinct club names from all staging tables.  
-- **Steps:**
-  1. Create a list of tables: `{Staging_MatchResults[home_team], Staging_MatchResults[away_team], Staging_PlayerStats[club], Staging_Transfers[departure_club], Staging_Transfers[arrival_club], Staging_StadiumAttendance[club], Staging_Sanctions[club]}` — in M you do this by **Append** of tables. Easiest: create one table per source with one column "ClubName", then **Append Queries** (Append as New) to get one long table of names.
-  2. **Remove Duplicates** on ClubName.
-  3. **Trim** ClubName.
-  4. **Add Index Column** (1, 1) → rename to **ClubKey**.
-  5. Optionally: merge with a grouped stadium_attendance (Group By club → Max capacity, First stadium) to add StadiumName and Capacity; or leave those columns for later.
+- **Source (when `clubs.xlsx` is present):** **Staging_Clubs** (from clubs.xlsx). Optionally append any distinct club names from other staging tables that are not in Staging_Clubs (e.g. "External" for non-Ligue 1 transfer clubs) so all facts can resolve to a row.
+- **Source (when `clubs.xlsx` is absent):** Combine distinct club names from all staging tables (match_results, player_stats, transfers, stadium_attendance, sanctions).
+- **Steps when using Staging_Clubs:**
+  1. Start from **Staging_Clubs** (columns ClubName, StadiumName, Capacity). **Trim** ClubName if not already done in staging.
+  2. **Add Index Column** (1, 1) → rename to **ClubKey**.
+  3. (Optional) Append missing clubs: build a table of distinct ClubName from all other sources; **anti-join** or **except** with Staging_Clubs[ClubName]; append those rows to DimClub with null StadiumName/Capacity; renumber ClubKey or add new keys for appended rows.
+- **Steps when not using clubs.xlsx:**
+  1. Create one table per source with one column "ClubName" (from home_team, away_team, club, departure_club, arrival_club), then **Append Queries** → **Remove Duplicates** → **Trim** → **Add Index Column** (1, 1) → **ClubKey**.
+  2. Optionally merge with grouped stadium_attendance (Group By club → Max capacity, First stadium) to add StadiumName and Capacity.
 - **Output columns:** ClubKey (Whole Number), ClubName (Text), optionally StadiumName, Capacity.
 
-**M sketch (one way to get distinct clubs):**
+**M sketch (fallback when clubs.xlsx is absent):**
 
 ```powerquery
-// DimClub: combine clubs from all sources
+// DimClub: combine clubs from all sources (use when Staging_Clubs not available)
 let
   Home = Table.SelectColumns(Staging_MatchResults, {"home_team"}),
   RenameHome = Table.RenameColumns(Home, {{"home_team", "ClubName"}}),
@@ -217,23 +260,19 @@ in AddKey
 
 ---
 
-### D.3 DimPosition
+### D.3 DimPlayer
 
-- **Source:** `Staging_PlayerStats`.  
-- **Steps:** Select **position** → **Remove Duplicates** → **Trim** → **Add Index Column** (1, 1) → rename to **PositionKey**; rename **position** to **PositionName**.  
-- **Output:** PositionKey, PositionName.
-
----
-
-### D.4 DimPlayer
-
-- **Source:** `Staging_PlayerStats` (distinct player_id, full_name).  
-- **Steps:** Select **player_id**, **full_name** → **Remove Duplicates** (on player_id) → **Trim** → **Add Index Column** (1, 1) → **PositionKey**; rename to **PlayerKey**. Optionally: **Merge** with `players.xlsx` (if present) on player_id to add Age, Nationality, Salary, MarketValue.  
-- **Output:** PlayerKey, PlayerId, FullName, (Age, Nationality, Salary, MarketValue if available).
+- **Source:** `Staging_PlayerStats` (distinct player_id, full_name, position) and `Staging_Players` (from players.xlsx) to enrich with Age, Nationality, Salary, MarketValue.  
+- **Steps:**  
+  1. From **Staging_PlayerStats**: select **player_id**, **full_name**, **position** → **Remove Duplicates** (on player_id) → **Trim** all three columns → **Add Index Column** (1, 1) → rename the index column to **PlayerKey**; rename **player_id** to **PlayerId**, **full_name** to **FullName**, **position** to **Position**.  
+  2. **Merge** with **Staging_Players**: left = current table (DimPlayer base), right = **Staging_Players**; join on **PlayerId** = **player_id** (or the player_id column name in Staging_Players). Join kind: **Left Outer** (keep all players even if not in Excel).  
+  3. Expand the merged column: check only **Age**, **Nationality**, **Salary**, **MarketValue** (uncheck “Select all”; use original column names or rename to these).  
+  4. Set types: PlayerKey Whole Number, PlayerId Text, FullName Text, Position Text, Age Whole Number, Nationality Text, Salary Decimal, MarketValue Decimal.  
+- **Output:** PlayerKey, PlayerId, FullName, Position, Age, Nationality, Salary, MarketValue.
 
 ---
 
-### D.5 DimDate
+### D.4 DimDate
 
 - **Source:** Calendar (no file).  
 - **Steps:** **New Source** → **Blank Query** → **Advanced Editor**:
@@ -257,19 +296,19 @@ in AddDay
 
 ---
 
-### D.6 DimMatch
+### D.5 DimMatch
 
 - **Source:** `Staging_MatchResults`.  
 - **Steps:**
   1. **Merge** with DimClub: left = Staging_MatchResults[home_team], right = DimClub[ClubName] → expand only **ClubKey** → rename to **HomeClubKey**.
   2. **Merge** with DimClub again: left = Staging_MatchResults[away_team], right = DimClub[ClubName] → expand only **ClubKey** → rename to **AwayClubKey**.
-  3. Select columns: **match_id** (rename to **MatchKey**), **matchday** (Matchday), **match_date** (MatchDate), **HomeClubKey**, **AwayClubKey**, **stadium** (Stadium), **referee** (Referee).
-  4. Set types: MatchKey Text, Matchday Whole Number, MatchDate Date, HomeClubKey/AwayClubKey Whole Number.
-- **Output:** MatchKey, Matchday, MatchDate, HomeClubKey, AwayClubKey, Stadium, Referee.
+  3. Select columns: **match_id** (rename to **MatchKey**), **matchday** (Matchday), **match_date** (MatchDate), **HomeClubKey**, **AwayClubKey**, **stadium** (Stadium), **referee** (Referee), **attendance** (Attendance; keep all source attributes).
+  4. Set types: MatchKey Text, Matchday Whole Number, MatchDate Date, HomeClubKey/AwayClubKey Whole Number, Attendance Whole Number (null allowed).
+- **Output:** MatchKey, Matchday, MatchDate, HomeClubKey, AwayClubKey, Stadium, Referee, Attendance.
 
 ---
 
-### D.7 FactClubMatch
+### D.6 FactClubMatch
 
 - **Source:** `Staging_MatchResults`.  
 - **Grain:** Two rows per match (one home club, one away club).  
@@ -309,19 +348,20 @@ in Combined
 
 ---
 
-### D.8 FactPlayerSeason
+### D.7 FactPlayerSeason
 
 - **Source:** `Staging_PlayerStats`.  
+- **Scope:** **All players** (field players and goalkeepers). No filtering by position; position is stored on DimPlayer and can be used for filtering in reports.
 - **Steps:**
-  1. **Merge** DimClub on club → ClubKey; DimPosition on position → PositionKey; DimPlayer on player_id → PlayerKey.
-  2. **Add Column** MatchesMissed = 38 - [matches_played] (or blank for goalkeepers if you prefer).
-  3. Select: PlayerKey, ClubKey, PositionKey, Goals, Assists, MinutesPlayed, MatchesPlayed, MatchesMissed, Starts, YellowCards, RedCards (and optional stats).
-  4. Set all types (keys Whole Number, measures as needed).
-- **Output:** As per schema.
+  1. **Merge** DimClub on club → ClubKey; DimPlayer on player_id → PlayerKey.
+  2. **Add Column** MatchesMissed = 38 - [matches_played]. (Goalkeepers may have fewer than 38 matches; the formula still applies; use DimPlayer[Position] in reports to interpret.)
+  3. Select and keep **all** columns from source: PlayerKey, ClubKey, Goals, Assists, MinutesPlayed, MatchesPlayed, MatchesMissed, Starts, YellowCards, RedCards, Shots, ShotsOnTarget, CleanSheets, Saves, SuccessfulDribbles, Interceptions, SuccessfulTackles.
+  4. Set all types (keys Whole Number; measures Whole Number or Decimal as appropriate).
+- **Output:** PlayerKey, ClubKey, Goals, Assists, MinutesPlayed, MatchesPlayed, MatchesMissed, Starts, YellowCards, RedCards, Shots, ShotsOnTarget, CleanSheets, Saves, SuccessfulDribbles, Interceptions, SuccessfulTackles (all attributes from player_stats retained).
 
 ---
 
-### D.9 FactTransfer
+### D.8 FactTransfer
 
 - **Source:** `Staging_Transfers`.  
 - **Steps:**
@@ -329,28 +369,28 @@ in Combined
   2. **Merge** DimClub on departure_club → DepartureClubKey (clubs not in DimClub: use **null** or add "External" to DimClub and map there).
   3. **Merge** DimClub on arrival_club → ArrivalClubKey.
   4. Add **TransferDateKey**: same as transfer_date (date) for relationship to DimDate — ensure this date exists in DimDate (your calendar 2023-07-01 to 2024-08-31 covers it).
-  5. Select: TransferKey (transfer_id), PlayerKey, DepartureClubKey, ArrivalClubKey, TransferDateKey, AmountME, TransferType.
-- **Output:** As per schema.
+  5. Select: TransferKey (transfer_id), PlayerKey, **PlayerName** (from transfers.player), DepartureClubKey, ArrivalClubKey, TransferDateKey, AmountME, TransferType, Agent (keep all source attributes).
+- **Output:** TransferKey, PlayerKey, PlayerName, DepartureClubKey, ArrivalClubKey, TransferDateKey, AmountME, TransferType, Agent.
 
 ---
 
-### D.10 FactSanction
+### D.9 FactSanction
 
 - **Source:** `Staging_Sanctions`.  
-- **Steps:** **Merge** DimPlayer (player_id → PlayerKey), DimClub (club → ClubKey); add **SanctionDateKey** = sanction_date (must be in DimDate). Select: SanctionKey, PlayerKey, ClubKey, SanctionDateKey, SanctionType, SuspensionMatches, FineEuros (optional Reason). Set types.
-- **Output:** As per schema.
+- **Steps:** **Merge** DimPlayer (player_id → PlayerKey), DimClub (club → ClubKey); add **SanctionDateKey** = sanction_date (must be in DimDate). Select: SanctionKey, PlayerKey, **PlayerName** (from disciplinary_sanctions.player), ClubKey, SanctionDateKey, SanctionType, Reason, SuspensionMatches, FineEuros (keep all source attributes). Set types.
+- **Output:** SanctionKey, PlayerKey, PlayerName, ClubKey, SanctionDateKey, SanctionType, Reason, SuspensionMatches, FineEuros.
 
 ---
 
-### D.11 FactAttendance
+### D.10 FactAttendance
 
 - **Source:** `Staging_StadiumAttendance`.  
-- **Steps:** **Merge** DimClub (club → ClubKey); add **DateKey** = date column (for DimDate). Select: ClubKey, Matchday, DateKey, Attendance, StadiumCapacity, FillRatePct (optional: Weather, TemperatureC). Optionally: **Merge** with DimMatch or Staging_MatchResults on (home_team = club, matchday, match_date ≈ date) to get MatchKey — only if you want to link attendance to matches.
-- **Output:** As per schema.
+- **Steps:** **Merge** DimClub (club → ClubKey); add **DateKey** = date column (for DimDate). Select: ClubKey, Matchday, DateKey, **Opponent**, Attendance, StadiumCapacity, FillRatePct, **Weather**, **TemperatureC** (keep all source attributes). Optionally: **Merge** with DimMatch or Staging_MatchResults on (home_team = club, matchday, match_date ≈ date) to get MatchKey.
+- **Output:** ClubKey, Matchday, DateKey, MatchKey (optional), Opponent, Attendance, StadiumCapacity, FillRatePct, Weather, TemperatureC.
 
 ---
 
-### D.12 Optional: StandingsByMatchday
+### D.11 Optional: StandingsByMatchday
 
 - **Source:** FactClubMatch + DimMatch.  
 - In Power Query: **Reference** FactClubMatch; **Merge** DimMatch on MatchKey to get Matchday; **Group By** ClubKey and Matchday, **Sum** Points; then add **Cumulative Points** (running sum per club over matchdays — requires sort and running sum in M, or do this in DAX as a calculated table).  
@@ -366,16 +406,15 @@ After **Close & Apply**, in **Model** view:
 2. **FactClubMatch[ClubKey]** → **DimClub[ClubKey]** (Many to One, Single).
 3. **FactPlayerSeason[PlayerKey]** → **DimPlayer[PlayerKey]** (Many to One, Single).
 4. **FactPlayerSeason[ClubKey]** → **DimClub[ClubKey]** (Many to One, Single).
-5. **FactPlayerSeason[PositionKey]** → **DimPosition[PositionKey]** (Many to One, Single).
-6. **FactTransfer[PlayerKey]** → **DimPlayer[PlayerKey]** (Many to One, Single).
-7. **FactTransfer[DepartureClubKey]** → **DimClub[ClubKey]** (Many to One, Single).
-8. **FactTransfer[ArrivalClubKey]** → **DimClub[ClubKey]** (Many to One, Single).
-9. **FactTransfer[TransferDateKey]** → **DimDate[DateKey]** (Many to One, Single).
-10. **FactSanction[PlayerKey]** → **DimPlayer[PlayerKey]** (Many to One, Single).
-11. **FactSanction[ClubKey]** → **DimClub[ClubKey]** (Many to One, Single).
-12. **FactSanction[SanctionDateKey]** → **DimDate[DateKey]** (Many to One, Single).
-13. **FactAttendance[ClubKey]** → **DimClub[ClubKey]** (Many to One, Single).
-14. **FactAttendance[DateKey]** → **DimDate[DateKey]** (Many to One, Single).
+5. **FactTransfer[PlayerKey]** → **DimPlayer[PlayerKey]** (Many to One, Single).
+6. **FactTransfer[DepartureClubKey]** → **DimClub[ClubKey]** (Many to One, Single).
+7. **FactTransfer[ArrivalClubKey]** → **DimClub[ClubKey]** (Many to One, Single).
+8. **FactTransfer[TransferDateKey]** → **DimDate[DateKey]** (Many to One, Single).
+9. **FactSanction[PlayerKey]** → **DimPlayer[PlayerKey]** (Many to One, Single).
+10. **FactSanction[ClubKey]** → **DimClub[ClubKey]** (Many to One, Single).
+11. **FactSanction[SanctionDateKey]** → **DimDate[DateKey]** (Many to One, Single).
+12. **FactAttendance[ClubKey]** → **DimClub[ClubKey]** (Many to One, Single).
+13. **FactAttendance[DateKey]** → **DimDate[DateKey]** (Many to One, Single).
 
 Drag from the fact column to the dimension column to create each relationship; set **Cardinality** to Many to One and **Cross filter direction** to Single (from dimension to fact).
 
@@ -446,6 +485,8 @@ RETURN CONCATENATEX(_Last5, FactClubMatch[Result], "")
 
 ### F.2 Page 2 — Squad impact
 
+**Scope:** All players (field + goalkeepers). Use **DimPlayer[Position]** (or a position slicer) to filter when needed: e.g. goals/assists leaders for "Outfield only", or goalkeeper-specific metrics (CleanSheets, Saves) when position = Goalkeeper. For "value vs performance" scatter: field players → Goals/Assists; goalkeepers → CleanSheets/Saves (if FactPlayerSeason has those columns).
+
 ```dax
 Total Goals = SUM(FactPlayerSeason[Goals])
 Total Assists = SUM(FactPlayerSeason[Assists])
@@ -457,6 +498,11 @@ Contribution Pct = DIVIDE([Total Goals], [Team Goals], BLANK())   // use for one
 
 Total Minutes Played = SUM(FactPlayerSeason[MinutesPlayed])
 Matches Missed = SUM(FactPlayerSeason[MatchesMissed])
+
+// Optional — goalkeeper performance (if FactPlayerSeason has CleanSheets, Saves):
+Total Clean Sheets = SUM(FactPlayerSeason[CleanSheets])
+Total Saves = SUM(FactPlayerSeason[Saves])
+// Use with filter DimPlayer[Position] = "Goalkeeper" for GK-only visuals.
 ```
 
 ---
@@ -556,9 +602,9 @@ ADDCOLUMNS(
 
 ## Part G — Checklist
 
-- [ ] All staging queries load and apply data quality fixes (dates, numbers, trim, delimiters).
-- [ ] DimClub has no duplicate names; ClubKey is integer.
-- [ ] DimPosition, DimPlayer, DimDate, DimMatch built and keys consistent.
+- [ ] All staging queries load and apply data quality fixes (dates, numbers, trim, delimiters); Staging_Clubs (clubs.xlsx) when present for DimClub; Staging_Players (players.xlsx) for DimPlayer enrichment.
+- [ ] DimClub has no duplicate names; ClubKey is integer (from Staging_Clubs when clubs.xlsx present, else from distinct names across sources).
+- [ ] DimPlayer (with Position, Age, Nationality, Salary, MarketValue from Staging_Players and Staging_PlayerStats), DimDate, DimMatch built and keys consistent.
 - [ ] FactClubMatch has exactly 2 rows per match (760 rows for 380 matches).
 - [ ] All Merge joins succeed (no unexpected null keys); external clubs in transfers handled (null or "External").
 - [ ] Relationships created in Model view; filter direction Single from dimension to fact.
