@@ -1,0 +1,81 @@
+transfer_id	player	player_id	departure_club	arrival_club	transfer_type	amount_ME	transfer_date	agent
+TR-001	Kylian Blanc	J0163	AC Milan	RC Lens	Purchase	22.2	2023-07-16	Jorge Mendes
+TR-002	Bryan Dupont	J0421	FC Lorient	FC Barcelona	Free transfer	0	2023-01-19	Unique Sports
+TR-003	Nabil Mercier	J0423	Clermont Foot	AC Milan	Loan with purchase option	37.6	2024-01-22	Jorge Mendes
+TR-004	Miguel Moreno	J0483	Olympique de Marseille	AS Saint-Etienne	Loan with purchase option	51.8	2024-01-14	Wasserman
+TR-005	Miguel Alvarez	J0453	Girondins de Bordeaux	FC Metz	Purchase	64.1	2024-08-10	Stellar Group
+TR-006	Habib Toure	J0323	RC Lens	Stade Brestois	Free transfer	0	2024-08-31	
+TR-007	Remy Morel	J0388	Le Havre AC	Real Madrid	Purchase	56.9M€	2023-08-09	
+TR-008	Rafael Romero	J0112	LOSC Lille	Sevilla FC	Purchase	67.3 M	2023-08-25	Jorge Mendes
+TR-009	Jonathan Dupont	J0248	FC Nantes	Sevilla FC	Purchase	20.4 M	2023-08-29	
+TR-010	Theo Diallo	J0010	Stade de Reims	Paris SG	Loan	74.2M€	2023-08-02	Promoesport
+TR-011	Bryan Fontaine	J0089	Manchester City	AS Monaco	Purchase	21.3	2023-01-25	Mino Raiola Agency
+TR-012	Romain Perrin	J0161	Girondins de Bordeaux	RC Lens	Purchase	69.4	2024-06-08	Wasserman
+TR-013	Jeremy Osimhen	J0522	AS Saint-Etienne	Girondins de Bordeaux	Free transfer	0	2024-06-05	Promoesport
+TR-014	Dimitri Girard	J0122	Montpellier HSC	LOSC Lille	Purchase	67.3 M	2024-01-11	Wasserman
+TR-015	Florian Martin	J0270	Stade de Reims	Montpellier HSC	Purchase	16.3 M	2024-06-24	ICM Partners
+TR-016	Maxime Robin	J0437	FC Barcelona	Clermont Foot	Loan	42.5 M	2024-08-03	
+TR-017	Kevin Perrin	J0206	Napoli	OGC Nice	Loan with purchase option	30.8	2023-08-01	Gestifute
+TR-018	Mohamed Kante	J0290	RB Leipzig	Toulouse FC	Free transfer	0	2023-07-25	Stellar Group
+TR-019	Matheus Oliveira	J0346	Stade Rennais	Stade de Reims	Loan	18.3M€	2023-08-09	Jorge Mendes
+TR-020	Bradley Ndombele	J0051	Clermont Foot	Olympique Lyonnais	Loan with purchase option	7.3 M	2023-08-15	Mino Raiola Agency
+TR-021	Maxime Robin	J0386	Girondins de Bordeaux	Le Havre AC	Loan with purchase option	48.6 M	2024-06-15	CAA Sports
+TR-022	Mohamed Fofana	J0385	Le Havre AC	Borussia Dortmund	Purchase	10.8	2024-01-22	Base Soccer
+TR-023	Ibrahima Bernard	J0527	AC Milan	Girondins de Bordeaux	Loan	40.3	2023-01-04	Mino Raiola Agency
+TR-024	Diego Moreno	J0068	Stade de Reims	Olympique de Marseille	Purchase	62.1	2024-06-10	Unique Sports
+TR-025	Seko Dembele	J0074	Tottenham	Olympique de Marseille	Free transfer	0	2023-08-30	Unique Sports
+TR-026	Dimitri Roux	J0438	LOSC Lille	Clermont Foot	Loan with purchase option	57.7M€	2023-07-18	Sport Cover
+TR-027	Felipe Silva	J0475	Girondins de Bordeaux	FC Metz	Free transfer	0	2023-08-18	Mino Raiola Agency
+TR-028	Habib Kone	J0213	Olympique Lyonnais	RC Strasbourg	Loan with purchase option	59.5	2024-01-24	Stellar Group
+TR-029	Seko Cisse	J0261	FC Nantes	Tottenham	Loan with purchase option	3.8	2024-01-20	Jorge Mendes
+TR-030	Antoine Simon	J0498	AS Monaco	AS Saint-Etienne	Loan	71.8 M	2024-01-01	Stellar Group
+TR-031	Warren Sylla	J0341	Stade Brestois	Borussia Dortmund	Loan	56.0	2024-08-26	Jorge Mendes
+TR-032	Ismael Diaby	J0516	Toulouse FC	Girondins de Bordeaux	Purchase	63.6	2024-07-01	Unique Sports
+TR-033	Kylian Lambert	J0330	Olympique de Marseille	Stade Brestois	Purchase	15.5 M	2024-07-18	Jorge Mendes
+TR-034	Mathieu Moreau	J0277	AS Monaco	Montpellier HSC	Free transfer	0	2024-06-10	Stellar Group
+TR-035	Aurelien Toure	J0392	Stade Rennais	Le Havre AC	Free transfer	0	2024-07-21	Jorge Mendes
+TR-036	Marco Diallo	J0266	Manchester City	Montpellier HSC	Free transfer	0	2023-01-19	Gestifute
+TR-037	Ismael Sylla	J0096	Stade de Reims	AS Monaco	Purchase	32.8	2024-08-14	Unique Sports
+TR-038	Theo Dembele	J0148	Olympique Lyonnais	Stade Rennais	Loan	20.3	2024-01-02	Sport Cover
+TR-039	Abdoulaye Toure	J0382	Paris SG	Le Havre AC	Loan with purchase option	29.1M€	2023-08-10	
+TR-040	Aurelien Cisse	J0084	Stade Brestois	AS Monaco	Loan with purchase option	31.8	2024-01-12	Jorge Mendes
+TR-041	Youssef Lefebvre	J0203	LOSC Lille	OGC Nice	Loan with purchase option	26.9M€	2023-07-27	
+TR-042	Moussa Fournier	J0217	FC Lorient	RC Strasbourg	Loan with purchase option	46.1 M	2023-08-13	Base Soccer
+TR-043	Enzo Diallo	J0075	AS Saint-Etienne	Olympique de Marseille	Loan	23.9	2023-08-20	Sport Cover
+TR-044	Youssef Morel	J0318	OGC Nice	Stade Brestois	Purchase	45.1 M	2023-07-05	Jorge Mendes
+TR-045	Brice Ndombele	J0023	FC Lorient	Paris SG	Free transfer	0	2024-01-29	
+TR-046	Steve Fofana	J0205	OGC Nice	FC Barcelona	Purchase	42.0	2023-08-10	Promoesport
+TR-047	Randal Kante	J0076	OGC Nice	Olympique de Marseille	Loan	53.5	2023-07-10	
+TR-048	Steve Sylla	J0037	Olympique Lyonnais	FC Barcelona	Loan	32.9 M	2023-06-03	Wasserman
+TR-049	Kylian Rousseau	J0402	OGC Nice	FC Lorient	Loan	46.5M€	2023-08-09	Promoesport
+TR-050	Enzo Fofana	J0232	AC Milan	RC Strasbourg	Loan with purchase option	32.1 M	2023-01-08	Unique Sports
+TR-051	Kylian Simon	J0144	Stade Rennais	Atletico Madrid	Loan with purchase option	40.9	2023-01-11	Sport Cover
+TR-052	Nabil Bonnet	J0061	Girondins de Bordeaux	Olympique de Marseille	Loan	20.7 M	2023-07-20	ICM Partners
+TR-053	Aurelien Fofana	J0412	RC Lens	FC Lorient	Free transfer	0	2024-06-11	ICM Partners
+TR-054	Aurelien Osimhen	J0200	AS Monaco	OGC Nice	Loan with purchase option	47.7	2023-08-16	Wasserman
+TR-055	Seko Diallo	J0104	AS Monaco	Chelsea	Loan with purchase option	17.0	2023-06-05	ICM Partners
+TR-056	Alexandre Girard	J0077	Clermont Foot	Olympique de Marseille	Loan	40.5	2023-08-18	Sport Cover
+TR-057	Ismael Toure	J0254	FC Nantes	Manchester City	Free transfer	0	2024-06-07	Unique Sports
+TR-058	Maxime Michel	J0138	Girondins de Bordeaux	Stade Rennais	Loan with purchase option	21.7	2023-08-03	Jorge Mendes
+TR-059	Abdoulaye Traore	J0092	FC Barcelona	AS Monaco	Purchase	74.7M€	2023-07-17	Base Soccer
+TR-060	Bradley Ndombele	J0125	RC Lens	LOSC Lille	Loan with purchase option	0.8	2023-01-29	CAA Sports
+TR-061	Mathieu Bernard	J0045	Girondins de Bordeaux	Olympique Lyonnais	Loan	12.5M€	2024-01-30	Jorge Mendes
+TR-062	Nabil Roux	J0308	Girondins de Bordeaux	Toulouse FC	Purchase	80.0M€	2023-01-04	Mino Raiola Agency
+TR-063	Antoine Garcia	J0408	FC Lorient	Chelsea	Loan with purchase option	73.0	2023-08-15	Wasserman
+TR-064	Youssef Garcia	J0528	Girondins de Bordeaux	Napoli	Loan with purchase option	24.1	2023-08-11	Unique Sports
+TR-065	Ibrahima Fontaine	J0273	Juventus	Montpellier HSC	Purchase	74.5	2024-07-24	
+TR-066	Florian Bonnet	J0269	FC Nantes	Montpellier HSC	Free transfer	0	2024-06-26	ICM Partners
+TR-067	Ousmane Lefebvre	J0149	Tottenham	Stade Rennais	Loan	27.7 M	2024-07-20	Mino Raiola Agency
+TR-068	Matheus Romero	J0196	OGC Nice	Juventus	Loan with purchase option	12.0M€	2023-01-28	Gestifute
+TR-069	Theo Koulibaly	J0493	Girondins de Bordeaux	AS Saint-Etienne	Purchase	24.5 M	2023-07-12	Sport Cover
+TR-070	Ousmane Mercier	J0109	Stade Rennais	LOSC Lille	Loan	43.0M€	2024-08-01	ICM Partners
+TR-071	Jean-Philippe Kone	J0197	Clermont Foot	OGC Nice	Purchase	74.4M€	2024-01-09	Jorge Mendes
+TR-072	Dimitri Dupont	J0358	Girondins de Bordeaux	Stade de Reims	Purchase	25.3	2024-07-02	Mino Raiola Agency
+TR-073	Jonathan Morel	J0531	FC Lorient	Girondins de Bordeaux	Loan	15.7M€	2023-01-21	Jorge Mendes
+TR-074	Aurelien Dembele	J0042	Borussia Dortmund	Olympique Lyonnais	Free transfer	0	2024-01-23	CAA Sports
+TR-075	Felipe Fernandez	J0231	RC Strasbourg	Arsenal	Loan with purchase option	25.4M€	2024-07-22	Promoesport
+TR-076	Kevin Martin	J0013	Arsenal	Paris SG	Purchase	54.2 M	2023-08-16	Stellar Group
+TR-077	Kevin Chevalier	J0278	FC Lorient	Montpellier HSC	Purchase	16.2	2023-08-25	Mino Raiola Agency
+TR-078	Miguel Jimenez	J0097	AS Monaco	Porto	Purchase	12.7	2024-06-21	
+TR-079	Jeremy Koulibaly	J0086	Chelsea	AS Monaco	Loan with purchase option	67.5 M	2024-06-21	
+TR-080	Jean-Philippe Kante	J0399	FC Lorient	Benfica	Purchase	22.1M€	2024-06-28	Promoesport

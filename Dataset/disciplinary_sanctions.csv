@@ -1,0 +1,91 @@
+﻿sanction_id,player,player_id,club,sanction_date,sanction_type,reason,suspension_matches,fine_euros
+SAN-001,Bradley Ndombele,J0051,Olympique Lyonnais,2024-01-17,Suspension,Controversial social media post,2,
+SAN-002,Randal Diaby,J0216,RC Strasbourg,2023-12-25,Suspension + Fine,unsportsmanlike conduct,1,25000
+SAN-003,Kylian Blanc,J0163,RC Lens,2024-05-14,Suspension,Red card - last man foul,4,
+SAN-004,Jeremy Kante,J0062,Olympique de Marseille,2024-01-17,Suspension + Fine,Spitting,4,15000
+SAN-005,Hugo Laurent,J0088,AS Monaco,2023-12-04,Suspension + Fine,On-field brawl,2,1000
+SAN-006,Adrien Rousseau,J0172,RC Lens,2023-12-28,Warning,Simulation,,
+SAN-007,Jean-Philippe Osimhen,J0065,Olympique de Marseille,2024-06-15,Suspension + Fine,Controversial social media post,3,50000
+SAN-008,Miguel Pereira,J0263,Montpellier HSC,2023-08-12,Suspension,Red card - last man foul,1,
+SAN-009,Aurelien Ndombele,J0319,Stade Brestois,2024-03-23,Suspension + Fine,Repeated protesting,2,500
+SAN-010,Bradley Kone,J0454,FC Metz,2024-02-22,Suspension,Red card - last man foul,1,
+SAN-011,Loic Bamba,J0491,AS Saint-Etienne,2024-01-19,Warning,unsportsmanlike conduct,,
+SAN-012,Lucas Moreau,J0326,Stade Brestois,2023-12-04,Suspension + Fine,Insulting the referee,2,1000
+SAN-013,Hugo Garcia,J0140,Stade Rennais,2023-12-28,Suspension,Red card - last man foul,1,
+SAN-014,Seko Ndombele,J0069,Olympique de Marseille,2023-11-10,Suspension + Fine,Repeated protesting,8,3000
+SAN-015,Romain Simon,J0504,AS Saint-Etienne,2024-03-21,Suspension,unsportsmanlike conduct,3,
+SAN-016,Habib Kante,J0411,FC Lorient,2024-06-06,Fine,Controversial social media post,,25000
+SAN-017,Felipe Silva,J0475,FC Metz,2023-10-23,Fine,Accumulation of yellow cards,,2000
+SAN-018,Ousmane Roux,J0452,FC Metz,2023-10-30,Warning,Late for anti-doping control,,
+SAN-019,Florian Faure,J0132,Stade Rennais,2024-05-18,Fine,On-field brawl,,1000
+SAN-020,Kevin Martin,J0013,Paris SG,2023-09-27,Suspended sentence,Late for anti-doping control,,
+SAN-021,Steve Dembele,J0060,Olympique de Marseille,2023-09-21,Suspension + Fine,Accumulation of yellow cards,3,5000
+SAN-022,Enzo Ndombele,J0004,Paris SG,2024-01-03,Fine,Late for anti-doping control,,500
+SAN-023,Abdoulaye Bamba,J0038,Olympique Lyonnais,2024-01-26,Suspension,Accumulation of yellow cards,3,
+SAN-024,Jean-Philippe Toure,J0289,Montpellier HSC,2023-10-05,Suspension,Unsportsmanlike conduct,3,
+SAN-025,Miguel Fernandez,J0152,Stade Rennais,2023-09-11,Fine,Simulation,,10000
+SAN-026,Pedro Alvarez,J0229,RC Strasbourg,2024-03-04,Suspension,On-field brawl,2,
+SAN-027,Mohamed Camara,J0173,RC Lens,2023-11-21,Suspension,On-field brawl,2,
+SAN-028,Steve Fofana,J0205,OGC Nice,2023-11-20,Fine,Accumulation of yellow cards,,10000
+SAN-029,Ludovic Kante,J0397,FC Lorient,2024-04-17,Suspension,Late for anti-doping control,3,
+SAN-030,Youssef Bernard,J0157,Stade Rennais,2023-08-04,Suspended sentence,Controversial social media post,,
+SAN-031,Bradley Cisse,J0027,Paris SG,2024-04-25,Suspension,Late for anti-doping control,3,
+SAN-032,Seko Ndombele,J0352,Stade de Reims,2023-08-25,Suspension,Simulation,1,
+SAN-033,Remy Girard,J0120,LOSC Lille,2024-06-05,Fine,Abusive language in mixed zone,,15000
+SAN-034,Rafael Jimenez,J0234,RC Strasbourg,2023-11-29,Fine,Simulation,,3000
+SAN-035,Abdoulaye Toure,J0382,Le Havre AC,2023-12-25,Warning,Insulting the referee,,
+SAN-036,Carlos Moreno,J0377,Le Havre AC,2023-09-19,Suspension + Fine,Spitting,5,3000
+SAN-037,Brice Dembele,J0467,FC Metz,2023-08-01,Suspension,Deliberate elbow strike,1,
+SAN-038,Bryan Simon,J0135,Stade Rennais,2023-08-02,Fine,Spitting,,10000
+SAN-039,Lucas Michel,J0224,RC Strasbourg,2023-08-31,Warning,On-field brawl,,
+SAN-040,Bradley Kante,J0188,OGC Nice,2023-11-28,Suspension,Controversial social media post,2,
+SAN-041,Jeremy Sylla,J0160,RC Lens,2024-04-15,Fine,Spitting,,3000
+SAN-042,Kevin Simon,J0177,RC Lens,2024-03-08,Fine,Insulting the referee,,1000
+SAN-043,Enzo Diallo,J0075,Olympique de Marseille,2024-03-26,Suspension,Late for anti-doping control,1,
+SAN-044,Ismael Cisse,J0093,AS Monaco,2024-01-06,Suspension,Controversial social media post,10,
+SAN-045,Kevin Chevalier,J0278,Montpellier HSC,2023-10-10,Suspension + Fine,Red card - last man foul,2,10000
+SAN-046,Jean-Philippe Kone,J0102,AS Monaco,2023-11-13,Warning,Repeated protesting,,
+SAN-047,Pedro Rodriguez,J0106,LOSC Lille,2024-01-31,Suspension,Simulation,2,
+SAN-048,Jonathan Girard,J0428,Clermont Foot,2024-07-04,Fine,Unsportsmanlike conduct,,50000
+SAN-049,Dimitri Dupont,J0358,Stade de Reims,2023-08-09,Suspension,Unsportsmanlike conduct,2,
+SAN-050,Marco Fofana,J0111,LOSC Lille,2024-04-30,Fine,Controversial social media post,,25000
+SAN-051,Marco Camara,J0212,RC Strasbourg,2024-04-02,Fine,Insulting the referee,,50000
+SAN-052,Dimitri Robin,J0420,FC Lorient,2023-09-26,Fine,Unsportsmanlike conduct,,5000
+SAN-053,Theo Diaby,J0057,Olympique de Marseille,2023-12-11,Fine,Straight red card - dangerous tackle,,15000
+SAN-054,Matheus Lopez,J0033,Olympique Lyonnais,2023-08-07,Suspended sentence,Abusive language in mixed zone,,
+SAN-055,Alexandre Roux,J0050,Olympique Lyonnais,2023-08-23,Fine,Insulting the referee,,500
+SAN-056,Enzo Ndombele,J0236,RC Strasbourg,2024-06-26,Fine,Straight red card - dangerous tackle,,1000
+SAN-057,Ludovic Toure,J0178,RC Lens,2024-03-24,Suspension + Fine,Straight red card - dangerous tackle,1,1000
+SAN-058,Jean-Philippe Traore,J0191,OGC Nice,2023-10-28,Suspension,Red card - last man foul,3,
+SAN-059,Kevin Morel,J0404,FC Lorient,2023-11-06,Suspension,Repeated protesting,2,
+SAN-060,Matheus Gonzalez,J0458,FC Metz,2023-09-24,Suspended sentence,On-field brawl,,
+SAN-061,Aurelien Fofana,J0090,AS Monaco,2023-08-04,Warning,Inappropriate gesture towards an opponent,,
+SAN-062,Bryan Lefebvre,J0155,Stade Rennais,2023-09-11,Warning,Unsportsmanlike conduct,,
+SAN-063,Nabil Bonnet,J0061,Olympique de Marseille,2024-05-01,Fine,On-field brawl,,2000
+SAN-064,Randal Ndombele,J0494,AS Saint-Etienne,2024-02-04,Fine,Controversial social media post,,10000
+SAN-065,Hugo Dupont,J0066,Olympique de Marseille,2023-08-05,Fine,Late for anti-doping control,,50000
+SAN-066,Habib Toure,J0193,OGC Nice,2024-03-28,Warning,Repeated protesting,,
+SAN-067,Ismael Koulibaly,J0228,RC Strasbourg,2024-04-23,Warning,Repeated protesting,,
+SAN-068,Aurelien Fofana,J0412,FC Lorient,2023-11-26,Suspension,Inappropriate gesture towards an opponent,2,
+SAN-069,Randal Koulibaly,J0257,FC Nantes,2024-01-26,Suspension,Late for anti-doping control,2,
+SAN-070,Ludovic Kone,J0465,FC Metz,2024-03-11,Warning,Straight red card - dangerous tackle,,
+SAN-071,Pedro Alvarez,J0371,Le Havre AC,2024-05-05,Suspension,Inappropriate gesture towards an opponent,3,
+SAN-072,Nabil Morel,J0457,FC Metz,2023-08-26,Suspended sentence,Unsportsmanlike conduct,,
+SAN-073,Kevin Dupont,J0063,Olympique de Marseille,2023-10-03,Suspension,On-field brawl,1,
+SAN-074,Enzo Camara,J0192,OGC Nice,2024-02-27,Suspension,Late for anti-doping control,1,
+SAN-075,Alexandre Dupont,J0085,AS Monaco,2024-03-01,Warning,On-field brawl,,
+SAN-076,Ousmane Simon,J0380,Le Havre AC,2023-12-03,Fine,Repeated protesting,,15000
+SAN-077,Romain Bonnet,J0187,OGC Nice,2024-03-04,Warning,Repeated protesting,,
+SAN-078,Jean-Philippe Kone,J0197,OGC Nice,2023-11-01,Fine,Red card - last man foul,,2000
+SAN-079,Nabil Mercier,J0304,Toulouse FC,2023-08-26,Suspension,Spitting,1,
+SAN-080,Ibrahima Lefebvre,J0156,Stade Rennais,2023-11-18,Suspended sentence,unsportsmanlike conduct,,
+SAN-081,Jean-Philippe Kante,J0399,FC Lorient,2023-10-19,Fine,Abusive language in mixed zone,,500
+SAN-082,Brice Cisse,J0147,Stade Rennais,2023-11-29,Suspension + Fine,Accumulation of yellow cards,1,10000
+SAN-083,Remy Lambert,J0116,LOSC Lille,2023-09-23,Suspended sentence,Inappropriate gesture towards an opponent,,
+SAN-084,Abdoulaye Toure,J0507,Girondins de Bordeaux,2023-09-11,Suspended sentence,Late for anti-doping control,,
+SAN-085,Nabil Roux,J0308,Toulouse FC,2023-10-25,Suspension,Straight red card - dangerous tackle,3,
+SAN-086,Warren Diaby,J0271,Montpellier HSC,2024-03-19,Suspension,Unsportsmanlike conduct,3,
+SAN-087,Ibrahima Roux,J0462,FC Metz,2024-03-14,Fine,Spitting,,15000
+SAN-088,Maxime Robin,J0437,Clermont Foot,2024-04-09,Suspension,Abusive language in mixed zone,1,
+SAN-089,Aurelien Toure,J0406,FC Lorient,2023-12-04,Suspension,Straight red card - dangerous tackle,1,
+SAN-090,Adrien Roux,J0443,Clermont Foot,2024-01-19,Warning,Controversial social media post,,

@@ -1,0 +1,532 @@
+player_id,full_name,club,position,matches_played,starts,minutes_played,goals,assists,yellow_cards,red_cards,shots,shots_on_target,clean_sheets,saves,successful_dribbles,interceptions,successful_tackles
+J0001,Marco Ndombele,Paris SG,Left back,31,16,1572,3,2,8,0,18,8,,,50.0,115.0,80.0
+J0002,Romain Garcia,Paris SG,Forward,13,8,810,13,4,1,0,30,14,,,33.0,12.0,3.0
+J0003,Hugo Dupont,Paris SG,Forward,31,31,2232,31,3,1,0,80,29,,,39.0,2.0,18.0
+J0004,Enzo Ndombele,Paris SG,Goalkeeper,5,4,310,0,0,4,0,0,0,1,16,,,
+J0005,Florian Morel,Paris SG,Central midfielder,33,25,2377,2,8,2,0,32,12,,,57.0,31.0,25.0
+J0006,Jeremy Camara,Paris SG,Goalkeeper,14,14,966,0,0,5,0,0,0,5,67,,,
+J0007,Lucas Fontaine,Paris SG,Central midfielder,38,20,2072,1,2,6,0,7,2,,,50.0,28.0,11.0
+J0008,Miguel Oliveira,Paris SG,Goalkeeper,17,12,1170,0,0,0,0,0,0,4,67,,,
+J0009,Matheus Ruiz,Paris SG,Attacking midfielder,2,1,72,2,2,0,0,6,3,,,1.0,1.0,0.0
+J0010,Theo Diallo,Paris SG,Forward,37,29,1979,15,9,1,2,59,28,,,62.0,10.0,33.0
+J0011,Felipe Martinez,Paris SG,Right winger,18,17,1223,7,6,2,0,40,16,,,0.0,17.0,14.0
+J0012,Mathieu Blanc,Paris SG,Defensive midfielder,13,8,706,0,4,3,0,24,6,,,4.0,0.0,39.0
+J0013,Kevin Martin,Paris SG,Defensive midfielder,11,6,684,1,0,0,0,15,5,,,4.0,16.0,21.0
+J0014,Ludovic Mbappe,Paris SG,Defensive midfielder,24,12,960,3,0,4,0,39,15,,,33.0,5.0,46.0
+J0015,Brice Cisse,Paris SG,Attacking midfielder,15,13,1067,15,12,2,0,17,9,,,12.0,5.0,10.0
+J0016,Ludovic Cisse,Paris SG,Center back,34,25,1771,0,1,3,2,0,0,,,22.0,0.0,76.0
+J0017,Kevin Garcia,Paris SG,Right back,20,19,1197,0,0,0,0,12,4,,,39.0,73.0,27.0
+J0018,Jonathan Roux,Paris SG,Right winger,32,25,1868,27,15,3,0,68,25,,,30.0,11.0,6.0
+J0019,Kevin Lefebvre,Paris SG,Attacking midfielder,21,11,984,5,6,1,0,29,12,,,16.0,6.0,18.0
+J0020,Mathieu Robin,Paris SG,Left winger,27,20,1778,18,5,0,0,67,26,,,29.0,2.0,22.0
+J0021,Theo Traore,Paris SG,Right winger,23,19,1635,23,13,1,0,63,31,,,57.0,17.0,21.0
+J0022,Brice Kante,Paris SG,Left winger,13,13,936,9,5,3,0,14,4,,,29.0,8.0,4.0
+J0023,Brice Ndombele,Paris SG,Central midfielder,15,8,861,0,1,3,0,4,1,,,6.0,15.0,6.0
+J0024,Hugo Blanc,Paris SG,Forward,31,26,2374,23,5,4,0,72,30,,,14.0,24.0,13.0
+J0025,Jeremy Koulibaly,Paris SG,Left back,18,13,982,0,3,1,0,8,1,,,13.0,70.0,31.0
+J0026,Lucas Perrin,Paris SG,Defensive midfielder,5,4,289 min,1,3,2,0,9,4,,,4.0,11.0,14.0
+J0027,Bradley Cisse,Paris SG,Forward,32,26,2364,30,1,0,0,126,57,,,85.0,18.0,21.0
+J0028,Bradley Mbappe,Paris SG,Defensive midfielder,7,7,567,5,5,1,0,7,3,,,13.0,26.0,5.0
+J0029,Aurelien Camara,Olympique Lyonnais,Right winger,0,0,0,0,1,1,0,1,0,,,0.0,0.0,0.0
+J0030,Kevin Roux,Olympique Lyonnais,Defensive midfielder,14,14,1064,9,2,3,0,22,7,,,3.0,44.0,39.0
+J0031,Alexandre Laurent,Olympique Lyonnais,Goalkeeper,14,7,532,0,0,0,0,0,0,8,23,,,
+J0032,Florian Garcia,Olympique Lyonnais,Right winger,17,15,1079,1,3,0,0,18,7,,,11.0,8.0,17.0
+J0033,Matheus Lopez,Olympique Lyonnais,Left back,28,22,1818,0,0,0,0,12,2,,,7.0,98.0,63.0
+J0034,Adrien Laurent,Olympique Lyonnais,Left winger,33,31,2440,5,8,5,1,52,28,,,97.0,10.0,10.0
+J0035,Enzo Diaby,Olympique Lyonnais,Left back,36,34,2814,1,0,2,1,27,8,,,50.0,48.0,18.0
+J0036,Rafael Pereira,Olympique Lyonnais,Right back,16,13,1142,2,3,0,0,2,0,,,20.0,40.0,3.0
+J0037,Steve Sylla,Olympique Lyonnais,Central midfielder,32,16,1264,0,4,0,0,52,21,,,49.0,4.0,7.0
+J0038,Abdoulaye Bamba,Olympique Lyonnais,Center back,38,33,2073,0,2,0,1,37,12,,,15.0,143.0,63.0
+J0039,Ismael Kante,Olympique Lyonnais,Left winger,25,20,1595,12,7,0,0,42,13,,,59.0,22.0,10.0
+J0040,Ismael Sylla,Olympique Lyonnais,Defensive midfielder,38,32,2172,4,3,2,2,47,14,,,74.0,150.0,78.0
+J0041,Alexandre Morel,Olympique Lyonnais,Left back,1,1,65,1,2,1,0,0,0,,,3.0,1.0,3.0
+J0042,Aurelien Dembele,Olympique Lyonnais,Goalkeeper,34,33,2798,0,0,2,0,0,0,17,79,,,
+J0043,Habib Sylla,Olympique Lyonnais,Attacking midfielder,26,22,1738,10,6,0,0,39,15,,,12.0,15.0,25.0
+J0044,Gaetan Osimhen,Olympique Lyonnais,Central midfielder,8,4,420,2,1,2,0,14,6,,,13.0,5.0,7.0
+J0045,Mathieu Bernard,Olympique Lyonnais,Forward,8,4,324,8,8,4,0,24,9,,,0.0,6.0,6.0
+J0046,Jean-Philippe Diaby,Olympique Lyonnais,Right back,24,12,1068,3,2,3,0,1,0,,,64.0,53.0,21.0
+J0047,Bradley Koulibaly,Olympique Lyonnais,Center back,34,22,2196,1,1,3,0,1,0,,,32.0,5.0,10.0
+J0048,Carlos Lopez,Olympique Lyonnais,Left back,37,31,2546,0,4,0,0,18,5,,,104.0,102.0,111.0
+J0049,Loic Cisse,Olympique Lyonnais,Attacking midfielder,36,28,2132,8,12,0,0,105,45,,,100.0,7.0,11.0
+J0050,Alexandre Roux,Olympique Lyonnais,Attacking midfielder,18,13,1251,7,4,2,0,40,19,,,43.0,0.0,5.0
+J0051,Bradley Ndombele,Olympique Lyonnais,Goalkeeper,11,9,705,0,0,0,0,0,0,6,28,,,
+J0052,Miguel Rodriguez,Olympique Lyonnais,Left winger,16,12,1056,2,2,0,0,39,15,,,11.0,7.0,13.0
+J0053,Marco Koulibaly,Olympique Lyonnais,Right winger,36,33,2655,1,12,0,0,86,40,,,23.0,6.0,11.0
+J0054,Moussa Dupont,Olympique Lyonnais,Center back,27,25,1755,0,1,9,0,22,6,,,39.0,46.0,7.0
+J0055,Maxime Laurent,Olympique de Marseille,Center back,15,7,604,0,3,2,0,13,3,,,11.0,21.0,0.0
+J0056,Ibrahima Dupont,Olympique de Marseille,Goalkeeper,17,12,765,0,0,0,0,0,0,4,44,,,
+J0057,Theo Diaby,Olympique de Marseille,Central midfielder,14,14,1162,2,0,0,0,7,1,,,3.0,0.0,1.0
+J0058,Moussa Simon,Olympique de Marseille,Right back,19,11,1028,1,2,0,0,15,3,,,28.0,73.0,38.0
+J0059,Loic Traore,Olympique de Marseille,Forward,31,29,2229,13,7,4,0,107,37,,,41.0,7.0,15.0
+J0060,Steve Dembele,Olympique de Marseille,Center back,15,15,1050,0,0,4,0,0,0,,,23.0,55.0,34.0
+J0061,Nabil Bonnet,Olympique de Marseille,Right winger,4,3,279,3,1,1,0,6,2,,,5.0,2.0,1.0
+J0062,Jeremy Kante,Olympique de Marseille,Right back,0,0,0,2,4,6,0,0,0,,,0.0,0.0,0.0
+J0063,Kevin Dupont,Olympique de Marseille,Attacking midfielder,16,10,890,8,8,4,0,40,19,,,20.0,6.0,5.0
+J0064,Maxime Roux,Olympique de Marseille,Right back,18,14,956,1,3,1,0,8,2,,,2.0,26.0,1.0
+J0065,Jean-Philippe Osimhen,Olympique de Marseille,Center back,36,19,1650,0,1,4,0,4,1,,,38.0,115.0,20.0
+J0066,Hugo Dupont,Olympique de Marseille,Left winger,9,8,635,2,3,5,0,14,6,,,14.0,7.0,6.0
+J0067,Mathieu Michel,Olympique de Marseille,Right winger,33,21,1818,3,6,7,0,69,21,,,38.0,27.0,11.0
+J0068,Diego Moreno,Olympique de Marseille,Forward,36,34,2674,4,8,6,0,16,4,,,91.0,15.0,0.0
+J0069,Seko Ndombele,Olympique de Marseille,Center back,20,19,1644,1,0,0,0,16,6,,,5.0,31.0,52.0
+J0070,Enzo Koulibaly,Olympique de Marseille,Right back,14,14,1078,0,0,4,0,10,3,,,6.0,20.0,32.0
+J0071,Gaetan Diallo,Olympique de Marseille,Goalkeeper,19,13,1272,0,1,5,0,0,0,7,73,,,
+J0072,Alexandre Michel,Olympique de Marseille,Defensive midfielder,36,25,1959,1,4,0,0,30,10,,,81.0,47.0,39.0
+J0073,Loic Sylla,Olympique de Marseille,Center back,26,14,1472,1,0,1,0,3,0,,,16.0,40.0,21.0
+J0074,Seko Dembele,Olympique de Marseille,Right back,15,11,1024,2,0,0,0,8,2,,,6.0,46.0,20.0
+J0075,Enzo Diallo,Olympique de Marseille,Right back,21,14,1106,0,2,2,0,5,1,,,35.0,10.0,53.0
+J0076,Randal Kante,Olympique de Marseille,Goalkeeper,22,15,1284,0,1,6,0,0,0,4,24,,,
+J0077,Alexandre Girard,Olympique de Marseille,Right back,3,3,267,0,2,2,0,2,0,,,2.0,7.0,8.0
+J0078,Antoine Bonnet,Olympique de Marseille,Central midfielder,11,10,609,0,0,3,0,18,4,,,17.0,6.0,4.0
+J0079,Steve Toure,Olympique de Marseille,Center back,22,20,1346,1,2,1,0,6,1,,,46.0,10.0,12.0
+J0080,Jeremy Toure,AS Monaco,Attacking midfielder,29,21,1515,2,8,0,0,81,42,,,29.0,7.0,16.0
+J0081,Marco Ndombele,AS Monaco,Left back,31,26,1714,1,1,7,0,0,0,,,31.0,51.0,8.0
+J0082,Pedro Ruiz,AS Monaco,Goalkeeper,21,21,1533,0,0,1,0,0,0,18,97,,,
+J0083,Theo Dembele,AS Monaco,Left back,11,8,714,1,0,8,0,9,4,,,31.0,11.0,28.0
+J0084,Aurelien Cisse,AS Monaco,Goalkeeper,19,18,1166,0,1,2,0,0,0,0,52,,,
+J0085,Alexandre Dupont,AS Monaco,Forward,32,18,1770,8,7,3,0,113,41,,,44.0,26.0,24.0
+J0086,Jeremy Koulibaly,AS Monaco,Left winger,12,12,1044,1,12,4,0,12,5,,,18.0,1.0,3.0
+J0087,Pedro Hernandez,AS Monaco,Forward,20,17,1047,8,9,1,0,19,6,,,24.0,1.0,3.0
+J0088,Hugo Laurent,AS Monaco,Left winger,8,5,483,8,6,2,0,24,10,,,0.0,3.0,2.0
+J0089,Bryan Fontaine,AS Monaco,Left winger,8,5,447,8,1,0,0,15,6,,,12.0,4.0,8.0
+J0090,Aurelien Fofana,AS Monaco,Left winger,14,11,825,4,6,2,0,31,12,,,16.0,12.0,3.0
+J0091,Jonathan Michel,AS Monaco,Right back,24,23,1889,1,1,2,0,11,4,,,35.0,22.0,39.0
+J0092,Abdoulaye Traore,AS Monaco,Central midfielder,11,7,609,0,3,2,0,4,1,,,31.0,10.0,1.0
+J0093,Ismael Cisse,AS Monaco,Defensive midfielder,38,30,2754 min,4,6,1,0,29,8,,,11.0,69.0,62.0
+J0094,Lucas Robin,AS Monaco,Center back,13,13,1131,4,0,0,0,9,4,,,31.0,22.0,14.0
+J0095,Ludovic Diallo,AS Monaco,Center back,23,14,1131,0,0,6,0,21,5,,,56.0,11.0,30.0
+J0096,Ismael Sylla,AS Monaco,Forward,36,25,2245,8 ,2,1,0,138,51,,,106.0,8.0,13.0
+J0097,Miguel Jimenez,AS Monaco,Forward,19,12,1118,5,10,5,0,12,3,,,20.0,15.0,13.0
+J0098,Antoine Michel,AS Monaco,Right winger,36,30,1902,8,6,4,0,75,38,,,66.0,23.0,21.0
+J0099,Mathieu Dumont,AS Monaco,Right winger,38,38,2964,10,12,1,0,100,50,,,33.0,9.0,33.0
+J0100,Mohamed Camara,AS Monaco,Central midfielder,16,10,812,2,3,0,0,24,6,,,22.0,4.0,4.0
+J0101,Lucas Mercier,AS Monaco,Defensive midfielder,31,16,1513,1,5,2,0,46,19,,,78.0,123.0,55.0
+J0102,Jean-Philippe Kone,AS Monaco,Goalkeeper,24,18,1266,0,0,2,0,0,0,16,76,,,
+J0103,Lucas Morel,AS Monaco,Right back,12,9,663,1,0,1,1,4,1,,,35.0,7.0,18.0
+J0104,Seko Diallo,AS Monaco,Forward,8,7,590,8,7,0,0,17,6,,,0.0,6.0,6.0
+J0105,Steve Diallo,AS Monaco,Attacking midfielder,14,14,1064,1,14,2,0,39,17,,,10.0,12.0,7.0
+J0106,Pedro Rodriguez,LOSC Lille,Forward,16,13,1088,3,1,0,0,64,20,,,20.0,15.0,7.0
+J0107,Theo Kone,LOSC Lille,Defensive midfielder,21,15,1260,4,0,1,0,17,7,,,36.0,17.0,57.0
+J0108,Adrien Faure,LOSC Lille,Left winger,5,5,410,4,5,4,0,6,3,,,12.0,3.0,0.0
+J0109,Ousmane Mercier,LOSC Lille,Right winger,30,21,1767,3,8,0,0,31,11,,,27.0,4.0,1.0
+J0110,Abdoulaye Mbappe,LOSC Lille,Defensive midfielder,6,5,339,0,1,2,0,10,2,,,2.0,13.0,9.0
+J0111,Marco Fofana,LOSC Lille,Left back,37,23,1933,0,2,2,0,20,6,,,78.0,111.0,104.0
+J0112,Rafael Romero,LOSC Lille,Center back,33,26,1791,2,1,4,0,4,0,,,85.0,132.0,72.0
+J0113,Marco Fofana,LOSC Lille,Attacking midfielder,16,11,946,1,2,1,0,7,2,,,15.0,10.0,0.0
+J0114,Ibrahima Rousseau,LOSC Lille,Goalkeeper,23,15,1444,0,0,0,0,0,0,16,112,,,
+J0115,Alexandre Blanc,LOSC Lille,Right back,25,17,1712,0,0,0,0,17,5,,,28.0,91.0,17.0
+J0116,Remy Lambert,LOSC Lille,Left back,37,18,1577,0,7,0,0,36,7,,,57.0,35.0,52.0
+J0117,Remy Faure,LOSC Lille,Attacking midfielder,5,4,257,5,3,2,0,13,7,,,15.0,3.0,0.0
+J0118,Loic Sylla,LOSC Lille,Right winger,24,12,1044,2,9,0,0,53,19,,,40.0,13.0,6.0
+J0119,Pierre-Emile Bamba,LOSC Lille,Attacking midfielder,30,25,2285,1,14,0,0,17,9,,,27.0,10.0,11.0
+J0120,Remy Girard,LOSC Lille,Left winger,5,2,158,3,4,4,0,3,1,,,7.0,3.0,4.0
+J0121,Marco Bamba,LOSC Lille,Central midfielder,31,23,2014,4,3,0,0,23,7,,,31.0,19.0,5.0
+J0122,Dimitri Girard,LOSC Lille,Goalkeeper,25,19,1836,0,0,5,0,0,0,9,35,,,
+J0123,Pierre-Emile Fofana,LOSC Lille,Forward,34,31,1975,6,1,1,0,119,51,,,40.0,23.0,34.0
+J0124,Seko Camara,LOSC Lille,Goalkeeper,33,16,1420,0,0,1,0,0,0,7,77,,,
+J0125,Bradley Ndombele,LOSC Lille,Forward,7,7,448,7,2,0,0,21,10,,,10.0,4.0,2.0
+J0126,Enzo Camara,LOSC Lille,Left winger,3,2,167,1,3,7,0,4,2,,,1.0,2.0,2.0
+J0127,Ludovic Fofana,LOSC Lille,Forward,9,4,428,9,7,7,1,21,10,,,11.0,1.0,6.0
+J0128,Randal Osimhen,LOSC Lille,Central midfielder,26,19,1540,1,3,0,0,27,7,,,69.0,9.0,4.0
+J0129,Miguel Romero,LOSC Lille,Attacking midfielder,33,16,1550,8,1,0,0,95,33,,,91.0,10.0,25.0
+J0130,Lucas Perrin,LOSC Lille,Center back,18,12,960,0,1,7,0,15,4,,,53.0,28.0,26.0
+J0131,Felipe Romero,Stade Rennais,Goalkeeper,27,13,1116,0,0,0,0,0,0,10,94,,,
+J0132,Florian Faure,Stade Rennais,Defensive midfielder,8,7,633,2,0,3,0,16,6,,,7.0,26.0,8.0
+J0133,Warren Diallo,Stade Rennais,Center back,9,9,612,0,0,1,0,5,1,,,10.0,15.0,11.0
+J0134,Theo Traore,Stade Rennais,Central midfielder,34,19,1553,1,1,1,0,62,28,,,17.0,18.0,14.0
+J0135,Bryan Simon,Stade Rennais,Center back,11,10,775,1,4,0,0,11,3,,,1.0,37.0,14.0
+J0136,Rafael Fernandez,Stade Rennais,Left back,12,7,543,3,0,3,0,3,0,,,29.0,35.0,18.0
+J0137,Ousmane Moreau,Stade Rennais,Left back,37,35,3186,1,1,0,1,7,3,,,102.0,78.0,53.0
+J0138,Maxime Michel,Stade Rennais,Right back,27,14,1513,1,0,13,0,15,6,,,43.0,2.0,27.0
+J0139,Kevin Bonnet,Stade Rennais,Right back,7,4,297,1 ,0,2,0,0,0,,,5.0,23.0,8.0
+J0140,Hugo Garcia,Stade Rennais,Left back,20,10,780,2,6,3,0,1,0,,,23.0,8.0,48.0
+J0141,Bradley Ndombele,Stade Rennais,Central midfielder,14,9,855,1,2,7,0,1,0,,,7.0,6.0,7.0
+J0142,Kylian Moreau,Stade Rennais,Left back,12,9,681,1 ,1,0,0,5,1,,,22.0,43.0,32.0
+J0143,Randal Cisse,Stade Rennais,Defensive midfielder,21,17,1502,1,1,1,0,37,15,,,51.0,53.0,59.0
+J0144,Kylian Simon,Stade Rennais,Center back,17,11,887,0,5,7,0,1,0,,,18.0,62.0,9.0
+J0145,Brice Camara,Stade Rennais,Center back,22,21,1900,1 ,2,0,0,11,4,,,49.0,15.0,42.0
+J0146,Ibrahima Fournier,Stade Rennais,Left back,26,18,1720,0,2,1,0,1,0,,,15.0,60.0,34.0
+J0147,Brice Cisse,Stade Rennais,Defensive midfielder,10,9,626,5,6,4,0,5,2,,,10.0,36.0,20.0
+J0148,Theo Dembele,Stade Rennais,Left back,31,29,2557 min,3,2,0,0,16,5,,,48.0,50.0,58.0
+J0149,Ousmane Lefebvre,Stade Rennais,Defensive midfielder,35,27,2549,1,4,1,0,66,18,,,67.0,5.0,34.0
+J0150,Abdoulaye Diallo,Stade Rennais,Right winger,21,14,1092,5,14,2,0,52,18,,,13.0,19.0,21.0
+J0151,Carlos Santos,Stade Rennais,Defensive midfielder,27,18,1872,0,5,0,0,9,4,,,16.0,100.0,29.0
+J0152,Miguel Fernandez,Stade Rennais,Left back,29,17,1322,0,1,0,0,4,1,,,10.0,69.0,11.0
+J0153,Gaetan Kone,Stade Rennais,Central midfielder,34,25,2294,1,2,0,0,8,2,,,24.0,20.0,9.0
+J0154,Seko Cisse,Stade Rennais,Defensive midfielder,19,12,1149,3,0,2,0,19,5,,,23.0,68.0,50.0
+J0155,Bryan Lefebvre,Stade Rennais,Goalkeeper,34,32,2788,0,0,2,0,0,0,18,80,,,
+J0156,Ibrahima Lefebvre,Stade Rennais,Left winger,15,13,849,1,14,2,0,41,13,,,27.0,13.0,2.0
+J0157,Youssef Bernard,Stade Rennais,Forward,26,23,1526,3,8,3,0,80,27,,,29.0,3.0,26.0
+J0158,Adrien Moreau,Stade Rennais,Goalkeeper,7,7,609,0,0,0,0,0,0,5,10,,,
+J0159,Brice Ndombele,RC Lens,Center back,23,13,1084,3,2,8,0,4,1,,,35.0,77.0,38.0
+J0160,Jeremy Sylla,RC Lens,Left back,32,21,1591,2,0,5,0,1,0,,,42.0,105.0,38.0
+J0161,Romain Perrin,RC Lens,Right winger,36,21,2112,5,5,5,0,63,34,,,34.0,22.0,18.0
+J0162,Abdoulaye Osimhen,RC Lens,Center back,38,33,2761,1,6,3,0,25,6,,,46.0,56.0,6.0
+J0163,Kylian Blanc,RC Lens,Central midfielder,10,10,900,5,8,1,0,12,4,,,19.0,7.0,5.0
+J0164,Diego Pereira,RC Lens,Right winger,34,25,2276,0,11,5,0,87,30,,,19.0,10.0,21.0
+J0165,Alexandre Blanc,RC Lens,Goalkeeper,11,7,519,0,0,1,0,0,0,6,24,,,
+J0166,Felipe Jimenez,RC Lens,Left back,1,0,27,1,3,7,0,0,0,,,1.0,1.0,1.0
+J0167,Jonathan Blanc,RC Lens,Right winger,35,27,2450,5,10,0,0,59,31,,,48.0,26.0,15.0
+J0168,Aurelien Diaby,RC Lens,Center back,15,15,1350,2 ,2,1,0,14,3,,,18.0,6.0,12.0
+J0169,Adrien Laurent,RC Lens,Goalkeeper,13,7,709,0,0,3,0,0,0,1,55,,,
+J0170,Ousmane Michel,RC Lens,Left back,8,8,544,0,1,0,0,0,0,,,9.0,8.0,20.0
+J0171,Kevin Lambert,RC Lens,Right back,23,11,1086,3,5,1,0,12,4,,,27.0,84.0,26.0
+J0172,Adrien Rousseau,RC Lens,Central midfielder,31,30,1809,1 ,4,0,0,19,8,,,28.0,7.0,14.0
+J0173,Mohamed Camara,RC Lens,Left winger,15,15,1035,4,8,4,0,42,12,,,12.0,5.0,4.0
+J0174,Mohamed Traore,RC Lens,Right back,14,13,970 min,2,7,4,0,10,3,,,8.0,32.0,27.0
+J0175,Rafael Martinez,RC Lens,Central midfielder,18,12,936,0,10,7,0,4,1,,,3.0,4.0,18.0
+J0176,Warren Toure,RC Lens,Left back,21,11,1057,0,0,1,0,15,6,,,40.0,12.0,9.0
+J0177,Kevin Simon,RC Lens,Defensive midfielder,37,24,2239,2,3,4,0,45,13,,,2.0,146.0,69.0
+J0178,Ludovic Toure,RC Lens,Attacking midfielder,33,19,1861,2,4,0,0,48,14,,,35.0,30.0,27.0
+J0179,Warren Cisse,RC Lens,Left back,8,4,396,0,0,4,0,6,1,,,19.0,8.0,2.0
+J0180,Kylian Simon,RC Lens,Forward,5,3,310,2,2,0,0,11,3,,,10.0,4.0,2.0
+J0181,Kevin Dupont,RC Lens,Attacking midfielder,13,7,525,0,10,6,0,16,7,,,35.0,10.0,8.0
+J0182,Pedro Hernandez,RC Lens,Goalkeeper,36,26,1640,0,0,0,0,0,0,4,170,,,
+J0183,Enzo Diallo,RC Lens,Left back,38,36,2210,2,4,7,0,19,9,,,30.0,62.0,38.0
+J0184,Seko Traore,RC Lens,Defensive midfielder,22,22,1848,1,1,5,0,44,13,,,62.0,6.0,14.0
+J0185,Jeremy Mbappe,OGC Nice,Goalkeeper,5,4,358,0,0,0,0,0,0,1,25,,,
+J0186,Antoine Fontaine,OGC Nice,Left back,29,14,1578,1,2,2,0,18,7,,,55.0,55.0,24.0
+J0187,Romain Bonnet,OGC Nice,Central midfielder,36,35,2179,3,3,1,0,20,8,,,35.0,16.0,28.0
+J0188,Bradley Kante,OGC Nice,Left back,36,19,1593,0,0,0,0,10,2,,,10.0,133.0,49.0
+J0189,Youssef Mercier,OGC Nice,Defensive midfielder,22,14,1212,2,3,0,0,43,18,,,10.0,28.0,12.0
+J0190,Ismael Diaby,OGC Nice,Forward,6,3,309,6,4,3,0,13,3,,,16.0,3.0,1.0
+J0191,Jean-Philippe Traore,OGC Nice,Forward,5,3,244,5,4,0,0,19,8,,,4.0,0.0,4.0
+J0192,Enzo Camara,OGC Nice,Left back,19,9,823,0,0,1,0,17,3,,,26.0,55.0,52.0
+J0193,Habib Toure,OGC Nice,Attacking midfielder,10,10,750,4 ,7,0,0,18,8,,,11.0,9.0,0.0
+J0194,Adrien Morel,OGC Nice,Left winger,22,12,1142,5,2,2,0,7,2,,,60.0,0.0,6.0
+J0195,Antoine Michel,OGC Nice,Central midfielder,34,30,2592,0,2,2,0,15,3,,,43.0,19.0,7.0
+J0196,Matheus Romero,OGC Nice,Defensive midfielder,35,18,2010,0,0,7,0,67,26,,,2.0,36.0,71.0
+J0197,Jean-Philippe Kone,OGC Nice,Central midfielder,18,14,1196,2,4,1,0,25,6,,,20.0,12.0,15.0
+J0198,Moussa Garcia,OGC Nice,Goalkeeper,6,4,324,0,0,6,0,0,0,4,16,,,
+J0199,Dimitri Fournier,OGC Nice,Right winger,19,12,791,2,9,1,0,5,2,,,42.0,9.0,18.0
+J0200,Aurelien Osimhen,OGC Nice,Left winger,10,6,506,5,5,1,0,10,4,,,27.0,9.0,2.0
+J0201,Rafael Lopez,OGC Nice,Defensive midfielder,32,21,1860,1,2,4,0,5,1,,,86.0,116.0,39.0
+J0202,Ismael Cisse,OGC Nice,Goalkeeper,15,7,715,0,0,0,0,0,0,8,39,,,
+J0203,Youssef Lefebvre,OGC Nice,Central midfielder,32,31,1907,0,1,3,0,62,23,,,61.0,28.0,21.0
+J0204,Kylian Fournier,OGC Nice,Central midfielder,25,13,1348,4,2,5,0,24,8,,,67.0,22.0,0.0
+J0205,Steve Fofana,OGC Nice,Defensive midfielder,24,22,1718,2,1,1,0,29,8,,,58.0,74.0,35.0
+J0206,Kevin Perrin,OGC Nice,Center back,3,1,120,5,2,0,0,3,0,,,8.0,11.0,1.0
+J0207,Remy Bonnet,OGC Nice,Forward,15,15,1245 min,3,1,1,0,50,17,,,27.0,4.0,5.0
+J0208,Romain Morel,OGC Nice,Left winger,23,22,1793,3,12,3,0,6,2,,,40.0,21.0,18.0
+J0209,Rafael Pereira,OGC Nice,Left winger,12,7,527,2,1,4,0,16,4,,,25.0,4.0,2.0
+J0210,Hugo Moreau,OGC Nice,Right back,24,19,1374,1,1,1,0,17,4,,,16.0,64.0,1.0
+J0211,Youssef Robin,RC Strasbourg,Right back,30,24,2208,0,0,0,0,15,5,,,62.0,114.0,46.0
+J0212,Marco Camara,RC Strasbourg,Defensive midfielder,29,26,1899,1,2,1,0,2,0,,,54.0,79.0,45.0
+J0213,Habib Kone,RC Strasbourg,Right back,16,12,892,1,1,4,0,12,2,,,14.0,30.0,39.0
+J0214,Miguel Alvarez,RC Strasbourg,Goalkeeper,0,0,0,0,0,1,0,0,0,0,0,,,
+J0215,Ibrahima Martin,RC Strasbourg,Left winger,32,23,1796,0,1,2,0,67,27,,,32.0,32.0,21.0
+J0216,Randal Diaby,RC Strasbourg,Central midfielder,22,18,1436,2,5,0,0,19,6,,,24.0,6.0,7.0
+J0217,Moussa Fournier,RC Strasbourg,Right winger,15,13,954,3,5,0,0,29,9,,,33.0,3.0,0.0
+J0218,Nabil Moreau,RC Strasbourg,Right winger,32,32,2848,2,5,1,0,15,6,,,93.0,20.0,3.0
+J0219,Jeremy Ndombele,RC Strasbourg,Forward,30,24,1836,3,7,3,0,117,55,,,15.0,12.0,1.0
+J0220,Youssef Rousseau,RC Strasbourg,Goalkeeper,14,9,699,0,0,1,0,0,0,7,47,,,
+J0221,Ismael Koulibaly,RC Strasbourg,Goalkeeper,12,11,907,0,0,1,0,0,0,10,39,,,
+J0222,Rafael Silva,RC Strasbourg,Attacking midfielder,37,25,2322,1,13,0,0,39,11,,,72.0,5.0,26.0
+J0223,Pierre-Emile Bamba,RC Strasbourg,Right back,17,11,740,0,2,7,0,9,2,,,2.0,40.0,24.0
+J0224,Lucas Michel,RC Strasbourg,Forward,24,24,1896 min,4,1,3,0,34,16,,,37.0,15.0,19.0
+J0225,Seko Sylla,RC Strasbourg,Attacking midfielder,18,15,1263,3,7,1,0,3,1,,,50.0,10.0,2.0
+J0226,Youssef Simon,RC Strasbourg,Left back,24,17,1366,0,0,0,0,11,4,,,29.0,9.0,5.0
+J0227,Pedro Jimenez,RC Strasbourg,Center back,12,8,688,1,5,0,0,2,0,,,5.0,34.0,24.0
+J0228,Ismael Koulibaly,RC Strasbourg,Left winger,5,3,262 min,4,5,0,0,8,3,,,3.0,5.0,2.0
+J0229,Pedro Alvarez,RC Strasbourg,Left winger,14,7,546 min,2,12,0,0,21,10,,,29.0,10.0,6.0
+J0230,Ibrahima Roux,RC Strasbourg,Right winger,21,11,1048,4,2,4,0,44,17,,,37.0,12.0,9.0
+J0231,Felipe Fernandez,RC Strasbourg,Central midfielder,36,26,2090,0,0,5,0,62,26,,,102.0,10.0,11.0
+J0232,Enzo Fofana,RC Strasbourg,Attacking midfielder,10,10,820,1,3,0,0,9,4,,,2.0,5.0,9.0
+J0233,Jean-Philippe Fofana,RC Strasbourg,Right winger,24,19,1541,3,14,1,0,8,3,,,71.0,9.0,20.0
+J0234,Rafael Jimenez,RC Strasbourg,Center back,23,17,1305,2,2,8,0,12,5,,,32.0,68.0,14.0
+J0235,Gaetan Diallo,RC Strasbourg,Left back,5,5,330,0,2,3,0,4,1,,,13.0,0.0,3.0
+J0236,Enzo Ndombele,RC Strasbourg,Right winger,1,1,78,1,1,4,0,2,0,,,1.0,0.0,1.0
+J0237,Dimitri Moreau,FC Nantes,Left winger,11,8,665,1,9,0,0,12,6,,,30.0,4.0,2.0
+J0238,Youssef Bernard,FC Nantes,Left winger,8,5,404,3,5,1,0,3,1,,,21.0,1.0,6.0
+J0239,Mohamed Sylla,FC Nantes,Defensive midfielder,34,31,2671,5,4,3,0,32,11,,,55.0,109.0,102.0
+J0240,Bryan Bonnet,FC Nantes,Center back,18,14,1120 min,0,0,0,0,2,0,,,13.0,71.0,54.0
+J0241,Alexandre Simon,FC Nantes,Forward,29,15,1726,2,8,0,0,84,41,,,51.0,15.0,15.0
+J0242,Gaetan Osimhen,FC Nantes,Attacking midfielder,15,15,1350,1,14,3,0,17,7,,,17.0,14.0,15.0
+J0243,Alexandre Roux,FC Nantes,Left winger,19,14,1020,3,9,5,0,35,15,,,41.0,7.0,6.0
+J0244,Dimitri Garcia,FC Nantes,Central midfielder,6,6,480,1,5,5,0,2,0,,,17.0,4.0,2.0
+J0245,Abdoulaye Mbappe,FC Nantes,Goalkeeper,13,6,573,0,0,6,0,0,0,12,39,,,
+J0246,Enzo Ndombele,FC Nantes,Central midfielder,36,24,2016 min,1,1,5,0,41,18,,,29.0,10.0,2.0
+J0247,Aurelien Traore,FC Nantes,Forward,15,8,866,5,0,2,0,11,3,,,31.0,5.0,14.0
+J0248,Jonathan Dupont,FC Nantes,Attacking midfielder,7,6,513,3,6,1,0,8,3,,,7.0,1.0,0.0
+J0249,Enzo Osimhen,FC Nantes,Left winger,34,27,2479,3,6,3,0,27,14,,,9.0,17.0,14.0
+J0250,Antoine Bernard,FC Nantes,Center back,20,18,1478,0,0,3,0,18,3,,,1.0,30.0,26.0
+J0251,Kylian Martin,FC Nantes,Center back,8,4,324,0,0,0,0,1,0,,,24.0,16.0,22.0
+J0252,Dimitri Dumont,FC Nantes,Right back,31,31,2356,1,2,2,0,31,14,,,62.0,66.0,50.0
+J0253,Bradley Bamba,FC Nantes,Goalkeeper,19,12,848,0,0,1,0,0,0,11,37,,,
+J0254,Ismael Toure,FC Nantes,Center back,9,9,765,1,2,1,2,4,0,,,25.0,8.0,13.0
+J0255,Marco Mbappe,FC Nantes,Center back,5,2,172,0,0,3,0,4,1,,,0.0,20.0,15.0
+J0256,Moussa Girard,FC Nantes,Center back,9,4,457,2,1,0,0,8,2,,,17.0,30.0,16.0
+J0257,Randal Koulibaly,FC Nantes,Right winger,16,11,832,3,3,3,0,11,4,,,19.0,8.0,14.0
+J0258,Ismael Fofana,FC Nantes,Right back,32,19,1929,1,1,0,0,32,9,,,57.0,118.0,46.0
+J0259,Gaetan Fofana,FC Nantes,Central midfielder,26,20,1490,3,3,0,0,30,14,,,16.0,13.0,21.0
+J0260,Jonathan Dupont,FC Nantes,Goalkeeper,31,27,2035,0,0,1,0,0,0,6,54,,,
+J0261,Seko Cisse,FC Nantes,Central midfielder,12,8,640,3,4,0,0,14,5,,,8.0,4.0,4.0
+J0262,Florian Moreau,FC Nantes,Defensive midfielder,5,4,366 min,6,2,4,0,10,3,,,3.0,13.0,10.0
+J0263,Miguel Pereira,Montpellier HSC,Left back,12,6,444,0,4,3,2,8,2,,,23.0,17.0,15.0
+J0264,Matheus Rodriguez,Montpellier HSC,Right winger,27,23,1724,2,6,1,0,41,19,,,36.0,2.0,24.0
+J0265,Rafael Costa,Montpellier HSC,Forward,23,21,1389,4,5,1,0,72,30,,,51.0,2.0,22.0
+J0266,Marco Diallo,Montpellier HSC,Attacking midfielder,31,20,1649,2,3,0,0,38,11,,,40.0,2.0,24.0
+J0267,Pierre-Emile Traore,Montpellier HSC,Forward,35,20,1970,1,5,6,0,92,35,,,63.0,13.0,6.0
+J0268,Florian Simon,Montpellier HSC,Central midfielder,32,26,1896,4,2,6,0,56,20,,,41.0,26.0,30.0
+J0269,Florian Bonnet,Montpellier HSC,Defensive midfielder,23,14,1129,6,0,0,0,18,5,,,44.0,6.0,14.0
+J0270,Florian Martin,Montpellier HSC,Defensive midfielder,13,8,694,4,6,1,0,16,4,,,9.0,30.0,35.0
+J0271,Warren Diaby,Montpellier HSC,Goalkeeper,27,15,1269,0,0,0,0,0,0,16,34,,,
+J0272,Bradley Bamba,Montpellier HSC,Right winger,22,17,1471,0,12,2,0,63,20,,,39.0,17.0,2.0
+J0273,Ibrahima Fontaine,Montpellier HSC,Right winger,30,21,1929,1,2,0,0,42,23,,,73.0,24.0,10.0
+J0274,Kylian Bernard,Montpellier HSC,Left winger,9,6,447 min,2,8,0,0,10,5,,,4.0,6.0,8.0
+J0275,Romain Robin,Montpellier HSC,Left winger,37,30,2172,0,7,2,0,67,24,,,83.0,0.0,23.0
+J0276,Bryan Dumont,Montpellier HSC,Central midfielder,25,17,1567,1,4,0,2,31,9,,,7.0,19.0,20.0
+J0277,Mathieu Moreau,Montpellier HSC,Central midfielder,8,5,419,2,2,1,0,14,6,,,6.0,4.0,7.0
+J0278,Kevin Chevalier,Montpellier HSC,Defensive midfielder,38,19,1653,2,7,6,0,6,2,,,7.0,137.0,20.0
+J0279,Moussa Bonnet,Montpellier HSC,Left back,26,21,1933,1,6,7,0,19,6,,,19.0,65.0,54.0
+J0280,Moussa Bonnet,Montpellier HSC,Right winger,21,13,935,2,13,0,0,35,16,,,13.0,10.0,15.0
+J0281,Romain Fontaine,Montpellier HSC,Right back,28,17,1249,3,1,3,0,17,3,,,38.0,31.0,34.0
+J0282,Nabil Roux,Montpellier HSC,Goalkeeper,36,25,2120,0,0,0,0,0,0,16,94,,,
+J0283,Adrien Lambert,Montpellier HSC,Attacking midfielder,22,14,1464,2,4,1,0,11,4,,,4.0,17.0,13.0
+J0284,Jonathan Perrin,Montpellier HSC,Center back,26,22,1398,2,1,0,0,5,2,,,8.0,41.0,68.0
+J0285,Warren Fofana,Montpellier HSC,Right back,14,14,1204,2,0,0,1,0,0,,,0.0,11.0,5.0
+J0286,Pierre-Emile Dembele,Montpellier HSC,Right back,16,9,684,0,1,2,0,13,3,,,33.0,36.0,14.0
+J0287,Jean-Philippe Ndombele,Montpellier HSC,Defensive midfielder,8,6,430 min,2,1,0,0,7,3,,,24.0,1.0,14.0
+J0288,Theo Fofana,Montpellier HSC,Central midfielder,24,19,1525,1,1,0,0,1,0,,,36.0,24.0,10.0
+J0289,Jean-Philippe Toure,Montpellier HSC,Goalkeeper,8,5,340,0 ,0,0,0,0,0,4,9,,,
+J0290,Mohamed Kante,Toulouse FC,Attacking midfielder,35,19,2101,2,3,2,0,58,18,,,74.0,8.0,15.0
+J0291,Maxime Garcia,Toulouse FC,Left back,5,5,440,0,2,0,0,2,0,,,6.0,11.0,15.0
+J0292,Felipe Hernandez,Toulouse FC,Right back,19,16,1406,2,2,1,0,16,5,,,57.0,55.0,45.0
+J0293,Pierre-Emile Mbappe,Toulouse FC,Right back,18,10,938,3,3,3,0,17,6,,,13.0,38.0,49.0
+J0294,Enzo Kante,Toulouse FC,Center back,11,10,918,0,2,3,0,3,1,,,14.0,0.0,11.0
+J0295,Florian Simon,Toulouse FC,Defensive midfielder,6,4,348,4,4,4,0,9,3,,,3.0,18.0,6.0
+J0296,Gaetan Fofana,Toulouse FC,Left back,16,11,914,5,0,2,0,13,5,,,16.0,55.0,44.0
+J0297,Mathieu Garcia,Toulouse FC,Central midfielder,7,5,357,0,7,6,0,12,4,,,4.0,2.0,2.0
+J0298,Pedro Fernandez,Toulouse FC,Center back,24,20,1468,1,4,0,0,2,0,,,49.0,38.0,51.0
+J0299,Ludovic Ndombele,Toulouse FC,Forward,37,20,1759,2,0,4,0,44,14,,,31.0,7.0,35.0
+J0300,Loic Kone,Toulouse FC,Goalkeeper,10,6,554,0,0,5,0,0,0,8,10,,,
+J0301,Pedro Romero,Toulouse FC,Forward,16,14,1048,4,7,0,0,47,15,,,19.0,15.0,1.0
+J0302,Warren Mbappe,Toulouse FC,Goalkeeper,18,18,1422,0,0,0,0,0,0,4,79,,,
+J0303,Ousmane Girard,Toulouse FC,Central midfielder,23,13,1208,2,4,2,0,11,3,,,57.0,0.0,2.0
+J0304,Nabil Mercier,Toulouse FC,Center back,38,22,2272,2,1,5,0,13,5,,,8.0,59.0,69.0
+J0305,Pedro Rodriguez,Toulouse FC,Central midfielder,15,10,695,2,3,0,0,2,0,,,0.0,12.0,0.0
+J0306,Matheus Alvarez,Toulouse FC,Right winger,8,5,336,2,5,5,0,4,1,,,11.0,0.0,8.0
+J0307,Lucas Moreau,Toulouse FC,Defensive midfielder,29,14,1511,2,1,3,0,32,14,,,37.0,7.0,83.0
+J0308,Nabil Roux,Toulouse FC,Attacking midfielder,23,23,1587,0,10,4,0,15,6,,,62.0,5.0,10.0
+J0309,Lucas Simon,Toulouse FC,Goalkeeper,30,22,1800,0,0,4,0,0,0,12,40,,,
+J0310,Aurelien Mbappe,Toulouse FC,Attacking midfielder,13,13,923,2,3,0,0,13,5,,,35.0,0.0,4.0
+J0311,Enzo Traore,Toulouse FC,Defensive midfielder,33,17,1269 min,2,1,0,0,4,1,,,15.0,8.0,63.0
+J0312,Pierre-Emile Diallo,Toulouse FC,Right winger,28,23,2155,2,7,0,0,20,8,,,37.0,4.0,24.0
+J0313,Bryan Perrin,Toulouse FC,Defensive midfielder,15,10,745 min,3,2,0,0,13,5,,,37.0,36.0,40.0
+J0314,Marco Osimhen,Toulouse FC,Forward,37,25,1656,2,3,1,0,138,47,,,1.0,35.0,36.0
+J0315,Adrien Blanc,Stade Brestois,Right winger,5,3,265,0,3,3,0,9,4,,,8.0,0.0,3.0
+J0316,Jonathan Lefebvre,Stade Brestois,Attacking midfielder,37,19,1661,2,13,2,0,66,29,,,43.0,24.0,20.0
+J0317,Jonathan Blanc,Stade Brestois,Defensive midfielder,30,20,1730,5,3,1,0,35,15,,,8.0,55.0,37.0
+J0318,Youssef Morel,Stade Brestois,Center back,9,9,684,1,0,0,0,7,2,,,21.0,15.0,17.0
+J0319,Aurelien Ndombele,Stade Brestois,Central midfielder,19,18,1247,0,3,0,0,7,2,,,10.0,17.0,19.0
+J0320,Jeremy Ndombele,Stade Brestois,Attacking midfielder,2,2,142,2,2,4,0,6,2,,,1.0,0.0,1.0
+J0321,Dimitri Laurent,Stade Brestois,Left back,9,6,450,1,0,0,0,8,3,,,23.0,21.0,11.0
+J0322,Youssef Rousseau,Stade Brestois,Goalkeeper,5,2,175,0,0,0,0,0,0,0,20,,,
+J0323,Habib Toure,Stade Brestois,Right winger,24,22,1440,1,4,2,0,69,30,,,23.0,22.0,18.0
+J0324,Marco Bamba,Stade Brestois,Central midfielder,14,10,942,1,3,5,0,25,11,,,6.0,5.0,2.0
+J0325,Aurelien Sylla,Stade Brestois,Attacking midfielder,8,7,602,1,2,6,0,3,1,,,14.0,4.0,7.0
+J0326,Lucas Moreau,Stade Brestois,Forward,7,6,416,3 ,2,2,0,7,2,,,17.0,2.0,7.0
+J0327,Mathieu Laurent,Stade Brestois,Right back,18,18,1350,1,0,8,0,11,4,,,16.0,70.0,44.0
+J0328,Bryan Fontaine,Stade Brestois,Central midfielder,18,17,1187,0,1,3,0,3,1,,,52.0,11.0,12.0
+J0329,Randal Ndombele,Stade Brestois,Central midfielder,36,27,2160,1,3,4,0,16,4,,,37.0,25.0,15.0
+J0330,Kylian Lambert,Stade Brestois,Left winger,28,27,2240,1 ,9,0,0,55,25,,,75.0,7.0,14.0
+J0331,Lucas Moreau,Stade Brestois,Goalkeeper,35,27,1957,0,0,3,0,0,0,10,75,,,
+J0332,Nabil Michel,Stade Brestois,Left back,21,18,1548,1,1,0,0,1,0,,,27.0,21.0,3.0
+J0333,Gaetan Fofana,Stade Brestois,Left winger,6,6,438,2,5,0,0,7,2,,,3.0,6.0,5.0
+J0334,Felipe Pereira,Stade Brestois,Defensive midfielder,35,28,2254,2,2,1,0,21,10,,,85.0,94.0,60.0
+J0335,Hugo Lambert,Stade Brestois,Central midfielder,14,7,616,1,0,1,0,17,6,,,28.0,9.0,13.0
+J0336,Maxime Morel,Stade Brestois,Central midfielder,22,19,1469 min,2,3,0,0,16,4,,,37.0,10.0,0.0
+J0337,Romain Laurent,Stade Brestois,Center back,13,8,746,0,3,1,0,2,0,,,32.0,28.0,2.0
+J0338,Jonathan Simon,Stade Brestois,Goalkeeper,15,8,672,0,0,0,0,0,0,12,66,,,
+J0339,Ibrahima Chevalier,Stade Brestois,Left winger,32,32,2848,0,10,0,0,91,43,,,58.0,15.0,13.0
+J0340,Ismael Mbappe,Stade Brestois,Left back,7,7,532,1,4,3,0,1,0,,,11.0,23.0,5.0
+J0341,Warren Sylla,Stade Brestois,Forward,28,27,1771 min,1,0,1,0,11,4,,,6.0,25.0,23.0
+J0342,Hugo Faure,Stade Brestois,Central midfielder,21,11,950,2,1,6,0,18,5,,,49.0,20.0,7.0
+J0343,Loic Kone,Stade de Reims,Defensive midfielder,22,13,1258,2,1,1,0,14,5,,,50.0,53.0,52.0
+J0344,Bryan Girard,Stade de Reims,Left back,38,27,2344,2,1,1,0,13,4,,,35.0,60.0,45.0
+J0345,Mohamed Traore,Stade de Reims,Right winger,15,12,882,2,7,1,0,16,5,,,19.0,7.0,1.0
+J0346,Matheus Oliveira,Stade de Reims,Goalkeeper,31,26,2146,0,0,3,0,0,0,16,87,,,
+J0347,Loic Toure,Stade de Reims,Defensive midfielder,8,6,406,2,1,4,0,15,4,,,17.0,18.0,7.0
+J0348,Bryan Rousseau,Stade de Reims,Left back,12,11,871,1,2,0,0,2,0,,,18.0,47.0,18.0
+J0349,Moussa Fontaine,Stade de Reims,Left winger,29,28,1995,0,6,4,0,26,10,,,67.0,8.0,3.0
+J0350,Kevin Lefebvre,Stade de Reims,Goalkeeper,25,17,1420,0,0,1,0,0,0,1,44,,,
+J0351,Mohamed Kante,Stade de Reims,Central midfielder,29,25,1928,2,3,4,0,16,5,,,70.0,9.0,19.0
+J0352,Seko Ndombele,Stade de Reims,Defensive midfielder,13,12,759,0,1,1,0,1,0,,,15.0,52.0,34.0
+J0353,Pierre-Emile Osimhen,Stade de Reims,Right winger,26,18,1168,2,5,5,0,21,7,,,47.0,16.0,11.0
+J0354,Carlos Martinez,Stade de Reims,Goalkeeper,15,15,1140,0,0,3,0,0,0,1,50,,,
+J0355,Moussa Bernard,Stade de Reims,Defensive midfielder,27,27,1755,3,3,1,0,52,17,,,34.0,96.0,48.0
+J0356,Mathieu Robin,Stade de Reims,Defensive midfielder,7,3,372,0,1,3,0,0,0,,,7.0,0.0,8.0
+J0357,Ismael Cisse,Stade de Reims,Central midfielder,18,12,1062,2,2,2,0,22,7,,,33.0,6.0,15.0
+J0358,Dimitri Dupont,Stade de Reims,Right back,34,18,2034,2,1,1,0,7,2,,,99.0,26.0,86.0
+J0359,Theo Sylla,Stade de Reims,Attacking midfielder,5,2,242,1,5,0,0,1,0,,,0.0,3.0,4.0
+J0360,Adrien Bernard,Stade de Reims,Right back,23,23,1771 min,0,3,2,0,7,2,,,20.0,32.0,29.0
+J0361,Matheus Romero,Stade de Reims,Left back,9,7,554,0,1,1,0,4,1,,,3.0,29.0,5.0
+J0362,Nabil Michel,Stade de Reims,Left winger,25,19,1600,1,1,4,0,66,35,,,61.0,13.0,25.0
+J0363,Miguel Santos,Stade de Reims,Left back,12,8,572,1,1,2,0,3,0,,,25.0,8.0,23.0
+J0364,Pedro Jimenez,Stade de Reims,Attacking midfielder,36,19,1714,2,6,0,0,39,13,,,90.0,19.0,32.0
+J0365,Gaetan Ndombele,Stade de Reims,Central midfielder,35,31,2423 min,1,1,0,0,3,0,,,77.0,23.0,18.0
+J0366,Diego Alvarez,Stade de Reims,Center back,26,18,1564,3,0,0,0,26,6,,,73.0,67.0,0.0
+J0367,Diego Alvarez,Stade de Reims,Right winger,27,17,1394,2,4,0,0,53,24,,,68.0,5.0,21.0
+J0368,Pierre-Emile Koulibaly,Le Havre AC,Right winger,24,22,1672,1,8,1,2,19,10,,,49.0,4.0,8.0
+J0369,Bradley Toure,Le Havre AC,Left back,30,21,1659,0,2,1,0,26,7,,,77.0,102.0,89.0
+J0370,Diego Costa,Le Havre AC,Goalkeeper,33,24,2232 min,0,2,8,0,0,0,8,84,,,
+J0371,Pedro Alvarez,Le Havre AC,Center back,15,13,863,1,0,2,0,8,2,,,6.0,11.0,40.0
+J0372,Bryan Michel,Le Havre AC,Right winger,32,20,1592,0,10,3,0,93,43,,,42.0,21.0,26.0
+J0373,Ismael Koulibaly,Le Havre AC,Defensive midfielder,31,24,1829,0,4,9,0,35,15,,,58.0,46.0,93.0
+J0374,Ibrahima Roux,Le Havre AC,Goalkeeper,24,13,1274,0,0,1,0,0,0,3,72,,,
+J0375,Pierre-Emile Fofana,Le Havre AC,Defensive midfielder,35,23,2335,1,2,2,0,21,9,,,12.0,63.0,62.0
+J0376,Abdoulaye Cisse,Le Havre AC,Right winger,18,10,790,1,3,5,0,36,18,,,28.0,8.0,15.0
+J0377,Carlos Moreno,Le Havre AC,Right back,6,6,534,1,0,0,0,3,0,,,4.0,6.0,5.0
+J0378,Adrien Martin,Le Havre AC,Right winger,27,15,1080,1,1,0,0,9,4,,,65.0,25.0,0.0
+J0379,Maxime Lambert,Le Havre AC,Central midfielder,15,14,883,3,4,0,0,23,9,,,11.0,5.0,0.0
+J0380,Ousmane Simon,Le Havre AC,Left back,9,6,489,2,1,4,0,1,0,,,1.0,20.0,14.0
+J0381,Adrien Martin,Le Havre AC,Forward,10,8,734,0,3,4,0,4,1,,,12.0,1.0,6.0
+J0382,Abdoulaye Toure,Le Havre AC,Defensive midfielder,36,23,2260,3,2,3,0,34,9,,,82.0,73.0,52.0
+J0383,Ousmane Fournier,Le Havre AC,Center back,21,19,1298,0,1,1,0,1,0,,,5.0,77.0,61.0
+J0384,Enzo Fofana,Le Havre AC,Forward,29,27,2144,0,5,0,0,41,19,,,48.0,28.0,29.0
+J0385,Mohamed Fofana,Le Havre AC,Forward,11,11,924,2,4,0,0,41,19,,,16.0,8.0,11.0
+J0386,Maxime Robin,Le Havre AC,Right back,22,19,1346,1,1,2,2,19,6,,,13.0,57.0,62.0
+J0387,Ludovic Osimhen,Le Havre AC,Center back,12,8,836,4,0,6,0,0,0,,,3.0,45.0,4.0
+J0388,Remy Morel,Le Havre AC,Left back,27,17,1566,1,0,3,0,1,0,,,70.0,10.0,32.0
+J0389,Ismael Ndombele,Le Havre AC,Forward,16,10,892,0,6,0,0,36,11,,,40.0,12.0,15.0
+J0390,Hugo Michel,Le Havre AC,Goalkeeper,15,7,562,0 ,0,3,0,0,0,7,37,,,
+J0391,Kevin Bernard,Le Havre AC,Center back,7,4,368,0,1,3,0,2,0,,,1.0,8.0,0.0
+J0392,Aurelien Toure,Le Havre AC,Center back,4,2,214,4,2,4,0,4,0,,,4.0,1.0,3.0
+J0393,Aurelien Koulibaly,Le Havre AC,Forward,16,15,1219,1,6,0,0,24,7,,,12.0,9.0,16.0
+J0394,Warren Camara,Le Havre AC,Left winger,7,7,581,0,1,1,0,13,4,,,8.0,2.0,3.0
+J0395,Mathieu Perrin,Le Havre AC,Left back,9,7,505,4,0,0,0,1,0,,,4.0,0.0,26.0
+J0396,Marco Camara,FC Lorient,Right back,0,0,0 min,0,2,5,0,0,0,,,0.0,0.0,0.0
+J0397,Ludovic Kante,FC Lorient,Attacking midfielder,28,23,1715,1,8,0,0,39,18,,,6.0,25.0,8.0
+J0398,Mathieu Morel,FC Lorient,Left winger,26,25,2009,0,3,3,0,25,11,,,49.0,12.0,10.0
+J0399,Jean-Philippe Kante,FC Lorient,Left winger,38,19,1900,0,4,2,0,109,40,,,81.0,8.0,2.0
+J0400,Aurelien Fofana,FC Lorient,Central midfielder,24,21,1395,1,1,13,0,1,0,,,30.0,12.0,16.0
+J0401,Antoine Robin,FC Lorient,Attacking midfielder,1,1,74,1,1,2,0,3,1,,,3.0,0.0,0.0
+J0402,Kylian Rousseau,FC Lorient,Left winger,25,22,1585,2,6,4,0,11,4,,,40.0,2.0,5.0
+J0403,Ludovic Koulibaly,FC Lorient,Forward,17,8,801,2,2,6,0,37,17,,,11.0,16.0,6.0
+J0404,Kevin Morel,FC Lorient,Forward,24,19,1620 min,2,8,5,0,65,22,,,60.0,17.0,14.0
+J0405,Youssef Laurent,FC Lorient,Central midfielder,13,9,806,2,1,2,2,17,4,,,3.0,4.0,8.0
+J0406,Aurelien Toure,FC Lorient,Left winger,10,5,425,0,2,0,0,18,6,,,22.0,8.0,9.0
+J0407,Nabil Garcia,FC Lorient,Left winger,13,8,774,1,7,1,0,30,16,,,20.0,12.0,8.0
+J0408,Antoine Garcia,FC Lorient,Goalkeeper,18,13,1109,0,0,6,0,0,0,3,58,,,
+J0409,Romain Fournier,FC Lorient,Central midfielder,21,20,1781 min,6,0,2,0,30,12,,,7.0,15.0,17.0
+J0410,Felipe Pereira,FC Lorient,Center back,37,20,1758,0,2,4,0,34,13,,,100.0,92.0,69.0
+J0411,Habib Kante,FC Lorient,Left winger,10,10,750,1,7,1,0,30,16,,,25.0,7.0,7.0
+J0412,Aurelien Fofana,FC Lorient,Central midfielder,8,8,720,2,0,0,0,16,7,,,1.0,5.0,7.0
+J0413,Moussa Rousseau,FC Lorient,Goalkeeper,21,13,1286,0,0,4,0,0,0,0,100,,,
+J0414,Pedro Ruiz,FC Lorient,Forward,11,9,725,2,0,2,0,5,1,,,6.0,1.0,5.0
+J0415,Loic Sylla,FC Lorient,Defensive midfielder,1,1,88,1,3,7,0,1,0,,,1.0,4.0,3.0
+J0416,Diego Fernandez,FC Lorient,Defensive midfielder,17,17,1020,0,3,0,0,24,8,,,23.0,54.0,28.0
+J0417,Seko Camara,FC Lorient,Attacking midfielder,26,22,1834,0,1,3,0,25,8,,,54.0,14.0,22.0
+J0418,Lucas Martin,FC Lorient,Goalkeeper,3,1,136,0,0,2,0,0,0,0,14,,,
+J0419,Romain Dumont,FC Lorient,Left winger,7,5,484,0,6,7,0,20,9,,,10.0,1.0,5.0
+J0420,Dimitri Robin,FC Lorient,Right winger,26,22,1604,2,15,6,0,38,18,,,57.0,9.0,22.0
+J0421,Bryan Dupont,FC Lorient,Center back,12,12,864,1,1,4,0,7,2,,,34.0,38.0,22.0
+J0422,Aurelien Camara,Clermont Foot,Defensive midfielder,17,8,747,0,3,2,0,3,0,,,4.0,12.0,21.0
+J0423,Nabil Mercier,Clermont Foot,Defensive midfielder,32,17,1202,0,1,2,0,4,1,,,91.0,70.0,23.0
+J0424,Jean-Philippe Traore,Clermont Foot,Right winger,17,12,979,0,15,1,0,19,10,,,10.0,0.0,16.0
+J0425,Youssef Laurent,Clermont Foot,Left back,19,14,1376,2,0,1,0,7,2,,,4.0,28.0,40.0
+J0426,Steve Diaby,Clermont Foot,Left back,13,7,670,1,6,5,0,10,3,,,6.0,25.0,6.0
+J0427,Youssef Faure,Clermont Foot,Goalkeeper,35,30,2210,0,0,1,0,0,0,18,83,,,
+J0428,Jonathan Girard,Clermont Foot,Right winger,32,26,2158,0,9,5,0,70,31,,,36.0,30.0,3.0
+J0429,Matheus Fernandez,Clermont Foot,Right winger,32,25,1648,1,5,1,0,86,31,,,64.0,12.0,29.0
+J0430,Mohamed Dembele,Clermont Foot,Goalkeeper,17,15,1061,0,0,4,0,0,0,10,84,,,
+J0431,Jonathan Girard,Clermont Foot,Right back,18,12,1146,0,2,1,0,6,2,,,38.0,49.0,1.0
+J0432,Moussa Mercier,Clermont Foot,Center back,5,3,270,1,2,1,0,0,0,,,14.0,7.0,13.0
+J0433,Jonathan Bonnet,Clermont Foot,Forward,10,9,587,2,8,4,0,27,11,,,27.0,10.0,2.0
+J0434,Ousmane Fontaine,Clermont Foot,Right back,22,18,1120,2,2,0,1,1,0,,,10.0,88.0,39.0
+J0435,Loic Cisse,Clermont Foot,Attacking midfielder,26,13,1170,1,11,5,0,40,18,,,63.0,26.0,21.0
+J0436,Remy Fournier,Clermont Foot,Center back,5,3,259,0,1,1,0,5,1,,,7.0,5.0,11.0
+J0437,Maxime Robin,Clermont Foot,Left back,33,33,2310,1,2,8,0,12,5,,,14.0,89.0,60.0
+J0438,Dimitri Roux,Clermont Foot,Goalkeeper,6,3,309,0,0,1,0,0,0,5,6,,,
+J0439,Jonathan Girard,Clermont Foot,Left back,37,22,1861,0,1,2,0,22,5,,,82.0,23.0,60.0
+J0440,Bryan Morel,Clermont Foot,Right back,36,28,2424,1,2,1,0,28,8,,,101.0,4.0,57.0
+J0441,Brice Mbappe,Clermont Foot,Right back,21,10,914,1,1,0,0,9,1,,,61.0,78.0,12.0
+J0442,Abdoulaye Dembele,Clermont Foot,Left winger,38,29,2187 min,0,8,2,0,3,1,,,33.0,34.0,8.0
+J0443,Adrien Roux,Clermont Foot,Defensive midfielder,15,14,865,1,5,3,0,15,5,,,29.0,51.0,7.0
+J0444,Kevin Garcia,Clermont Foot,Left back,26,22,1730,0,0,1,0,20,8,,,46.0,0.0,42.0
+J0445,Jonathan Garcia,Clermont Foot,Right back,7,4,276,1,1,3,0,1,0,,,12.0,26.0,9.0
+J0446,Florian Roux,Clermont Foot,Central midfielder,37,23,2147,2,1,4,0,63,25,,,59.0,26.0,33.0
+J0447,Theo Kone,Clermont Foot,Left back,32,29,2676,1,0,1,0,0,0,,,87.0,118.0,43.0
+J0448,Gaetan Kone,Clermont Foot,Left winger,25,13,1446,1,9,5,0,56,17,,,42.0,12.0,23.0
+J0449,Mathieu Faure,Clermont Foot,Right back,22,15,1419,0,0,1,0,10,3,,,65.0,1.0,9.0
+J0450,Remy Fontaine,FC Metz,Forward,0,0,0,0,1,2,0,1,0,,,0.0,0.0,0.0
+J0451,Remy Blanc,FC Metz,Right winger,27,17,1683,0,7,2,0,63,23,,,26.0,3.0,2.0
+J0452,Ousmane Roux,FC Metz,Attacking midfielder,14,12,844,1,9,0,0,18,5,,,32.0,1.0,0.0
+J0453,Miguel Alvarez,FC Metz,Right winger,5,3,278,1,1,8,0,15,7,,,9.0,3.0,4.0
+J0454,Bradley Kone,FC Metz,Left winger,23,16,1464,1,2,7,0,19,8,,,63.0,4.0,15.0
+J0455,Mathieu Roux,FC Metz,Right winger,37,27,1978,0,14,3,0,9,4,,,7.0,19.0,5.0
+J0456,Antoine Robin,FC Metz,Center back,22,16,1356,0,2,0,0,3,0,,,58.0,59.0,46.0
+J0457,Nabil Morel,FC Metz,Attacking midfielder,7,3,320,1,3,0,0,18,8,,,20.0,7.0,7.0
+J0458,Matheus Gonzalez,FC Metz,Left back,17,12,1183,1,0,8,0,3,0,,,50.0,24.0,3.0
+J0459,Ousmane Blanc,FC Metz,Center back,20,12,980,1,2,6,0,6,2,,,38.0,10.0,4.0
+J0460,Dimitri Morel,FC Metz,Left winger,5,5,385 min,1,3,0,0,13,7,,,13.0,2.0,2.0
+J0461,Enzo Kone,FC Metz,Right back,15,11,1010,1,4,2,0,4,0,,,0.0,24.0,6.0
+J0462,Ibrahima Roux,FC Metz,Center back,12,9,624,0,5,1,1,5,1,,,23.0,4.0,17.0
+J0463,Abdoulaye Osimhen,FC Metz,Goalkeeper,30,20,1380,0,0,1,0,0,0,9,39,,,
+J0464,Maxime Fontaine,FC Metz,Attacking midfielder,27,27,2052,0,4,0,0,11,4,,,62.0,18.0,26.0
+J0465,Ludovic Kone,FC Metz,Forward,9,9,792,2,0,3,0,17,7,,,15.0,1.0,0.0
+J0466,Pierre-Emile Toure,FC Metz,Goalkeeper,15,7,755,0,0,1,0,0,0,12,31,,,
+J0467,Brice Dembele,FC Metz,Left winger,32,29,2072,1,13,1,0,50,23,,,59.0,28.0,22.0
+J0468,Matheus Costa,FC Metz,Forward,36,33,2424,1,7,2,0,66,20,,,55.0,27.0,20.0
+J0469,Ludovic Sylla,FC Metz,Left winger,8,7,443,1,4,2,0,4,2,,,23.0,5.0,0.0
+J0470,Youssef Dupont,FC Metz,Left winger,27,13,1472,1,6,6,0,54,29,,,42.0,14.0,7.0
+J0471,Kevin Mercier,FC Metz,Forward,31,27,1745,1,4,2,0,98,40,,,25.0,24.0,30.0
+J0472,Matheus Romero,FC Metz,Goalkeeper,5,4,299,0,0,7,0,0,0,0,22,,,
+J0473,Habib Diallo,FC Metz,Forward,29,17,1671,1,8,4,0,109,44,,,75.0,20.0,17.0
+J0474,Diego Pereira,FC Metz,Center back,18,13,1032,0,0,6,0,1,0,,,46.0,28.0,17.0
+J0475,Felipe Silva,FC Metz,Central midfielder,23,17,1492,2,7,0,0,5,2,,,39.0,5.0,10.0
+J0476,Carlos Ruiz,FC Metz,Right winger,29,25,2011,1,10,0,0,45,20,,,66.0,17.0,23.0
+J0477,Kylian Morel,FC Metz,Central midfielder,1,1,81,1,0,0,0,1,0,,,3.0,0.0,0.0
+J0478,Rafael Ruiz,AS Saint-Etienne,Right winger,6,5,402,0,2,0,0,9,4,,,14.0,5.0,4.0
+J0479,Bryan Roux,AS Saint-Etienne,Center back,27,22,1394 min,0,5,0,1,21,8,,,49.0,20.0,43.0
+J0480,Felipe Fernandez,AS Saint-Etienne,Defensive midfielder,32,25,1746,1,7,0,0,50,24,,,16.0,20.0,15.0
+J0481,Ludovic Mbappe,AS Saint-Etienne,Attacking midfielder,5,2,151,1,3,3,1,5,2,,,1.0,4.0,0.0
+J0482,Bradley Dembele,AS Saint-Etienne,Right winger,18,12,894,2,9,8,0,25,10,,,22.0,2.0,17.0
+J0483,Miguel Moreno,AS Saint-Etienne,Right back,26,21,1485,0,0,6,0,11,4,,,28.0,62.0,68.0
+J0484,Steve Bamba,AS Saint-Etienne,Right winger,12,11,881,2,5,2,0,12,5,,,16.0,7.0,0.0
+J0485,Rafael Gonzalez,AS Saint-Etienne,Goalkeeper,6,4,372,0,0,1,0,0,0,2,29,,,
+J0486,Matheus Moreno,AS Saint-Etienne,Right back,35,23,1687,0,0,0,0,0,0,,,43.0,71.0,88.0
+J0487,Steve Traore,AS Saint-Etienne,Right back,35,20,1965,0,0,5,0,35,13,,,38.0,20.0,41.0
+J0488,Miguel Alvarez,AS Saint-Etienne,Left back,13,11,1006,1,2,7,0,8,3,,,13.0,17.0,22.0
+J0489,Florian Dumont,AS Saint-Etienne,Attacking midfielder,12,7,730,0,4,2,0,1,0,,,3.0,7.0,1.0
+J0490,Pedro Jimenez,AS Saint-Etienne,Right winger,38,21,1946,1,9,2,0,96,44,,,26.0,6.0,24.0
+J0491,Loic Bamba,AS Saint-Etienne,Left back,21,15,1227,2,2,0,0,15,4,,,4.0,83.0,37.0
+J0492,Adrien Simon,AS Saint-Etienne,Forward,18,15,978,1,6,0,0,72,29,,,42.0,11.0,7.0
+J0493,Theo Koulibaly,AS Saint-Etienne,Attacking midfielder,30,25,1975,1,15,0,0,87,36,,,17.0,28.0,9.0
+J0494,Randal Ndombele,AS Saint-Etienne,Left back,37,24,2011,0 ,1,0,0,17,5,,,76.0,124.0,21.0
+J0495,Loic Camara,AS Saint-Etienne,Goalkeeper,34,20,1656 min,0,1,0,0,0,0,2,151,,,
+J0496,Theo Cisse,AS Saint-Etienne,Center back,5,4,311,0,4,0,0,1,0,,,2.0,0.0,6.0
+J0497,Mohamed Diaby,AS Saint-Etienne,Left back,36,26,2156,2,0,6,0,28,5,,,20.0,142.0,21.0
+J0498,Antoine Simon,AS Saint-Etienne,Center back,19,18,1547 min,1,0,0,0,7,2,,,39.0,70.0,27.0
+J0499,Romain Simon,AS Saint-Etienne,Goalkeeper,38,35,3008,0,0,8,0,0,0,3,80,,,
+J0500,Adrien Bonnet,AS Saint-Etienne,Forward,34,30,2228,3,6,1,0,84,35,,,38.0,4.0,7.0
+J0501,Moussa Roux,AS Saint-Etienne,Central midfielder,14,8,662 min,1,5,0,0,19,7,,,16.0,6.0,9.0
+J0502,Matheus Costa,AS Saint-Etienne,Left winger,19,14,1084,1 ,12,6,0,39,16,,,44.0,7.0,2.0
+J0503,Jeremy Bamba,AS Saint-Etienne,Forward,22,18,1464,1,5,2,0,9,4,,,54.0,7.0,18.0
+J0504,Romain Simon,AS Saint-Etienne,Central midfielder,25,21,1603,8,4,1,0,19,5,,,52.0,10.0,24.0
+J0505,Enzo Mbappe,Girondins de Bordeaux,Center back,16,15,1334,2,1,0,0,11,3,,,36.0,35.0,47.0
+J0506,Jean-Philippe Ndombele,Girondins de Bordeaux,Forward,12,11,965,1 ,6,2,1,44,21,,,25.0,8.0,5.0
+J0507,Abdoulaye Toure,Girondins de Bordeaux,Goalkeeper,16,12,1068,0,0,3,0,0,0,14,32,,,
+J0508,Maxime Fontaine,Girondins de Bordeaux,Right back,16,13,862,2,0,4,0,2,0,,,34.0,11.0,23.0
+J0509,Pedro Alvarez,Girondins de Bordeaux,Central midfielder,20,18,1442,0,3,0,0,5,2,,,46.0,18.0,10.0
+J0510,Gaetan Fofana,Girondins de Bordeaux,Attacking midfielder,20,14,1388,0,6,1,0,1,0,,,49.0,11.0,8.0
+J0511,Hugo Bernard,Girondins de Bordeaux,Left winger,13,8,670,2,1,0,0,37,16,,,13.0,2.0,4.0
+J0512,Bryan Rousseau,Girondins de Bordeaux,Central midfielder,26,15,1488,2,3,0,0,31,14,,,24.0,14.0,20.0
+J0513,Moussa Garcia,Girondins de Bordeaux,Center back,21,17,1385,0,1,4,0,3,1,,,0.0,4.0,45.0
+J0514,Nabil Lefebvre,Girondins de Bordeaux,Left back,7,3,319,1,1,1,0,7,1,,,15.0,3.0,12.0
+J0515,Felipe Fernandez,Girondins de Bordeaux,Central midfielder,28,17,1415,1,1,1,0,18,5,,,40.0,1.0,28.0
+J0516,Ismael Diaby,Girondins de Bordeaux,Goalkeeper,34,24,2130,0,1,1,0,0,0,1,141,,,
+J0517,Mohamed Sylla,Girondins de Bordeaux,Defensive midfielder,13,8,808,4,0,8,1,26,7,,,26.0,45.0,12.0
+J0518,Warren Bamba,Girondins de Bordeaux,Right winger,27,13,1241,0,11,1,0,76,41,,,49.0,18.0,1.0
+J0519,Bryan Laurent,Girondins de Bordeaux,Left back,7,3,329,2,1,0,0,1,0,,,7.0,27.0,21.0
+J0520,Mathieu Fontaine,Girondins de Bordeaux,Left back,34,26,2286,3,2,0,0,13,3,,,20.0,1.0,74.0
+J0521,Diego Rodriguez,Girondins de Bordeaux,Attacking midfielder,4,4,328,0,2,13,0,0,0,,,7.0,3.0,3.0
+J0522,Jeremy Osimhen,Girondins de Bordeaux,Left back,22,15,1398,0,1,7,0,22,9,,,30.0,83.0,34.0
+J0523,Lucas Lambert,Girondins de Bordeaux,Goalkeeper,21,15,1518,0,0,1,0,0,0,8,59,,,
+J0524,Romain Simon,Girondins de Bordeaux,Center back,5,3,240,0,3,4,0,3,1,,,2.0,15.0,0.0
+J0525,Maxime Fournier,Girondins de Bordeaux,Central midfielder,7,3,230,1,4,0,0,11,4,,,2.0,0.0,5.0
+J0526,Ismael Dembele,Girondins de Bordeaux,Left winger,22,17,1238,2,10,0,0,63,32,,,3.0,15.0,13.0
+J0527,Ibrahima Bernard,Girondins de Bordeaux,Right winger,37,37,3071,1,6,2,0,63,20,,,60.0,36.0,20.0
+J0528,Youssef Garcia,Girondins de Bordeaux,Defensive midfielder,22,17,1591,6,8,1,0,21,6,,,43.0,76.0,54.0
+J0529,Diego Moreno,Girondins de Bordeaux,Central midfielder,35,32,2769,2,5,1,0,68,22,,,39.0,15.0,19.0
+J0530,Steve Bamba,Girondins de Bordeaux,Right winger,12,12,852 min,0,7,1,0,26,11,,,34.0,12.0,0.0
+J0531,Jonathan Morel,Girondins de Bordeaux,Defensive midfielder,5,4,280,3,6,1,0,7,1,,,3.0,16.0,12.0

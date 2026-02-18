@@ -1,0 +1,381 @@
+match_id,matchday,match_date,home_team,away_team,home_score,away_score,stadium,referee,attendance
+M0001,1,2023-08-12,Paris SG,FC Nantes,1,1,Parc des Princes,Pierre Music,46317
+M0002,1,2023-08-11,Olympique Lyonnais,Stade Brestois,3,1,Groupama Stadium,Florent Batta,49943
+M0003,1,2023-08-13,Stade Brestois,Stade de Reims,0,0,Stade Francis-Le Ble,Stephanie Frappart,14964
+M0004,1,2023-08-12,Montpellier HSC,LOSC Lille,0,2,Stade de la Mosson,Pierre Music,27982
+M0005,1,2023-08-11,Olympique de Marseille,OGC Nice,3,2,Velodrome,Pierre Music,40241
+M0006,1,2023-08-13,AS Saint-Etienne,Le Havre AC,0,1,Stade Geoffroy-Guichard,Willy Delajod,28378
+M0007,1,2023-08-13,Paris SG,Olympique Lyonnais,0,1,Parc des Princes,Hakim Ben El Hadj,37936
+M0008,1,2023-08-12,Toulouse FC,Paris SG,1,4,Stadium de Toulouse,Hakim Ben El Hadj,30511
+M0009,1,2023-08-11,Paris SG,Montpellier HSC,3,1,Parc des Princes,Hakim Ben El Hadj,47396
+M0010,1,2023-08-13,Girondins de Bordeaux,Clermont Foot,0,2,Matmut Atlantique,Bastien Music,36781
+M0011,2,2023-08-18,RC Strasbourg,Le Havre AC,0,2,Stade de la Meinau,Johan Music,23921
+M0012,2,2023-08-18,Le Havre AC,Montpellier HSC,0,2,Stade Oceane,Johan Music,13861
+M0013,2,2023-08-18,Olympique Lyonnais,Clermont Foot,3,0,Groupama Stadium,Bastien Music,57408
+M0014,2,19 Aug 2023,Toulouse FC,AS Monaco,1,2,Stadium de Toulouse,Johan Music,19126
+M0015,2,2023-08-19,AS Monaco,LOSC Lille,2,4,Stade Louis-II,Florent Batta,13342
+M0016,2,18/08/2023,Girondins de Bordeaux,Paris SG,1,1,Matmut Atlantique,Francois Letexier,24716
+M0017,2,2023-08-19,AS Saint-Etienne,RC Lens,0,3,Stade Geoffroy-Guichard,Bastien Music,27466
+M0018,2,2023-08-18,Clermont Foot,AS Saint-Etienne,2,0,Stade Gabriel-Montpied,Clement Turpin,8020
+M0019,2,2023-08-19,Olympique de Marseille,RC Strasbourg,0,0,Velodrome,Jerome Brisard,42314
+M0020,2,2023-08-20,RC Strasbourg,FC Lorient,2,2,Stade de la Meinau,Jerome Brisard,23971
+M0021,3,2023-08-27,Toulouse FC,FC Nantes,0,0,Stadium de Toulouse,Hakim Ben El Hadj,21426
+M0022,3,2023-08-26,RC Strasbourg,Olympique de Marseille,0,1,Stade de la Meinau,Pierre Music,17312
+M0023,3,2023-08-26,RC Strasbourg,Stade de Reims,4,1,Stade de la Meinau,Willy Delajod,14766
+M0024,3,2023-08-25,AS Monaco,Stade Rennais,2,0,Stade Louis-II,Francois Letexier,14969
+M0025,3,2023-08-27,Olympique de Marseille,Stade Rennais,1,2,Velodrome,Jerome Brisard,40928
+M0026,3,25/08/2023,OGC Nice,AS Saint-Etienne,0,1,Allianz Riviera,Hakim Ben El Hadj,32406
+M0027,3,2023-08-27,Toulouse FC,FC Lorient,2,2,Stadium de Toulouse,Willy Delajod,23823
+M0028,3,26/08/2023,AS Saint-Etienne,OGC Nice,0,2,Stade Geoffroy-Guichard,Florent Batta,34865
+M0029,3,2023-08-26,OGC Nice,Stade Brestois,0,0,Allianz Riviera,Benoit Bastien,23074
+M0030,3,2023-08-25,Stade Rennais,Olympique Lyonnais,1,1,Roazhon Park,Hakim Ben El Hadj,20945
+M0031,4,2023-09-03,LOSC Lille,OGC Nice,0,0,Stade Pierre-Mauroy,Francois Letexier,31533
+M0032,4,2023-09-02,Stade Brestois,Montpellier HSC,0,2,Stade Francis-Le Ble,Stephanie Frappart,10643
+M0033,4,02/09/2023,OGC Nice,RC Lens,1,2,Allianz Riviera,Willy Delajod,29315
+M0034,4,2023-09-01,OGC Nice,RC Strasbourg,1,1,Allianz Riviera,Pierre Music,20540
+M0035,4,2023-09-02,Clermont Foot,Stade Brestois,2,0,Stade Gabriel-Montpied,Johan Music,10193
+M0036,4,2023-09-02,FC Lorient,Olympique Lyonnais,0,4,Stade du Moustoir,Thomas Music,11824
+M0037,4,2023-09-03,Girondins de Bordeaux,Stade Rennais,1,1,Matmut Atlantique,Francois Letexier,24573
+M0038,4,2023-09-02,FC Nantes,Girondins de Bordeaux,1,1,Stade de la Beaujoire,Johan Music,36749
+M0039,4,2023-09-03,FC Metz,Stade de Reims,0,1,Stade Saint-Symphorien,Willy Delajod,17241
+M0040,4,2023-09-03,Le Havre AC,RC Strasbourg,3,0,Stade Oceane,Thomas Music,17652
+M0041,5,2023-09-10,FC Nantes,RC Lens,1,0,Stade de la Beaujoire,Pierre Music,30859
+M0042,5,2023-09-08,Paris SG,LOSC Lille,2,2,Parc des Princes,Pierre Music,28884
+M0043,5,09/09/2023,FC Nantes,LOSC Lille,1,1,Stade de la Beaujoire,Francois Letexier,34889
+M0044,5,2023-09-08,AS Monaco,FC Lorient,2,0,Stade Louis-II,Willy Delajod,14728
+M0045,5,2023-09-09,Paris SG,Stade de Reims,2,4,Parc des Princes,Bastien Music,33958
+M0046,5,2023-09-08,Le Havre AC,FC Lorient,1,0,Stade Oceane,Johan Music,19236
+M0047,5,2023-09-10,LOSC Lille,FC Nantes,1,1,Stade Pierre-Mauroy,Clement Turpin,34340
+M0048,5,2023-09-09,Olympique de Marseille,AS Monaco,2,1,Velodrome,Pierre Music,60026
+M0049,5,2023-09-09,LOSC Lille,Clermont Foot,1,1,Stade Pierre-Mauroy,Bastien Music,32919
+M0050,5,2023-09-09,Olympique de Marseille,Stade de Reims,0,2,Velodrome,Hakim Ben El Hadj,56696
+M0051,6,2023-09-17,LOSC Lille,Olympique de Marseille,2,0,Stade Pierre-Mauroy,Willy Delajod,49997
+M0052,6,2023-09-16,Olympique de Marseille,Clermont Foot,2,4,Velodrome,Johan Music,44194
+M0053,6,2023-09-15,FC Metz,Girondins de Bordeaux,0,1,Stade Saint-Symphorien,Pierre Music,17768
+M0054,6,15 Sep 2023,FC Metz,FC Nantes,0,1,Stade Saint-Symphorien,Jerome Brisard,29744
+M0055,6,15 Sep 2023,Girondins de Bordeaux,Le Havre AC,1,2,Matmut Atlantique,Clement Turpin,38615
+M0056,6,2023-09-15,Paris SG,Stade Brestois,1,0,Parc des Princes,Florent Batta,30262
+M0057,6,2023-09-15,RC Lens,Montpellier HSC,1,0,Stade Bollaert-Delelis,Benoit Bastien,23844
+M0058,6,2023-09-17,FC Lorient,FC Metz,1,3,Stade du Moustoir,Hakim Ben El Hadj,16859
+M0059,6,2023-09-15,RC Lens,AS Monaco,1,2,Stade Bollaert-Delelis,Florent Batta,26980
+M0060,6,2023-09-16,FC Nantes,FC Lorient,2,1,Stade de la Beaujoire,Benoit Bastien,27877
+M0061,7,2023-09-23,Girondins de Bordeaux,Stade Brestois,1,2,Matmut Atlantique,Florent Batta,28878
+M0062,7,2023-09-22,OGC Nice,Toulouse FC,1,0,Allianz Riviera,Benoit Bastien,34307
+M0063,7,2023-09-23,RC Lens,Paris SG,1,1,Stade Bollaert-Delelis,Jerome Brisard,22402
+M0064,7,2023-09-24,RC Strasbourg,FC Nantes,3,2,Stade de la Meinau,Benoit Bastien,21959
+M0065,7,2023-09-24,Clermont Foot,Stade de Reims,1,0,Stade Gabriel-Montpied,Bastien Music,7311
+M0066,7,2023-09-24,FC Lorient,LOSC Lille,0,0,Stade du Moustoir,Willy Delajod,12132
+M0067,7,2023-09-22,Stade Rennais,AS Saint-Etienne,2,1,Roazhon Park,Benoit Bastien,
+M0068,7,22/09/2023,Toulouse FC,Olympique de Marseille,3,2,Stadium de Toulouse,Benoit Bastien,22143
+M0069,7,2023-09-23,Toulouse FC,Stade Rennais,0,2,Stadium de Toulouse,Clement Turpin,25267
+M0070,7,2023-09-23,LOSC Lille,Stade Rennais,3,2,Stade Pierre-Mauroy,Stephanie Frappart,48453
+M0071,8,2023-10-01,OGC Nice,Paris SG,2,0,Allianz Riviera,Florent Batta,26806
+M0072,8,29/09/2023,Clermont Foot,Stade Rennais,6,1,Stade Gabriel-Montpied,Bastien Music,10737
+M0073,8,2023-10-01,Olympique Lyonnais,Montpellier HSC,3,0,Groupama Stadium,Hakim Ben El Hadj,
+M0074,8,2023-09-29,Le Havre AC,RC Lens,0,1,Stade Oceane,Stephanie Frappart,22631
+M0075,8,2023-09-30,AS Monaco,RC Lens,1,2,Stade Louis-II,Jerome Brisard,16448
+M0076,8,2023-09-30,Stade Brestois,Le Havre AC,0,2,Stade Francis-Le Ble,Thomas Music,13376
+M0077,8,2023-09-30,FC Metz,Toulouse FC,5,1,Stade Saint-Symphorien,Pierre Music,25738
+M0078,8,2023-09-29,Toulouse FC,RC Lens,3,1,Stadium de Toulouse,Benoit Bastien,22335
+M0079,8,2023-09-30,Olympique de Marseille,Montpellier HSC,2,0,Velodrome,Johan Music,39362
+M0080,8,30 Sep 2023,Stade de Reims,AS Saint-Etienne,0,1,Stade Auguste-Delaune,Stephanie Frappart,12251
+M0081,9,2023-10-06,RC Strasbourg,LOSC Lille,1,0,Stade de la Meinau,Willy Delajod,15528
+M0082,9,2023-10-07,RC Strasbourg,Toulouse FC,1,1,Stade de la Meinau,Thomas Music,15840
+M0083,9,2023-10-07,Stade de Reims,Olympique Lyonnais,1,0,Stade Auguste-Delaune,Johan Music,14470
+M0084,9,2023-10-08,FC Lorient,Toulouse FC,1,1,Stade du Moustoir,Willy Delajod,
+M0085,9,06/10/2023,LOSC Lille,Toulouse FC,0,2,Stade Pierre-Mauroy,Johan Music,46508
+M0086,9,2023-10-08,Clermont Foot,RC Lens,0,3,Stade Gabriel-Montpied,Pierre Music,11973
+M0087,9,06 Oct 2023,Montpellier HSC,FC Nantes,0,0,Stade de la Mosson,Willy Delajod,
+M0088,9,2023-10-07,Stade Rennais,RC Strasbourg,0,2,Roazhon Park,Hakim Ben El Hadj,28106
+M0089,9,2023-10-08,Clermont Foot,Toulouse FC,1,2,Stade Gabriel-Montpied,Johan Music,8325
+M0090,9,2023-10-08,Montpellier HSC,Stade Brestois,2,0,Stade de la Mosson,Stephanie Frappart,28491
+M0091,10,2023-10-14,Montpellier HSC,Olympique de Marseille,1,2,Stade de la Mosson,Benoit Bastien,22986
+M0092,10,2023-10-14,AS Saint-Etienne,FC Lorient,1,0,Stade Geoffroy-Guichard,Florent Batta,32611
+M0093,10,2023-10-14,Toulouse FC,FC Metz,2,1,Stadium de Toulouse,Florent Batta,22898
+M0094,10,15/10/2023,AS Monaco,FC Metz,0,0,Stade Louis-II,Bastien Music,10695
+M0095,10,2023-10-15,Girondins de Bordeaux,Montpellier HSC,1,1,Matmut Atlantique,Thomas Music,27614
+M0096,10,2023-10-15,Montpellier HSC,Clermont Foot,0,2,Stade de la Mosson,Johan Music,30695
+M0097,10,2023-10-15,FC Nantes,AS Saint-Etienne,1,1,Stade de la Beaujoire,Stephanie Frappart,29423
+M0098,10,2023-10-15,FC Lorient,Olympique de Marseille,1,2,Stade du Moustoir,Stephanie Frappart,11734
+M0099,10,2023-10-15,RC Lens,Olympique Lyonnais,1,2,Stade Bollaert-Delelis,Benoit Bastien,23997
+M0100,10,14 Oct 2023,FC Lorient,Girondins de Bordeaux,2,1,Stade du Moustoir,Willy Delajod,15310
+M0101,11,2023-10-22,Stade Brestois,Girondins de Bordeaux,2,1,Stade Francis-Le Ble,Benoit Bastien,11195
+M0102,11,2023-10-22,Le Havre AC,Toulouse FC,1,2,Stade Oceane,Florent Batta,16762
+M0103,11,2023-10-22,Montpellier HSC,Toulouse FC,3,1,Stade de la Mosson,Hakim Ben El Hadj,32886
+M0104,11,2023-10-20,RC Lens,Le Havre AC,0,4,Stade Bollaert-Delelis,Jerome Brisard,32925
+M0105,11,2023-10-22,AS Monaco,Toulouse FC,2,1,Stade Louis-II,Johan Music,16976
+M0106,11,2023-10-20,RC Lens,Toulouse FC,0,1,Stade Bollaert-Delelis,Francois Letexier,25155
+M0107,11,2023-10-21,Stade de Reims,OGC Nice,2,0,Stade Auguste-Delaune,Benoit Bastien,17363
+M0108,11,2023-10-21,LOSC Lille,Stade Brestois,2,2,Stade Pierre-Mauroy,Benoit Bastien,30636
+M0109,11,2023-10-22,Clermont Foot,Girondins de Bordeaux,3,0,Stade Gabriel-Montpied,Florent Batta,9415
+M0110,11,21/10/2023,Le Havre AC,Olympique Lyonnais,0,2,Stade Oceane,Bastien Music,15022
+M0111,12,2023-10-28,FC Nantes,Montpellier HSC,3,0,Stade de la Beaujoire,Stephanie Frappart,32922
+M0112,12,2023-10-27,AS Monaco,Paris SG,3,1,Stade Louis-II,Jerome Brisard,17588
+M0113,12,2023-10-29,OGC Nice,FC Lorient,1,2,Allianz Riviera,Johan Music,22590
+M0114,12,2023-10-27,Montpellier HSC,Olympique Lyonnais,0,0,Stade de la Mosson,Florent Batta,
+M0115,12,2023-10-27,Girondins de Bordeaux,FC Lorient,0,0,Matmut Atlantique,Benoit Bastien,34720
+M0116,12,2023-10-27,Paris SG,OGC Nice,3,3,Parc des Princes,Pierre Music,31211
+M0117,12,2023-10-29,Clermont Foot,Le Havre AC,2,1,Stade Gabriel-Montpied,Jerome Brisard,9253
+M0118,12,2023-10-27,Le Havre AC,Clermont Foot,2,0,Stade Oceane,Florent Batta,14953
+M0119,12,2023-10-27,FC Nantes,Olympique de Marseille,0,1,Stade de la Beaujoire,Thomas Music,20610
+M0120,12,2023-10-27,AS Saint-Etienne,Montpellier HSC,3,2,Stade Geoffroy-Guichard,Benoit Bastien,26999
+M0121,13,2023-11-03,Stade de Reims,Toulouse FC,3,1,Stade Auguste-Delaune,Clement Turpin,14573
+M0122,13,05/11/2023,Stade de Reims,FC Nantes,0,1,Stade Auguste-Delaune,Pierre Music,17900
+M0123,13,2023-11-05,RC Lens,FC Metz,0,1,Stade Bollaert-Delelis,Clement Turpin,28461
+M0124,13,2023-11-04,AS Monaco,RC Strasbourg,0,0,Stade Louis-II,Bastien Music,13157
+M0125,13,2023-11-04,FC Lorient,Montpellier HSC,0,3,Stade du Moustoir,Benoit Bastien,15617
+M0126,13,2023-11-03,Paris SG,Stade Rennais,3,2,Parc des Princes,Bastien Music,42983
+M0127,13,2023-11-04,Stade Rennais,Stade de Reims,0,1,Roazhon Park,Jerome Brisard,27745
+M0128,13,2023-11-04,Stade Brestois,Toulouse FC,0,1,Stade Francis-Le Ble,Benoit Bastien,9355
+M0129,13,2023-11-05,Olympique de Marseille,FC Nantes,2,2,Velodrome,Stephanie Frappart,65225
+M0130,13,2023-11-05,AS Saint-Etienne,AS Monaco,0,1,Stade Geoffroy-Guichard,Bastien Music,39625
+M0131,14,2023-11-11,Stade Rennais,Paris SG,1,1,Roazhon Park,Florent Batta,28019
+M0132,14,2023-11-11,Clermont Foot,FC Nantes,0,2,Stade Gabriel-Montpied,Thomas Music,9072
+M0133,14,2023-11-11,Toulouse FC,Stade de Reims,2,5,Stadium de Toulouse,Hakim Ben El Hadj,20448
+M0134,14,2023-11-11,FC Metz,Le Havre AC,0,0,stade Saint-Symphorien,Bastien Music,23687
+M0135,14,2023-11-10,Paris SG,Girondins de Bordeaux,1,1,Parc des Princes,Thomas Music,35407
+M0136,14,2023-11-10,FC Metz,Olympique Lyonnais,4,2,Stade Saint-Symphorien,Florent Batta,29515
+M0137,14,2023-11-12,Le Havre AC,Stade Rennais,0,0,Stade Oceane,Stephanie Frappart,20236
+M0138,14,2023-11-12,RC Strasbourg,RC Lens,1,0,Stade de la Meinau,Bastien Music,14785
+M0139,14,2023-11-12,Stade Brestois,RC Lens,1,1,Stade Francis-Le Ble,Pierre Music,13206
+M0140,14,2023-11-11,FC Lorient,Stade Rennais,1,0,Stade du Moustoir,Stephanie Frappart,15715
+M0141,15,2023-11-19,RC Lens,FC Nantes,2,0,Stade Bollaert-Delelis,Benoit Bastien,30522
+M0142,15,2023-11-18,AS Monaco,Olympique Lyonnais,1,0,Stade Louis-II,Stephanie Frappart,12849
+M0143,15,2023-11-18,RC Strasbourg,Olympique Lyonnais,3,2,Stade de la Meinau,Bastien Music,16849
+M0144,15,2023-11-18,Olympique Lyonnais,AS Monaco,1,0,Groupama Stadium,Benoit Bastien,44354
+M0145,15,2023-11-17,FC Lorient,Paris SG,1,1,Stade du Moustoir,Benoit Bastien,15748
+M0146,15,2023-11-19,RC Lens,Stade Brestois,3,2,Stade Bollaert-Delelis,Hakim Ben El Hadj,27455
+M0147,15,2023-11-18,Paris SG,RC Strasbourg,2,2,Parc des Princes,Pierre Music,39832
+M0148,15,2023-11-19,RC Lens,Stade Rennais,1,2,Stade Bollaert-Delelis,Florent Batta,29827
+M0149,15,2023-11-18,Olympique de Marseille,Stade Brestois,0,0,Velodrome,Thomas Music,54845
+M0150,15,19/11/2023,FC Metz,Olympique de Marseille,1,2,Stade Saint-Symphorien,Benoit Bastien,28278
+M0151,16,26/11/2023,Olympique de Marseille,Paris SG,0,0,Velodrome,Stephanie Frappart,40794
+M0152,16,2023-11-25,FC Lorient,RC Lens,0,0,Stade du Moustoir,Hakim Ben El Hadj,13065
+M0153,16,2023-11-24,LOSC Lille,FC Metz,1,2,Stade Pierre-Mauroy,Jerome Brisard,37908
+M0154,16,2023-11-24,Olympique Lyonnais,Toulouse FC,3,1,Groupama Stadium,Hakim Ben El Hadj,46913
+M0155,16,2023-11-26,AS Saint-Etienne,FC Metz,1,0,Stade Geoffroy-Guichard,Jerome Brisard,24411
+M0156,16,2023-11-25,Stade de Reims,Paris SG,1,1,Stade Auguste-Delaune,Benoit Bastien,13819
+M0157,16,2023-11-26,Toulouse FC,Le Havre AC,0,0,Stadium de Toulouse,Benoit Bastien,29548
+M0158,16,2023-11-24,FC Metz,AS Saint-Etienne,0,0,Stade Saint-Symphorien,Willy Delajod,26552
+M0159,16,2023-11-25,RC Lens,Girondins de Bordeaux,3,1,Stade Bollaert-Delelis,Willy Delajod,24705
+M0160,16,24/11/2023,Le Havre AC,FC Metz,0,6,Stade Oceane,Benoit Bastien,18375
+M0161,17,2023-12-02,AS Monaco,Olympique de Marseille,2,2,Stade Louis-II,Benoit Bastien,13141
+M0162,17,2023-12-03,Stade Rennais,FC Metz,0,1,Roazhon Park,Bastien Music,23468
+M0163,17,2023-12-02,Olympique de Marseille,AS Saint-Etienne,3,2,Velodrome,Francois Letexier,48369
+M0164,17,2023-12-02,AS Saint-Etienne,Girondins de Bordeaux,2,1,Stade Geoffroy-Guichard,Benoit Bastien,38389
+M0165,17,2023-12-02,Toulouse FC,LOSC Lille,2,0,Stadium de Toulouse,Clement Turpin,23798
+M0166,17,2023-12-02,Olympique Lyonnais,RC Lens,3,0,Groupama Stadium,Bastien Music,44390
+M0167,17,03/12/2023,RC Strasbourg,AS Monaco,1,1,Stade de la Meinau,Benoit Bastien,21576
+M0168,17,2023-12-02,Olympique de Marseille,Le Havre AC,1,0,Velodrome,Jerome Brisard,63816
+M0169,17,2023-12-02,Girondins de Bordeaux,Stade de Reims,0,0,Matmut Atlantique,Pierre Music,24528
+M0170,17,2023-12-02,LOSC Lille,Paris SG,0,1,Stade Pierre-Mauroy,Florent Batta,33464
+M0171,18,2023-12-09,Paris SG,AS Monaco,1,0,Parc des Princes,Jerome Brisard,40930
+M0172,18,2023-12-08,FC Nantes,OGC Nice,2,0,Stade de la Beaujoire,Pierre Music,32139
+M0173,18,2023-12-10,Le Havre AC,AS Saint-Etienne,2,0,Stade Oceane,Florent Batta,22188
+M0174,18,2023-12-09,Clermont Foot,OGC Nice,0,0,Stade Gabriel-Montpied,Francois Letexier,8297
+M0175,18,2023-12-09,Girondins de Bordeaux,Olympique de Marseille,0,0,Matmut Atlantique,Thomas Music,41809
+M0176,18,2023-12-08,Montpellier HSC,FC Lorient,0,0,Stade de la Mosson,Thomas Music,27348
+M0177,18,2023-12-10,Le Havre AC,Paris SG,0,1,Stade Oceane,Johan Music,21266
+M0178,18,2023-12-08,LOSC Lille,Olympique Lyonnais,2,0,Stade Pierre-Mauroy,Clement Turpin,30880
+M0179,18,2023-12-10,Montpellier HSC,Stade Rennais,0,1,Stade de la Mosson,Hakim Ben El Hadj,30672
+M0180,18,2023-12-08,LOSC Lille,Girondins de Bordeaux,2,2,Stade Pierre-Mauroy,Pierre Music,29189
+M0181,19,2023-12-15,Le Havre AC,Stade de Reims,1,1,Stade Oceane,Hakim Ben El Hadj,16616
+M0182,19,2023-12-17,AS Monaco,FC Nantes,4,1,Stade Louis-II,Thomas Music,17325
+M0183,19,2023-12-17,RC Lens,OGC Nice,2,1,Stade Bollaert-Delelis,Stephanie Frappart,37392
+M0184,19,2023-12-16,Girondins de Bordeaux,Olympique Lyonnais,0,1,Matmut Atlantique,Francois Letexier,26533
+M0185,19,2023-12-15,RC Strasbourg,Girondins de Bordeaux,2,0,Stade de la Meinau,Willy Delajod,19717
+M0186,19,2023-12-16,Montpellier HSC,RC Lens,2,2,Stade de la Mosson,Willy Delajod,18156
+M0187,19,2023-12-16,OGC Nice,Olympique de Marseille,0,1,Allianz Riviera,Bastien Music,22810
+M0188,19,2023-12-16,Montpellier HSC,Le Havre AC,0,1,Stade de la Mosson,Willy Delajod,22669
+M0189,19,2023-12-15,Girondins de Bordeaux,RC Lens,0,3,Matmut Atlantique,Benoit Bastien,33115
+M0190,19,2023-12-16,Montpellier HSC,Stade de Reims,3,0,Stade de la Mosson,Willy Delajod,28130
+M0191,20,2024-01-11,RC Lens,Olympique de Marseille,2,2,Stade Bollaert-Delelis,Clement Turpin,22791
+M0192,20,2024-01-09,Olympique Lyonnais,Stade de Reims,2,0,Groupama Stadium,Bastien Music,54182
+M0193,20,2024-01-10,Olympique de Marseille,RC Lens,2,2,Velodrome,Willy Delajod,52814
+M0194,20,2024-01-09,Toulouse FC,Montpellier HSC,3,1,Stadium de Toulouse,Clement Turpin,20199
+M0195,20,2024-01-11,Girondins de Bordeaux,AS Monaco,1,0,Matmut Atlantique,Stephanie Frappart,30997
+M0196,20,10/01/2024,AS Saint-Etienne,RC Strasbourg,2,3,Stade Geoffroy-Guichard,Clement Turpin,34304
+M0197,20,2024-01-10,Stade Rennais,RC Lens,0,0,Roazhon Park,Florent Batta,28466
+M0198,20,09 Jan 2024,Stade Rennais,Stade Brestois,2,4,Roazhon Park,Stephanie Frappart,29583
+M0199,20,2024-01-10,Stade de Reims,Stade Rennais,2,2,Stade Auguste-Delaune,Thomas Music,21479
+M0200,20,2024-01-10,OGC Nice,FC Nantes,0,3,Allianz Riviera,Hakim Ben El Hadj,29993
+M0201,21,2024-01-18,FC Metz,RC Strasbourg,2,2,Stade Saint-Symphorien,Johan Music,28415
+M0202,21,2024-01-17,Olympique Lyonnais,Le Havre AC,0,0,Groupama Stadium,Willy Delajod,46469
+M0203,21,2024-01-17,Stade Rennais,Toulouse FC,2,0,Roazhon Park,Thomas Music,22288
+M0204,21,2024-01-17,FC Lorient,RC Strasbourg,3,0,Stade du Moustoir,Stephanie Frappart,10962
+M0205,21,2024-01-17,FC Metz,RC Lens,1,0,Stade Saint-Symphorien,Francois Letexier,19064
+M0206,21,2024-01-18,Montpellier HSC,FC Metz,0,0,Stade de la Mosson,Johan Music,24336
+M0207,21,2024-01-16,Toulouse FC,Girondins de Bordeaux,0,0,Stadium de Toulouse,Benoit Bastien,28182
+M0208,21,2024-01-16,Stade de Reims,FC Metz,0,0,Stade Auguste-Delaune,Willy Delajod,12465
+M0209,21,2024-01-16,FC Metz,Clermont Foot,7,2,Stade Saint-Symphorien,Pierre Music,27113
+M0210,21,2024-01-18,Girondins de Bordeaux,FC Metz,3,3,Matmut Atlantique,Willy Delajod,23753
+M0211,22,2024-01-07,Clermont Foot,AS Monaco,0,1,Stade Gabriel-Montpied,Johan Music,10143
+M0212,22,2024-01-05,FC Nantes,Toulouse FC,2,0,Stade de la Beaujoire,Florent Batta,25540
+M0213,22,2024-01-07,Paris SG,FC Lorient,4,0,Parc des Princes,Stephanie Frappart,42435
+M0214,22,05/01/2024,FC Lorient,OGC Nice,2,1,Stade du Moustoir,Clement Turpin,15656
+M0215,22,2024-01-05,AS Monaco,Girondins de Bordeaux,2,1,Stade Louis-II,Pierre Music,11099
+M0216,22,2024-01-06,Stade de Reims,LOSC Lille,2,1,Stade Auguste-Delaune,Hakim Ben El Hadj,18764
+M0217,22,2024-01-07,Stade Rennais,Olympique de Marseille,2,1,Roazhon Park,Benoit Bastien,29418
+M0218,22,2024-01-06,RC Strasbourg,Clermont Foot,0,2,Stade de la Meinau,Thomas Music,24204
+M0219,22,2024-01-06,FC Nantes,AS Monaco,1,1,Stade de la Beaujoire,Benoit Bastien,26978
+M0220,22,2024-01-06,Paris SG,Le Havre AC,0,0,Parc des Princes,Johan Music,39918
+M0221,23,14/01/2024,LOSC Lille,Le Havre AC,1,2,Stade Pierre-Mauroy,Bastien Music,37735
+M0222,23,2024-01-12,Girondins de Bordeaux,Toulouse FC,0,3,Matmut Atlantique,Clement Turpin,23528
+M0223,23,2024-01-12,Stade Brestois,FC Metz,1,0,Stade Francis-Le Ble,Jerome Brisard,13106
+M0224,23,2024-01-13,LOSC Lille,FC Lorient,1,0,Stade Pierre-Mauroy,Francois Letexier,40317
+M0225,23,2024-01-12,OGC Nice,AS Monaco,0,1,Allianz Riviera,Hakim Ben El Hadj,26906
+M0226,23,2024-01-13,Stade Brestois,AS Saint-Etienne,1,1,Stade Francis-Le Ble,Clement Turpin,9738
+M0227,23,2024-01-12,Girondins de Bordeaux,FC Nantes,2,0,Matmut Atlantique,Pierre Music,27194
+M0228,23,2024-01-13,LOSC Lille,AS Monaco,0,0,Stade Pierre-Mauroy,Jerome Brisard,45158
+M0229,23,12/01/2024,AS Monaco,Stade Brestois,3,1,Stade Louis-II,Thomas Music,17633
+M0230,23,2024-01-12,OGC Nice,Clermont Foot,1,0,Allianz Riviera,Johan Music,34104
+M0231,24,2024-01-19,Stade Rennais,Le Havre AC,1,0,Roazhon Park,Francois Letexier,29754
+M0232,24,2024-01-21,AS Saint-Etienne,Stade Rennais,0,1,Stade Geoffroy-Guichard,Francois Letexier,26083
+M0233,24,2024-01-20,AS Monaco,Montpellier HSC,1,0,Stade Louis-II,Florent Batta,18382
+M0234,24,2024-01-21,FC Lorient,AS Monaco,0,1,Stade du Moustoir,Willy Delajod,15666
+M0235,24,2024-01-19,Stade Rennais,Clermont Foot,6,0,Roazhon Park,Clement Turpin,27875
+M0236,24,2024-01-21,OGC Nice,Stade de Reims,2,0,Allianz Riviera,Bastien Music,23935
+M0237,24,2024-01-20,FC Lorient,Le Havre AC,4,4,Stade du Moustoir,Stephanie Frappart,12308
+M0238,24,2024-01-19,Clermont Foot,LOSC Lille,4,1,Stade Gabriel-Montpied,Benoit Bastien,9470
+M0239,24,2024-01-21,Stade de Reims,FC Lorient,1,2,Stade Auguste-Delaune,Hakim Ben El Hadj,17631
+M0240,24,2024-01-20,Olympique Lyonnais,AS Saint-Etienne,0,1,Groupama Stadium,Florent Batta,40424
+M0241,25,2024-01-27,FC Metz,Montpellier HSC,0,1,Stade Saint-Symphorien,Willy Delajod,18070
+M0242,25,2024-01-27,LOSC Lille,Stade de Reims,2,0,Stade Pierre-Mauroy,Johan Music,48755
+M0243,25,2024-01-28,RC Strasbourg,FC Metz,0,0,Stade de la Meinau,Hakim Ben El Hadj,21430
+M0244,25,27/01/2024,Montpellier HSC,AS Saint-Etienne,3,0,Stade de la Mosson,Benoit Bastien,31648
+M0245,25,2024-01-27,Stade Brestois,Stade Rennais,0,3,Stade Francis-Le Ble,Bastien Music,12708
+M0246,25,2024-01-28,Paris SG,FC Metz,3,0,Parc des Princes,Hakim Ben El Hadj,35800
+M0247,25,27 Jan 2024,Stade Brestois,LOSC Lille,2,2,Stade Francis-Le Ble,Jerome Brisard,9409
+M0248,25,2024-01-28,AS Saint-Etienne,LOSC Lille,0,1,Stade Geoffroy-Guichard,Jerome Brisard,36224
+M0249,25,2024-01-28,LOSC Lille,RC Strasbourg,2,1,Stade Pierre-Mauroy,Clement Turpin,39268
+M0250,25,2024-01-27,Stade Rennais,Montpellier HSC,1,0,Roazhon Park,Hakim Ben El Hadj,24468
+M0251,26,2024-02-03,AS Saint-Etienne,Clermont Foot,3,2,Stade Geoffroy-Guichard,Johan Music,37338
+M0252,26,2024-02-04,Montpellier HSC,RC Strasbourg,2,1,Stade de la Mosson,Johan Music,24781
+M0253,26,03/02/2024,Toulouse FC,Olympique Lyonnais,3,0,Stadium de Toulouse,Johan Music,27638
+M0254,26,2024-02-03,AS Saint-Etienne,Stade Brestois,1,0,Stade Geoffroy-Guichard,Pierre Music,26992
+M0255,26,03/02/2024,Olympique de Marseille,FC Lorient,2,3,Velodrome,Pierre Music,62244
+M0256,26,02 Feb 2024,Montpellier HSC,OGC Nice,4,0,Stade de la Mosson,Stephanie Frappart,23024
+M0257,26,2024-02-04,Stade Brestois,FC Nantes,1,1,Stade Francis-Le Ble,Jerome Brisard,12557
+M0258,26,02 Feb 2024,Girondins de Bordeaux,LOSC Lille,0,2,Matmut Atlantique,Benoit Bastien,33280
+M0259,26,2024-02-04,Toulouse FC,Clermont Foot,3,0,Stadium de Toulouse,Willy Delajod,22451
+M0260,26,2024-02-04,Clermont Foot,FC Metz,1,0,Stade Gabriel-Montpied,Jerome Brisard,9321
+M0261,27,2024-02-11,OGC Nice,Stade Rennais,1,0,Allianz Riviera,Francois Letexier,30974
+M0262,27,2024-02-09,FC Lorient,Stade de Reims,2,1,Stade du Moustoir,Stephanie Frappart,16265
+M0263,27,11 Feb 2024,Paris SG,Olympique de Marseille,2,1,Parc des Princes,Thomas Music,34807
+M0264,27,2024-02-11,Stade Brestois,Clermont Foot,1,2,Stade Francis-Le Ble,Johan Music,10687
+M0265,27,2024-02-09,Olympique de Marseille,FC Metz,0,2,Velodrome,Johan Music,41892
+M0266,27,2024-02-09,Paris SG,Clermont Foot,1,0,Parc des Princes,Hakim Ben El Hadj,45487
+M0267,27,10/02/2024,RC Strasbourg,AS Saint-Etienne,3,0,Stade de la Meinau,Hakim Ben El Hadj,20984
+M0268,27,2024-02-10,FC Lorient,AS Saint-Etienne,2,2,Stade du Moustoir,Thomas Music,16629
+M0269,27,2024-02-10,OGC Nice,Montpellier HSC,2,2,Allianz Riviera,Jerome Brisard,31208
+M0270,27,2024-02-09,RC Strasbourg,OGC Nice,0,0,Stade de la Meinau,Thomas Music,19222
+M0271,28,2024-02-17,Montpellier HSC,Girondins de Bordeaux,1,3,Stade de la Mosson,Florent Batta,27460
+M0272,28,2024-02-18,Paris SG,AS Saint-Etienne,2,2,Parc des Princes,Hakim Ben El Hadj,37426
+M0273,28,2024-02-18,AS Monaco,Le Havre AC,1,0,Stade Louis-II,Benoit Bastien,16099
+M0274,28,2024-02-18,Stade de Reims,AS Monaco,2,2,Stade Auguste-Delaune,Willy Delajod,15313
+M0275,28,2024-02-18,Olympique Lyonnais,LOSC Lille,0,2,Groupama Stadium,Clement Turpin,43056
+M0276,28,17/02/2024,Stade de Reims,Girondins de Bordeaux,1,0,Stade Auguste-Delaune,Jerome Brisard,18392
+M0277,28,2024-02-18,Clermont Foot,Paris SG,0,0,Stade Gabriel-Montpied,Florent Batta,10467
+M0278,28,2024-02-17,Stade Brestois,Olympique de Marseille,3,0,Stade Francis-Le Ble,Thomas Music,9640
+M0279,28,2024-02-18,OGC Nice,Girondins de Bordeaux,2,0,Allianz Riviera,Bastien Music,34364
+M0280,28,2024-02-18,RC Lens,FC Lorient,2,0,Stade Bollaert-Delelis,Willy Delajod,34667
+M0281,29,2024-02-24,Stade Rennais,OGC Nice,3,0,Roazhon Park,Clement Turpin,24508
+M0282,29,2024-02-25,FC Metz,Stade Rennais,0,3,Stade Saint-Symphorien,Francois Letexier,24191
+M0283,29,2024-02-23,Olympique Lyonnais,Stade Rennais,1,1,Groupama Stadium,Hakim Ben El Hadj,43329
+M0284,29,2024-02-25,Olympique Lyonnais,Paris SG,2,0,Groupama Stadium,Stephanie Frappart,33719
+M0285,29,2024-02-24,Le Havre AC,AS Monaco,4,1,Stade Oceane,Florent Batta,21386
+M0286,29,23 Feb 2024,Le Havre AC,FC Nantes,3,1,Stade Oceane,Francois Letexier,18893
+M0287,29,2024-02-25,AS Monaco,Clermont Foot,2,1,Stade Louis-II,Benoit Bastien,15265
+M0288,29,2024-02-25,Girondins de Bordeaux,RC Strasbourg,1,3,Matmut Atlantique,Thomas Music,23741
+M0289,29,2024-02-23,Toulouse FC,RC Strasbourg,1,2,Stadium de Toulouse,Pierre Music,18728
+M0290,29,2024-02-24,RC Lens,Stade de Reims,2,2,Stade Bollaert-Delelis,Florent Batta,26220
+M0291,30,2024-03-02,FC Metz,OGC Nice,3,1,Stade Saint-Symphorien,Pierre Music,28636
+M0292,30,2024-03-01,AS Saint-Etienne,FC Nantes,2,1,Stade Geoffroy-Guichard,Pierre Music,36981
+M0293,30,2024-03-01,Clermont Foot,FC Lorient,1,3,Stade Gabriel-Montpied,Benoit Bastien,10923
+M0294,30,2024-03-01,Stade de Reims,RC Strasbourg,0,1,Stade Auguste-Delaune,Bastien Music,19685
+M0295,30,2024-03-02,FC Metz,LOSC Lille,5,2,Stade Saint-Symphorien,Benoit Bastien,19435
+M0296,30,03/03/2024,AS Monaco,OGC Nice,1,0,Stade Louis-II,Hakim Ben El Hadj,17600
+M0297,30,2024-03-01,AS Monaco,AS Saint-Etienne,0,0,Stade Louis-II,Johan Music,12055
+M0298,30,02/03/2024,Le Havre AC,Girondins de Bordeaux,2,3,Stade Oceane,Bastien Music,22235
+M0299,30,2024-03-02,Olympique Lyonnais,OGC Nice,0,1,Groupama Stadium,Clement Turpin,37980
+M0300,30,2024-03-02,Paris SG,RC Lens,4,0,Parc des Princes,Clement Turpin,29554
+M0301,31,10/03/2024,Stade de Reims,Clermont Foot,1,0,Stade Auguste-Delaune,Benoit Bastien,17220
+M0302,31,2024-03-10,Stade Brestois,Paris SG,0,1,Stade Francis-Le Ble,Thomas Music,13065
+M0303,31,2024-03-09,LOSC Lille,RC Lens,0,2,Stade Pierre-Mauroy,Stephanie Frappart,29982
+M0304,31,2024-03-10,Olympique de Marseille,Toulouse FC,1,4,Velodrome,Florent Batta,66422
+M0305,31,09/03/2024,Paris SG,Toulouse FC,1,0,Parc des Princes,Pierre Music,41227
+M0306,31,2024-03-09,Stade de Reims,RC Lens,0,1,Stade Auguste-Delaune,Benoit Bastien,18008
+M0307,31,2024-03-09,Clermont Foot,Olympique de Marseille,2,0,Stade Gabriel-Montpied,Johan Music,7878
+M0308,31,08/03/2024,RC Strasbourg,Montpellier HSC,0,1,Stade de la Meinau,Thomas Music,15822
+M0309,31,09/03/2024,Toulouse FC,OGC Nice,0,0,Stadium de Toulouse,Pierre Music,21700
+M0310,31,2024-03-10,Stade de Reims,Olympique de Marseille,2,0,Stade Auguste-Delaune,Johan Music,14544
+M0311,32,2024-03-15,Clermont Foot,Montpellier HSC,2,2,Stade Gabriel-Montpied,Willy Delajod,7833
+M0312,32,16/03/2024,RC Strasbourg,Stade Brestois,1,2,Stade de la Meinau,Pierre Music,23463
+M0313,32,2024-03-15,AS Saint-Etienne,Toulouse FC,1,1,Stade Geoffroy-Guichard,Thomas Music,23207
+M0314,32,2024-03-17,Olympique Lyonnais,FC Nantes,1,2,Groupama Stadium,Stephanie Frappart,
+M0315,32,2024-03-16,Olympique Lyonnais,RC Strasbourg,2,1,Groupama Stadium,Willy Delajod,56176
+M0316,32,2024-03-17,LOSC Lille,AS Saint-Etienne,1,0,Stade Pierre-Mauroy,Clement Turpin,49800
+M0317,32,17/03/2024,Toulouse FC,Stade Brestois,2,1,Stadium de Toulouse,Willy Delajod,22696
+M0318,32,2024-03-17,RC Strasbourg,Stade Rennais,1,2,Stade de la Meinau,Hakim Ben El Hadj,16136
+M0319,32,2024-03-17,FC Nantes,Paris SG,1,3,Stade de la Beaujoire,Francois Letexier,36177
+M0320,32,2024-03-15,FC Nantes,Stade Brestois,1,0,Stade de la Beaujoire,Bastien Music,34824
+M0321,33,24 Mar 2024,FC Nantes,FC Metz,0,2,Stade de la Beaujoire,Florent Batta,32698
+M0322,33,2024-03-23,RC Lens,LOSC Lille,0,1,Stade Bollaert-Delelis,Benoit Bastien,32303
+M0323,33,2024-03-22,OGC Nice,FC Metz,1,0,Allianz Riviera,Benoit Bastien,20825
+M0324,33,2024-03-23,FC Metz,FC Lorient,1,0,Stade Saint-Symphorien,Hakim Ben El Hadj,29984
+M0325,33,22 Mar 2024,Le Havre AC,LOSC Lille,2,1,Stade Oceane,Bastien Music,21153
+M0326,33,2024-03-22,AS Saint-Etienne,Stade de Reims,1,0,Stade Geoffroy-Guichard,Francois Letexier,27356
+M0327,33,2024-03-24,Stade de Reims,Montpellier HSC,2,1,Stade Auguste-Delaune,Hakim Ben El Hadj,17104
+M0328,33,23/03/2024,AS Saint-Etienne,Olympique de Marseille,0,1,Stade Geoffroy-Guichard,Clement Turpin,29001
+M0329,33,2024-03-23,OGC Nice,LOSC Lille,0,0,Allianz Riviera,Jerome Brisard,28073
+M0330,33,2024-03-22,Girondins de Bordeaux,AS Saint-Etienne,0,1,Matmut Atlantique,Jerome Brisard,39385
+M0331,34,2024-03-31,Le Havre AC,OGC Nice,0,2,Stade Oceane,Clement Turpin,19024
+M0332,34,2024-03-29,FC Metz,AS Monaco,4,0,Stade Saint-Symphorien,Willy Delajod,
+M0333,34,2024-03-29,FC Lorient,Clermont Foot,1,1,Stade du Moustoir,Francois Letexier,13873
+M0334,34,2024-03-31,AS Saint-Etienne,Paris SG,0,1,Stade Geoffroy-Guichard,Stephanie Frappart,30413
+M0335,34,2024-03-29,Le Havre AC,Stade Brestois,2,0,Stade Oceane,Bastien Music,18282
+M0336,34,2024-03-29,FC Nantes,Clermont Foot,2,1,Stade de la Beaujoire,Pierre Music,33927
+M0337,34,2024-03-31,FC Metz,Paris SG,0,0,Stade Saint-Symphorien,Johan Music,25687
+M0338,34,2024-03-30,Stade Rennais,LOSC Lille,0,1,Roazhon Park,Stephanie Frappart,28437
+M0339,34,2024-03-31,OGC Nice,Olympique Lyonnais,0,0,Allianz Riviera,Stephanie Frappart,31711
+M0340,34,2024-03-31,FC Nantes,Olympique Lyonnais,0,1,Stade de la Beaujoire,Thomas Music,29104
+M0341,35,2024-04-05,Le Havre AC,Olympique de Marseille,0,2,Stade Oceane,Johan Music,24557
+M0342,35,05 Apr 2024,RC Strasbourg,Paris SG,2,0,Stade de la Meinau,Jerome Brisard,24022
+M0343,35,07/04/2024,Montpellier HSC,Paris SG,2,2,Stade de la Mosson,Bastien Music,23967
+M0344,35,2024-04-07,Stade Brestois,FC Lorient,0,2,Stade Francis-Le Ble,Florent Batta,12894
+M0345,35,2024-04-07,OGC Nice,Le Havre AC,1,2,Allianz Riviera,Stephanie Frappart,23179
+M0346,35,07 Apr 2024,Montpellier HSC,AS Monaco,1,0,Stade de la Mosson,Benoit Bastien,31497
+M0347,35,2024-04-05,Olympique de Marseille,LOSC Lille,4,0,Velodrome,Willy Delajod,54853
+M0348,35,2024-04-06,Stade Rennais,FC Lorient,1,3,Roazhon Park,Willy Delajod,21840
+M0349,35,2024-04-07,Girondins de Bordeaux,OGC Nice,1,0,Matmut Atlantique,Francois Letexier,30970
+M0350,35,2024-04-06,FC Nantes,Stade de Reims,0,2,Stade de la Beaujoire,Benoit Bastien,27008
+M0351,36,2024-04-13,Stade Brestois,RC Strasbourg,0,1,Stade Francis-Le Ble,Pierre Music,10758
+M0352,36,2024-04-14,RC Lens,RC Strasbourg,2,0,Stade Bollaert-Delelis,Florent Batta,37803
+M0353,36,2024-04-13,FC Nantes,Stade Rennais,4,0,Stade de la Beaujoire,Francois Letexier,28533
+M0354,36,2024-04-13,FC Lorient,FC Nantes,1,0,Stade du Moustoir,Jerome Brisard,17264
+M0355,36,2024-04-14,Olympique Lyonnais,Olympique de Marseille,0,0,Groupama Stadium,Thomas Music,39582
+M0356,36,13/04/2024,Clermont Foot,Olympique Lyonnais,0,0,Stade Gabriel-Montpied,Stephanie Frappart,8818
+M0357,36,2024-04-14,Olympique Lyonnais,Girondins de Bordeaux,3,1,Groupama Stadium,Florent Batta,53439
+M0358,36,2024-04-14,Stade Brestois,OGC Nice,2,2,Stade Francis-Le Ble,Thomas Music,14455
+M0359,36,13/04/2024,RC Lens,Clermont Foot,1,1,Stade Bollaert-Delelis,Bastien Music,28536
+M0360,36,2024-04-12,Toulouse FC,AS Saint-Etienne,2,1,Stadium de Toulouse,Benoit Bastien,21010
+M0361,37,2024-04-21,LOSC Lille,Montpellier HSC,1,0,Stade Pierre-Mauroy,Pierre Music,39023
+M0362,37,19 Apr 2024,AS Monaco,Stade de Reims,2,0,Stade Louis-II,Benoit Bastien,12402
+M0363,37,2024-04-19,FC Nantes,Le Havre AC,0,5,Stade de la Beaujoire,Hakim Ben El Hadj,30551
+M0364,37,2024-04-19,Stade Brestois,Olympique Lyonnais,1,0,Stade Francis-Le Ble,Bastien Music,10820
+M0365,37,2024-04-21,Stade de Reims,Le Havre AC,0,1,Stade Auguste-Delaune,Stephanie Frappart,13087
+M0366,37,2024-04-20,Olympique de Marseille,Girondins de Bordeaux,1,0,Velodrome,Thomas Music,51099
+M0367,37,2024-04-21,Stade de Reims,Stade Brestois,2,2,Stade Auguste-Delaune,Willy Delajod,12242
+M0368,37,2024-04-21,Stade Rennais,FC Nantes,2,2,Roazhon Park,Willy Delajod,18569
+M0369,37,2024-04-20,Olympique Lyonnais,FC Metz,0,2,Groupama Stadium,Stephanie Frappart,50014
+M0370,37,2024-04-21,Stade Rennais,AS Monaco,1,2,Roazhon Park,Francois Letexier,27492
+M0371,38,28/04/2024,RC Lens,AS Saint-Etienne,1,1,Stade Bollaert-Delelis,Pierre Music,34593
+M0372,38,2024-04-27,FC Metz,Stade Brestois,2,1,Stade Saint-Symphorien,Pierre Music,29446
+M0373,38,2024-04-26,FC Lorient,Stade Brestois,1,0,Stade du Moustoir,Pierre Music,16251
+M0374,38,2024-04-26,Clermont Foot,RC Strasbourg,2,0,Stade Gabriel-Montpied,Francois Letexier,10692
+M0375,38,2024-04-27,AS Saint-Etienne,Olympique Lyonnais,0,1,Stade Geoffroy-Guichard,Stephanie Frappart,37001
+M0376,38,27 Apr 2024,Stade Brestois,AS Monaco,2,4,Stade Francis-Le Ble,Willy Delajod,8984
+M0377,38,2024-04-28,Olympique Lyonnais,FC Lorient,3,2,Groupama Stadium,Florent Batta,54244
+M0378,38,2024-04-26,FC Nantes,RC Strasbourg,2,0,Stade de la Beaujoire,Hakim Ben El Hadj,36368
+M0379,38,2024-04-28,Olympique de Marseille,Olympique Lyonnais,2,3,Velodrome,Willy Delajod,
+M0380,38,2024-04-28,Stade Rennais,Girondins de Bordeaux,2,0,Roazhon Park,Jerome Brisard,22504

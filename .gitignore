@@ -1,0 +1,22 @@
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Editor / IDE
+.vscode/
+.idea/
+*.suo
+*.user
+
+# Power BI / Excel temp
+~$*.xlsx
+~$*.xls
+*.pbix.tmp
+
+# Python (if used for scripts)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
