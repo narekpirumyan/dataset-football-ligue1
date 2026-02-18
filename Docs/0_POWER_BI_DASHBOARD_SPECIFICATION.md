@@ -246,10 +246,10 @@
 | Chart | Age distribution (e.g. histogram); nationality breakdown (pie/bar) |
 | Purpose | Squad composition |
 
-**Source file:** **NOT PRESENT in current dataset.**  
+**Source file:** **players.xlsx.**  
 **Data required:** `age` (or date_of_birth), `nationality` (or country) per player.
 
-**Data quality:** **GAP — Data missing.** To implement: add a player master (e.g. `player_id`, `age`, `nationality`) or extend `player_stats_season.csv`. Document as “Not available – to be added” in data quality report.
+**Data quality:** **Ok.** To implement: add a player master (e.g. `player_id`, `age`, `nationality`) or extend `player_stats_season.csv`.
 
 ---
 
@@ -278,13 +278,13 @@
 
 | Visual | Description |
 |--------|-------------|
-| Axes | X: “value” (salary or market value), Y: performance (goals, assists, or composite) |
+| Axes | X: Market value, Y: performance (goals, assists, or composite) |
 | Purpose | Identify high-impact vs high-cost players |
 
-**Source file:** **NOT PRESENT.**  
-**Data required:** From player-level data: `salary` or `market_value` (or both), plus `goals`, `assists` (and optionally minutes) from `player_stats_season.csv`.
+**Source file:** **players.xlsx.**  
+**Data required:** From player-level data: `market_value` (from **players.xlsx**), plus `goals`, `assists` (and optionally minutes) from `player_stats_season.csv`.
 
-**Data quality:** **GAP — No salary or market value in current files.** Document as “Not available – to be added” for this visual. If only transfers fees exist, “value” could be approximated for transferred players only (from `transfers_2023_2024.txt`).
+**Data quality:** **Ok.** Ensure `market_value` is numeric and aligned with `player_id` for join to player stats.
 
 ---
 
@@ -294,7 +294,7 @@
 |------|-------------|
 | `player_stats_season.csv` | player_id, full_name, club, position, matches_played, starts, minutes_played, goals, assists, (yellow_cards, red_cards, shots, shots_on_target, clean_sheets, saves, successful_dribbles, interceptions, successful_tackles as needed) |
 
-**Missing for full spec:** age, nationality, salary, market_value.
+**Missing for full spec:** age, nationality, market_value.
 
 **Known data quality issues:**  
 - `minutes_played`: mixed format (“1234” vs “1234 min”).  
@@ -308,80 +308,93 @@
 
 **Message:** Did financial investment translate into performance?
 
-### 3.1 Wage bill vs league position
+**Market value vs salary — interpretation**  
+Salary data (wage bill, cost per point in €) is **not available** in this dataset. **Market value** (estimated worth of a player/squad) is used **in place of** salary where needed, with a different meaning: market value is a **valuation** (what the squad is worth), not an **expense** (what the club pays). Visuals below therefore answer “squad value vs results” and “value efficiency”, not “money spent vs results”. For **actual spend**, use **transfer data** (`amount_ME`, net spend, total spend) in addition — see “Use of transfer data” below and sections 3.2, 3.4, 4.1, 5.4.
 
-| Visual | Description |
-|--------|-------------|
-| Chart | Scatter or bar: wage bill (total salary) per club vs final league position (or points) |
-
-**Source file:** **NOT PRESENT.**  
-**Data required:** Club-level wage bill (sum of player salaries by club) and final position/points from match results or standings.
-
-**Data quality:** **GAP — No salary/wage data in any file.** Document as “Not available”.
+**Use of transfer data (in addition to market value)**  
+Transfer data (`transfers_2023_2024.txt`) provides **actual money spent/received**: fees paid (arrivals), fees received (departures), net spend, total spend by club. Use it **alongside** market value to: (1) show **transfer spend vs league position** (real investment); (2) **transfer spend per point** (actual cost per point); (3) **fee paid vs current market value** for transferred players (value creation); (4) **net spend** and spend by window (summer/winter). This complements market-value-based visuals with cost-based ones.
 
 ---
 
-### 3.2 Cost per point KPI
+### 3.1 Squad market value vs league position (+ transfer spend vs position)
 
 | Visual | Description |
 |--------|-------------|
-| Formula | Wage bill (or transfer spend) / total points |
-| Scope | Per club |
+| Chart | Scatter or bar: Total market value per club vs final league position (or points) — *valuation vs results*. |
+| **Also (transfer data):** Transfer spend (e.g. net spend or spend on arrivals) per club vs final position — *actual investment vs results*. |
 
-**Source file:** Would use wage bill (missing) or transfer spend. Transfer spend can be **partially** derived from `transfers_2023_2024.txt` (see below).
+**Source file:** **players.xlsx** (market value) + `transfers_2023_2024.txt` (for transfer-spend visual) + match results/standings.
+
+**Data required:** Club-level total market value (sum of player `market_value` by club) and final position/points; for transfer visual: `arrival_club`, `departure_club`, `amount_ME` (normalised), season window.
+
+**Data quality:** Ensure `market_value` is numeric per player; club name in players.xlsx aligns with match_results. If market value not in dataset, use transfer-fee aggregate as proxy (see 3.4). Transfer amounts: normalise `amount_ME`; define net vs gross and season window.
+
+---
+
+### 3.2 Squad value per point & transfer spend per point (KPIs)
+
+| Visual | Description |
+|--------|-------------|
+| **Squad value per point** | Sum(market value per club) / total points — *value efficiency* (squad worth per point; not actual cost). |
+| **Transfer spend per point** | Sum(transfer spend: arrivals − departures or total spend by club) / total points — *actual cost per point* (use transfer data). |
+| Scope | Per club; show both when data allows. |
+
+**Source file:** **players.xlsx** (market value) + `match_results_2023_2024.csv` (points) + `transfers_2023_2024.txt` (for transfer spend per point).
 
 **Data required:**  
 - Points: from `match_results_2023_2024.csv` (derived).  
-- Cost: salary (missing) or from transfers: `arrival_club`, `amount_ME`, filter by season window.
+- Market value: from **players.xlsx** — sum of player `market_value` by club.  
+- Transfer spend: from `transfers_2023_2024.txt` — `amount_ME` (normalised), `arrival_club`, `departure_club`; define season window and net vs gross (e.g. spend on arrivals, or net = arrivals − departures).
 
 **Data quality:**  
-- [ ] Transfer amounts: `amount_ME` has mixed formats (22.2, 56.9M€, 67.3 M, 74.2M€) — normalise to numeric.  
-- [ ] Dates: filter 2023–24 season; some transfer_date are 2024-08 (next season) — define “season” window.
+- [ ] `market_value` in players.xlsx: numeric, no mixed units; club alignment with match_results.  
+- [ ] Transfer spend: `amount_ME` has mixed formats (22.2, 56.9M€, 67.3 M, 74.2M€) — normalise; define 2023–24 season window (some transfer_date 2024-08). 
 
 ---
 
-### 3.3 Salary vs contribution scatter
+### 3.3 Market value vs contribution scatter
 
 | Visual | Description |
 |--------|-------------|
-| Axes | X: salary, Y: goals+assists or other contribution metric |
-| Scope | Per player |
+| Axes | X: Market value, Y: goals+assists or other contribution metric |
+| Scope | Per player — *valuation vs output* (not pay vs output; salary not in dataset). |
 
-**Source file:** **NOT PRESENT.**  
-**Data required:** Player salary + goals/assists (and optionally minutes) from player stats.
+**Source file:** **players.xlsx** (market value) + `player_stats_season.csv` (goals, assists, minutes).  
+**Data required:** Player `market_value` from players.xlsx + `goals`, `assists` (and optionally minutes) from player stats; join by `player_id`.
 
-**Data quality:** **GAP — No salary data.**
+**Data quality:** **Ok** if players.xlsx contains `market_value`; otherwise **GAP — No market value data.** Ensure numeric market_value and consistent player_id across sources.
 
 ---
 
-### 3.4 Market value vs actual production
+### 3.4 Market value vs actual production (+ fee paid vs market value)
 
 | Visual | Description |
 |--------|-------------|
-| Idea | Compare market value (or transfer fee) to output (goals, assists, minutes) |
+| Idea | Compare market value (or transfer fee as proxy) to output (goals, assists, minutes). |
+| **Also (transfer data):** For transferred players: **fee paid** (at transfer) vs **current market value** — value creation since signing. |
 
-**Source file:** Market value not in dataset. **Partial:** transfer fee for players who moved in/out in `transfers_2023_2024.txt` (`amount_ME`, `player_id`, `arrival_club`/`departure_club`). Performance from `player_stats_season.csv`.
+**Source file:** **Primary:** **players.xlsx** (`market_value` per player). **Transfer data:** `transfers_2023_2024.txt` (`amount_ME`, `player_id`, `arrival_club`/`departure_club`) — use **in addition** for fee-paid vs market-value and for players without market value. Performance from `player_stats_season.csv`.
 
 **Data required:**  
-- From transfers: `player_id`, `amount_ME` (as proxy for “value” for transferred players), `arrival_club`, `departure_club`, `transfer_date`.  
+- From players.xlsx: `player_id`, `market_value` (primary).  
+- From transfers (if no market value): `player_id`, `amount_ME` (proxy), `arrival_club`, `departure_club`, `transfer_date`.  
 - From player_stats: `goals`, `assists`, `minutes_played`, `club`.
 
 **Data quality:**  
-- [ ] Normalise `amount_ME` (see 3.2).  
-- [ ] Link by `player_id`; handle players with multiple transfers in period.  
-- [ ] Free transfers (0) and loans: define how to treat in “value”.
+- [ ] If using market value: numeric, same unit (e.g. M€); player_id aligned with player_stats.  
+- [ ] If using transfers: normalise `amount_ME` (see 3.2); link by `player_id`; handle multiple transfers; define treatment of free transfers (0) and loans.
 
 ---
 
-### 3.5 Most cost-efficient players
+### 3.5 Most value-efficient players (market value or transfer fee)
 
 | Visual | Description |
 |--------|-------------|
-| Idea | Contribution per € (or per million €) — e.g. (goals+assists) / salary or / transfer_fee |
+| Idea | Contribution per unit of value — e.g. (goals+assists) / market_value or (goals+assists) / transfer_fee. Use **market value** for valuation-based efficiency; use **transfer fee** (from transfers file) for *spend*-based efficiency where applicable. |
 
-**Source file:** Same as 3.4; requires salary or transfer fee + contribution. **GAP for salary.**
+**Source file:** Same as 3.4; requires `market_value` (players.xlsx) and/or transfer fee (`transfers_2023_2024.txt`) + contribution from player_stats. Prefer both: show efficiency vs market value and, for transferred players, vs fee paid.
 
-**Data quality:** Same as 3.2 and 3.4.
+**Data quality:** Same as 3.2 and 3.4 (market value numeric and aligned, or amount_ME normalised).
 
 ---
 
@@ -389,11 +402,12 @@
 
 | File | Fields used |
 |------|-------------|
+| **players.xlsx** | player_id, club, market_value (squad total, value per point, scatter, efficiency) |
 | `match_results_2023_2024.csv` | For points / position (derived) |
-| `transfers_2023_2024.txt` | transfer_id, player, player_id, departure_club, arrival_club, transfer_type, amount_ME, transfer_date |
+| `transfers_2023_2024.txt` | transfer_id, player, player_id, departure_club, arrival_club, transfer_type, amount_ME, transfer_date — for **transfer spend per point**, spend vs position, fee vs market value, efficiency vs fee (in addition to or proxy for market value) |
 | `player_stats_season.csv` | club, goals, assists, minutes_played (for contribution) |
 
-**Missing for full spec:** Player salary, club wage bill, market value.
+**Missing for full spec:** Player market value, club total market value (or use transfer-fee proxy).
 
 **Known data quality issues:**  
 - `amount_ME`: mixed units and formats (M€, M, decimals); need parsing and unit (e.g. M€).  
@@ -407,25 +421,26 @@
 
 **Message:** What external factors shaped performance — recruitment or disruptions?
 
-### 4.1 Transfers in/out summary
+### 4.1 Transfers in/out summary (+ net spend, spend by window)
 
 | Visual | Description |
 |--------|-------------|
-| Chart | Count and/or total fee: transfers IN vs OUT per club (and optionally by window) |
+| Chart | Count and/or total fee: transfers IN vs OUT per club (and optionally by window: summer vs winter). |
+| **Also (transfer data):** **Net transfer spend** per club (spend on arrivals − fees received from departures); **total spend** (e.g. sum of `amount_ME` for arrivals); **spend by window** (summer 2023 vs winter 2024). |
 
 **Source file:** `transfers_2023_2024.txt`  
 **Data required:**
 
 | Field | Use |
 |-------|-----|
-| `departure_club`, `arrival_club` | Classify IN (arrival_club = our club) vs OUT (departure_club = our club) |
-| `transfer_type`, `amount_ME` | Volume and spend |
+| `departure_club`, `arrival_club` | Classify IN (arrival_club = our club) vs OUT (departure_club = our club); compute net spend by club |
+| `transfer_type`, `amount_ME` | Volume and spend; normalise amount_ME for totals and net |
 | `transfer_date` | Filter by season; split summer vs winter if needed |
 
 **Data quality checks:**  
 - [ ] Club names align with match_results and player_stats (e.g. “Paris SG” vs “PSG”)  
 - [ ] Date parsing; consistent transfer_date format  
-- [ ] amount_ME normalised for totals |
+- [ ] amount_ME normalised for totals and net spend |
 
 ---
 
@@ -505,7 +520,7 @@
 
 | File | Fields used |
 |------|-------------|
-| `transfers_2023_2024.txt` | transfer_id, player, player_id, departure_club, arrival_club, transfer_type, amount_ME, transfer_date, agent |
+| `transfers_2023_2024.txt` | transfer_id, player, player_id, departure_club, arrival_club, transfer_type, amount_ME, transfer_date, agent (counts, totals, net spend, spend by window) |
 | `player_stats_season.csv` | player_id, full_name, club, matches_played, goals, assists, minutes_played, yellow_cards, red_cards |
 | `disciplinary_sanctions.csv` | sanction_id, player, player_id, club, sanction_date, sanction_type, reason, suspension_matches, fine_euros |
 
@@ -578,15 +593,16 @@
 
 | Visual | Description |
 |--------|-------------|
-| Idea | Compare “squad value” rank (e.g. by transfer market value or wage bill) with final league position |
+| Idea | Compare “squad value” rank with final league position. Use **both**: (1) **squad market value** (players.xlsx) — valuation rank; (2) **transfer spend** (e.g. net spend or total spend from `transfers_2023_2024.txt`) — actual investment rank. |
 
-**Source file:** Squad value not in dataset. **Partial:** aggregate of transfer fees (in/out or net) from `transfers_2023_2024.txt` by club as proxy; final rank from match results or PDF.
+**Source file:** **players.xlsx** (squad market value) + `transfers_2023_2024.txt` (transfer spend by club, in addition) + match results or PDF (standings).
 
 **Data required:**  
-- Transfers: `arrival_club`, `departure_club`, `amount_ME` (normalised).  
+- From players.xlsx: `market_value`, club — sum by club for squad value rank.  
+- From transfers: `arrival_club`, `departure_club`, `amount_ME` (normalised) — net spend or total spend by club for spend-based rank.  
 - Standings: from match results or PDF.
 
-**Data quality:** Same as Page 3 (amount_ME, club names). Document that “squad value” is proxy (transfer spend) unless market value/wage data is added.
+**Data quality:** Same as Page 3 (amount_ME, club names). Use transfer data **in addition to** market value so both valuation-based and spend-based ranks are available.
 
 ---
 
@@ -607,10 +623,10 @@
 |------|-------------|
 | `stadium_attendance.csv` | club, matchday, date, opponent, attendance, stadium_capacity, fill_rate (weather, temperature_c optional) |
 | `match_results_2023_2024.csv` | attendance, matchday, match_date, home_team (for cross-check or primary attendance if preferred) |
-| `transfers_2023_2024.txt` | arrival_club, departure_club, amount_ME (for value proxy) |
+| `transfers_2023_2024.txt` | arrival_club, departure_club, amount_ME (squad value rank via transfer spend, in addition to market value) |
 | `season_report_2023_2024.pdf` | Narrative / reference |
 
-**Missing for full spec:** Revenue per match (or ticket price), true squad market value / wage bill.
+**Missing for full spec:** Revenue per match (or ticket price), true squad market value (if not in players.xlsx).
 
 **Known data quality issues:**  
 - stadium_attendance: delimiter `;`; fill_rate as 96,6; date format.  
@@ -636,8 +652,7 @@
 |------|----------------|------------|
 | Player age | 2 (Squad) | Add column to player_stats or separate player master |
 | Player nationality | 2 (Squad) | Same |
-| Player salary / club wage bill | 3 (Financial), 5 (value rank) | New source or “N/A” in dashboard |
-| Market value (player/squad) | 2, 3, 5 | New source or use transfer fee as proxy where applicable |
+| Player market value / club squad market value | 2, 3, 5 (Financial, value rank) | **players.xlsx** if available; else new source or use transfer fee as proxy |
 | Injury timeline / availability | 4 (Risk) | New source or use “matches missed” from player_stats only |
 | Revenue per match | 5 (Fans) | New source or omit / proxy |
 
@@ -653,7 +668,7 @@
 
 1. **Data quality report:** For each file, run completeness (nulls), format (dates, numbers), and consistency (club names, player_id) checks.  
 2. **Data prep:** Normalise dates, amount_ME, minutes_played, fill_rate; choose single attendance source or document difference.  
-3. **Gap handling:** Decide which visuals to build with existing data, which to mark “N/A”, and which to add after new data (age, nationality, salary, revenue, injuries).  
-4. **Power BI:** Build data model (club, player, match, transfer, sanction, attendance); implement calculated columns/measures for points, rank, form, contribution %, cost per point (where data exists).
+3. **Gap handling:** Decide which visuals to build with existing data, which to mark “N/A”, and which to add after new data (age, nationality, market value, revenue, injuries).  
+4. **Power BI:** Build data model (club, player, match, transfer, sanction, attendance); implement calculated columns/measures for points, rank, form, contribution %, squad value per point and transfer spend per point (where data exists).
 
 This specification is ready to support a structured **data quality analysis** and subsequent dashboard implementation.
