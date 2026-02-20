@@ -52,19 +52,18 @@ Use **Sanction Count** in the **Value** well. Power BI will aggregate by Club (a
 
 | Role | Field | Notes |
 |------|--------|--------|
-| **X-axis** | Matchday (1–38) | One point per matchday. Use a **Matchday** dimension (e.g. table with values 1 to 38) or `DimMatch[Matchday]` with one row per matchday (see below). |
+| **X-axis** | Matchday (1–38) | One point per matchday. Use **`DimMatch[Matchday]`** on the axis; Power BI shows one category per distinct value (38 points). No need for a separate Matchday table. |
 | **Y-axis** | Cumulative sanction count | Number of sanctions with `SanctionDateKey` ≤ end of that matchday. |
 
 **Data source:** `FactSanction` (SanctionDateKey), `DimMatch` (Matchday, MatchDate). To get "end of matchday N", use the date of the match(es) on that matchday (e.g. `MAX(DimMatch[MatchDate])` for that Matchday).
 
-**Option A — Matchday dimension + DAX measure**
+**Option A — Use DimMatch for the axis (recommended)**
 
-1. **Matchday axis:** Create a small table **DimMatchday** with one column **Matchday** (values 1 to 38). Add it to the model; no relationship needed if you use the measure below.
-2. **Cumulative measure:** For each matchday on the axis, compute the "cutoff date" (end of that matchday) from `DimMatch`, then count sanctions up to that date:
+Put **`DimMatch[Matchday]`** on the X-axis. Power BI groups by distinct Matchday, so you get 38 points. For each point, the measure gets the end date of that matchday from `DimMatch`, then counts sanctions up to that date:
 
 ```dax
 Cumulative Sanction Count =
-VAR MatchdayVal = MAX(DimMatchday[Matchday])
+VAR MatchdayVal = MAX(DimMatch[Matchday])
 VAR EndDate =
     CALCULATE(
         MAX(DimMatch[MatchDate]),
@@ -79,7 +78,9 @@ RETURN
     )
 ```
 
-Use **DimMatchday[Matchday]** on the X-axis and **`[Cumulative Sanction Count]`** on the Y-axis. Ensure the visual shows one point per matchday (no duplicate matchdays).
+**X-axis:** `DimMatch[Matchday]`. **Y-axis:** `[Cumulative Sanction Count]`. No extra table needed.
+
+*Optional:* If you prefer a dedicated dimension with exactly one row per matchday (1–38), create a small table **DimMatchday** with column **Matchday**, use it on the X-axis, and in the measure use `MAX(DimMatchday[Matchday])` instead of `MAX(DimMatch[Matchday])`; the rest of the measure stays the same.
 
 **Option B — Assign sanction to matchday in the model**
 
@@ -101,7 +102,7 @@ X-axis: the Matchday column (from a table that has one row per matchday, e.g. Di
 **Power BI setup:**
 
 1. Add a **Line chart** (Graphique en lignes).
-2. **X-axis:** Matchday (1–38) from DimMatchday or equivalent; ensure **one point per matchday** and sort by Matchday ascending.
+2. **X-axis:** `DimMatch[Matchday]` (Option A) or Matchday from DimMatchday / FactSanction (Option B); ensure **one point per matchday** and sort by Matchday ascending.
 3. **Y-axis:** `[Cumulative Sanction Count]`.
 4. **Legend (optional):** Add `DimClub[ClubName]` if you want one line per club (cumulative per club); otherwise one line for the whole league.
 5. **Format:** Y-axis = Whole number; no decimals. X-axis min/max 1–38 if needed.
