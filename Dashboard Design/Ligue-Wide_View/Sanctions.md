@@ -227,43 +227,65 @@ When the visual groups by city, this gives total sanctions in that city. For the
 
 **Purpose:** Compare the **number of sanctions at home** vs **away** (league-wide or per club if filtered). No change to the data model: home/away is derived from **DimMatch** (HomeClubKey / AwayClubKey) in DAX only.
 
-**Data source:** `FactSanction` (ClubKey, SanctionDateKey), `DimMatch` (DateKey, HomeClubKey, AwayClubKey). For each sanction, the club played one match on that date — either as home or away. We count sanctions where the club was home (HomeClubKey = ClubKey on that date) vs away (AwayClubKey = ClubKey).
+**Data source:** `FactSanction` (ClubKey, SanctionDateKey), `DimMatch` (DateKey, HomeClubKey, AwayClubKey). In the source CSV, **sanction_date** is often the *decision* date (e.g. 2023-12-25, 2024-01-17), not the match date, so matching “sanction date = match date” only counts sanctions that fall exactly on a match day and gives very low totals (e.g. 5+5). We therefore attribute each sanction to the **last match of that club on or before the sanction date**, and use home/away from that match.
 
 **DAX measures (no new columns, no new tables)**
+
+For each sanction we take the club’s **last match date ≤ SanctionDateKey**, then check if the club was Home (HomeClubKey) or Away (AwayClubKey) in that match:
 
 ```dax
 Sanctions Domicile =
 SUMX(
     FactSanction,
-    IF(
-        COUNTROWS(
+    VAR LastMatchDate =
+        CALCULATE(
+            MAX(DimMatch[DateKey]),
             FILTER(
                 DimMatch,
-                DimMatch[DateKey] = FactSanction[SanctionDateKey]
+                DimMatch[DateKey] <= FactSanction[SanctionDateKey]
+                    && (DimMatch[HomeClubKey] = FactSanction[ClubKey]
+                        || DimMatch[AwayClubKey] = FactSanction[ClubKey])
+            )
+        )
+    VAR IsHome =
+        NOT ISBLANK(LastMatchDate)
+        && COUNTROWS(
+            FILTER(
+                DimMatch,
+                DimMatch[DateKey] = LastMatchDate
                     && DimMatch[HomeClubKey] = FactSanction[ClubKey]
             )
-        ) > 0,
-        1,
-        0
-    )
+        ) > 0
+    RETURN IF(IsHome, 1, 0)
 )
 
 Sanctions Extérieur =
 SUMX(
     FactSanction,
-    IF(
-        COUNTROWS(
+    VAR LastMatchDate =
+        CALCULATE(
+            MAX(DimMatch[DateKey]),
             FILTER(
                 DimMatch,
-                DimMatch[DateKey] = FactSanction[SanctionDateKey]
+                DimMatch[DateKey] <= FactSanction[SanctionDateKey]
+                    && (DimMatch[HomeClubKey] = FactSanction[ClubKey]
+                        || DimMatch[AwayClubKey] = FactSanction[ClubKey])
+            )
+        )
+    VAR IsAway =
+        NOT ISBLANK(LastMatchDate)
+        && COUNTROWS(
+            FILTER(
+                DimMatch,
+                DimMatch[DateKey] = LastMatchDate
                     && DimMatch[AwayClubKey] = FactSanction[ClubKey]
             )
-        ) > 0,
-        1,
-        0
-    )
+        ) > 0
+    RETURN IF(IsAway, 1, 0)
 )
 ```
+
+**Note:** If a sanction date is before the club’s first match, `LastMatchDate` is blank and that sanction is not counted in either bar. The sum of the two measures can be less than total sanctions in that case.
 
 **Power BI setup (one graph)**
 
