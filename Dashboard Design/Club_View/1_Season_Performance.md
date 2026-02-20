@@ -727,6 +727,54 @@ If you prefer, you can use a **Card** visual instead of HTML Content:
 - Add the `[Discipline HTML]` measure to a Card visual.
 - Set the card to display as "HTML" if your Power BI version supports it, or use HTML Content visual.
 
+### 1.12.1 Aggressiveness index gauge (Indice d’agressivité – club sélectionné)
+
+**Visual Type:** Gauge (Jauge)
+
+**Purpose:** Show an **aggressiveness index** for the **selected club**: the gauge displays the club’s total sanction count (`FactSanction`), with the **minimum** of the scale = total sanctions of the club that has the **fewest** sanctions in the league, and the **maximum** = total sanctions of the club that has the **most** sanctions. The selected club’s value is shown on this min–max scale so users can see where the club stands relative to the league.
+
+**Context:** Club view — the gauge is driven by the **club selection** (slicer or filter on `DimClub`). One club should be selected so the gauge shows that club’s sanction count between the league min and max.
+
+**Data Source:** `FactSanction`, `DimClub`.
+
+**DAX measures:**
+
+```dax
+Sanction Count = COUNTROWS(FactSanction)
+```
+
+Min and max sanction count across all clubs (for the gauge scale), independent of the current club filter:
+
+```dax
+Min Sanctions (League) =
+MINX(
+    ALL(DimClub),
+    CALCULATE( COUNTROWS(FactSanction) )
+)
+
+Max Sanctions (League) =
+MAXX(
+    ALL(DimClub),
+    CALCULATE( COUNTROWS(FactSanction) )
+)
+```
+
+- **Value (valeur affichée):** `[Sanction Count]` — in the context of the selected club, this is that club’s total sanctions.
+- **Minimum (échelle):** `[Min Sanctions (League)]`.
+- **Maximum (échelle):** `[Max Sanctions (League)]`.
+
+**Power BI setup:**
+
+1. Add a **Gauge** visual (Jauge) on the Club view page.
+2. **Value:** `[Sanction Count]` (uses filter context = selected club).
+3. **Minimum value:** `[Min Sanctions (League)]` (if the gauge allows a measure; otherwise see note below).
+4. **Maximum value:** `[Max Sanctions (League)]`.
+5. The page **club slicer** defines the selected club; the gauge then shows that club’s sanction count between the league min and max.
+6. **Format:** Whole numbers; title e.g. “Indice d’agressivité” or “Sanctions (club sélectionné)”.
+7. **Tooltips:** ClubName, Sanction Count, Min Sanctions (League), Max Sanctions (League).
+
+**Note:** If the built-in gauge does not accept measures for min/max (only constants), use a **Card** or **KPI** with the same Value and add a reference line, or a table with one row and columns MinValue = [Min Sanctions (League)] and MaxValue = [Max Sanctions (League)] to drive the scale, or use a custom visual that supports measure-driven min/max.
+
 ---
 
 ## 1.13 Top Scorer & Top Assister (FactPlayerSeason)

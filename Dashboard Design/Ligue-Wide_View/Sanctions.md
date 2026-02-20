@@ -126,63 +126,11 @@ No change to the cumulative measure is required; only the Legend configuration a
 
 ---
 
-## C. Red and yellow cards by club (donut chart)
+## C. Sanction count by reason (donut chart)
 
 **Visual type:** Donut chart (Graphique en anneau)
 
-**Purpose:** Show the **cumulative** number of red and yellow cards per club as a share of the league total. One segment per club; the value is the count of sanctions that correspond to red cards or yellow cards (from `FactSanction[Reason]`). Compare discipline (cards) across clubs at a glance.
-
-**Roles:**
-
-| Role | Field | Notes |
-|------|--------|--------|
-| **Legend** (or **Axis**) | `DimClub[ClubName]` | One segment per club. |
-| **Values** | Count of card sanctions | Number of rows in FactSanction per club where Reason is red- or yellow-card related. |
-
-**Data source:** `FactSanction`, `DimClub`. Card type is derived from **Reason**: e.g. red = “Red card - last man foul”, “Straight red card - dangerous tackle”; yellow = “Accumulation of yellow cards”. Other reasons (e.g. “Simulation”, “Spitting”) can be excluded or included depending on whether you want “cards only” or all sanctions; for “cartons rouges et jaunes” restrict to card reasons.
-
-**DAX measures:**
-
-Define a measure that counts only card-related sanctions (red + yellow). If you do not have a column `CardType` or `IsCard`, use a filter on **Reason**:
-
-```dax
-Card Count =
-CALCULATE(
-    COUNTROWS(FactSanction),
-    FILTER(
-        FactSanction,
-        FactSanction[Reason] = "Red card - last man foul"
-            || FactSanction[Reason] = "Straight red card - dangerous tackle"
-            || FactSanction[Reason] = "Accumulation of yellow cards"
-    )
-)
-```
-
-Alternatively, add a calculated column in Power Query or DAX on `FactSanction`, e.g. `CardType` = "Red", "Yellow" or BLANK(), then:
-
-```dax
-Card Count = CALCULATE( COUNTROWS(FactSanction), FactSanction[CardType] <> BLANK() )
-```
-
-**Power BI setup:**
-
-1. Add a **Donut chart** (Graphique en anneau).
-2. **Legend** (or **Axis**): `DimClub[ClubName]`.
-3. **Values:** `[Card Count]`.
-4. **Sort:** Optionally sort by Card Count descending so the clubs with the most cards appear first.
-5. Apply **Visual Charter** colours for clubs (Format by field value from the Club Colors table).
-6. **Tooltips:** ClubName, Card Count, and optionally percentage of total.
-7. **Center label (optional):** Show total card count or “Cartons par club” in the center.
-
-**Variant — Two donuts (red vs yellow):** Use two measures, e.g. `[Red Card Count]` and `[Yellow Card Count]` (each filtering on the relevant reasons), and create two donut charts side by side: one “Cartons rouges par club”, one “Cartons jaunes par club”. Or use a **single** donut with **Legend** = CardType (Red / Yellow) and **Axis** = Club so each club has two segments (red + yellow); Values = count.
-
----
-
-## D. Sanction count by reason (donut chart)
-
-**Visual type:** Donut chart (Graphique en anneau)
-
-**Purpose:** Show the **distribution of sanctions by reason** across the league: one segment per reason, value = number of sanctions for that reason. Highlights which types of incidents (e.g. red cards, accumulation of yellows, simulation, unsportsmanlike conduct) are most frequent overall.
+**Purpose:** Show the **distribution** of sanctions by reason across the league: one segment per reason, value = number of sanctions for that reason. Highlights which types of incidents (e.g. red cards, accumulation of yellows, simulation, unsportsmanlike conduct) are most frequent overall.
 
 **Roles:**
 
@@ -190,6 +138,7 @@ Card Count = CALCULATE( COUNTROWS(FactSanction), FactSanction[CardType] <> BLANK
 |------|--------|--------|
 | **Legend** (or **Axis**) | `FactSanction[Reason]` | One segment per distinct reason. |
 | **Values** | Sanction count | Number of rows in FactSanction per reason. |
+
 
 **Data source:** `FactSanction`. Use the existing **Reason** column (from `disciplinary_sanctions.csv`).
 
@@ -209,6 +158,104 @@ Sanction Count = COUNTROWS(FactSanction)
 4. **Sort:** Optionally sort by Sanction Count descending so the most frequent reasons appear first.
 5. Use a **distinct palette** for reasons so each segment is readable (avoid club colours here; this is reason-based).
 6. **Tooltips:** Reason, Sanction Count, and optionally percentage of total.
-7. **Center label (optional):** Show total sanction count or “Sanctions par raison” in the center.
+7. **Center label (optional):** Show total sanction count or "Sanctions par raison" in the center.
 
-**Note:** If there are many distinct reasons, consider showing only the top N (e.g. filter or “Top 10” in the visual) or use a slicer on Reason so users can focus on a subset.
+**Note:** If there are many distinct reasons, consider showing only the top N (e.g. filter or "Top 10" in the visual) or use a slicer on Reason so users can focus on a subset.
+
+---
+
+## D. Total sanctions by city (map with bubble size)
+
+**Visual type:** Map (Carte) — bubbles sized by value
+
+**Purpose:** Display **total sanctions per city** on a map: one point per city (from `DimClub[city]`), with **bubble size** proportional to the total number of sanctions in that city (all clubs in the city combined). Gives a league-wide geographic view of discipline by location.
+
+**Data source (0_markdown.md):** `FactSanction` (via `ClubKey`), `DimClub` (`city`). No Latitude/Longitude in the schema — use **city** for geocoding (Power BI/Bing recognizes French city names).
+
+**One point per city — recommended: summarized table**
+
+To avoid duplicate points when several clubs share the same city, use a table with **one row per city** and total sanctions.
+
+**Option A — Calculated table (DAX)**
+
+Create a calculated table, e.g. `CitySanctions`:
+
+```dax
+CitySanctions =
+SUMMARIZE(
+    DimClub,
+    DimClub[city],
+    "TotalSanctions", CALCULATE( COUNTROWS(FactSanction) )
+)
+```
+
+Result: columns `city`, `TotalSanctions`. Use this table as the source for the map (no relationship needed if you only need this visual; otherwise relate via `city` to a dimension if you use one).
+
+**Option B — Power Query**
+
+- Start from `DimClub` (or a query that joins DimClub and FactSanction).
+- Group by `city`.
+- Add column: total sanctions = count of related `FactSanction` rows (or sum of a count column). Output columns: `city`, `TotalSanctions`.
+- Load as a table, e.g. `CitySanctions`.
+
+**If you keep using DimClub directly:** Put `DimClub[city]` in Location and a measure in Size (see below). You may get one point per club; if two clubs share a city, you can get two overlapping points. Prefer the summarized table for one bubble per city.
+
+**DAX measure (when using DimClub or for tooltips)**
+
+```dax
+Sanction Count = COUNTROWS(FactSanction)
+```
+
+When the visual groups by city, this gives total sanctions in that city. For the summarized table, use the column `TotalSanctions` in the **Size** well.
+
+**Power BI setup**
+
+1. Add a **Map** visual (Carte).
+2. **Location:** `City` (from `CitySanctions`) or `DimClub[city]` — one value per city so Power BI geocodes the city name.
+3. **Size:** `TotalSanctions` (from `CitySanctions`) or `[Sanction Count]` if using DimClub. Bubble size = total sanctions in that city.
+4. **Legend (optional):** Add `DimClub[ClubName]` only if you need one point per club; for one point per city, leave legend empty or use a tooltip.
+5. **Tooltips:** City, Total Sanctions (and optionally list of clubs in that city).
+6. **Format:** Adjust size range (min/max) so bubbles are readable; optional labels.
+
+**Note:** Geocoding uses the **city** name only (e.g. Paris, Lyon). For more precise stadium locations you would need Latitude/Longitude columns (not in the current schema).
+
+---
+
+## E. Sanctions at home vs away (bar chart)
+
+**Visual type:** Bar chart (Graphique à barres) — two bars: one for sanctions at home (domicile), one for sanctions away (extérieur).
+
+**Purpose:** Compare the **number of sanctions at home** vs **away** (league-wide or per club if filtered). One bar = total sanctions in “domicile” context, one bar = total in “extérieur” context.
+
+**Data source:** `FactSanction`, `DimClub`. The current schema (0_markdown.md) does **not** include a home/away attribute on `FactSanction`. You need a way to associate each sanction with a match context (home or away for the sanctioned club).
+
+**Enriching the model with Venue (Domicile / Extérieur)**
+
+Add a column to `FactSanction` (in Power Query or as a calculated column) that indicates whether the sanction occurred in a **home** or **away** context for the club:
+
+- **Option A — Power Query:** For each sanction, match `SanctionDateKey` and `ClubKey` to the match(es) where that club played on that date (via `DimMatch` + `FactClubMatch`: same date and club). If the club was home in that match, set `Venue = "Domicile"`; if away, `Venue = "Extérieur"`. If a club played twice on the same day, use matchday or a rule (e.g. first match). Load as `FactSanction[Venue]` (Text) or `FactSanction[IsHome]` (Boolean).
+- **Option B — Calculated column (DAX):** If you can uniquely identify the match (e.g. you add `MatchKey` to FactSanction), then `Venue = IF(LOOKUPVALUE(FactClubMatch[IsHome], FactClubMatch[MatchKey], FactSanction[MatchKey], FactClubMatch[ClubKey], FactSanction[ClubKey]), "Domicile", "Extérieur")`. Otherwise prefer Power Query.
+
+If you cannot link sanctions to a specific match, you can approximate: e.g. for each sanction date and club, take the **matchday** where that club played and get IsHome from `FactClubMatch` for that club and matchday (one row per club per match, so one IsHome value per club per match). Matching on (ClubKey, Date) to (FactClubMatch via DimMatch date) gives the match and thus IsHome.
+
+**DAX measures**
+
+Once `FactSanction` has a **Venue** column (e.g. `"Domicile"` / `"Extérieur"`):
+
+```dax
+Sanction Count = COUNTROWS(FactSanction)
+```
+
+Use this in the **Value** well; Power BI will slice by the field you put on the axis.
+
+**Power BI setup**
+
+1. Add a **Bar chart** (Graphique à barres) or **Clustered bar chart**.
+2. **Axis (Category):** `FactSanction[Venue]` (or a table with two rows: "Domicile", "Extérieur") so you get exactly two bars.
+3. **Value:** `[Sanction Count]` (or drag FactSanction with Count). You get one bar for Domicile and one for Extérieur.
+4. **Sort:** Optionally sort by value descending.
+5. **Format:** Whole numbers; optional data labels on the bars.
+6. **Tooltips:** Venue, Sanction Count; optionally ClubName if filtered by club.
+7. Use a **slicer** on Club to show home/away sanctions for a selected club, or leave unfiltered for league totals.
+
+**Alternative axis:** If you prefer a small **dimension table** with two rows (e.g. `DimVenue`: VenueKey, VenueName = "Domicile" / "Extérieur"`) and a measure that filters by it, you can put `DimVenue[VenueName]` on the axis and use a measure that counts sanctions where `FactSanction[Venue] = MAX(DimVenue[VenueName])` (or relate FactSanction to DimVenue on Venue). Same result: two bars.
