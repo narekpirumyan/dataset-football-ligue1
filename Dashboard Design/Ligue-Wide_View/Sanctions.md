@@ -306,13 +306,13 @@ SUMX(
 
 **Purpose:** Visualize the **number of sanctions** (on the day of the match) in relation to the **stadium fill rate** (taux de remplissage) for that match. One point per match: X = fill rate (%), Y = number of sanctions attributed to that match date for the two clubs involved (home + away). Helps explore whether attendance/fill rate is associated with more or fewer sanctions.
 
-**Data source (0_markdown.md):** `FactAttendance` (one row per home match: ClubKey, MatchKey, DateKey, **FillRatePct**), `DimMatch` (HomeClubKey, AwayClubKey), `FactSanction` (ClubKey, SanctionDateKey). Use **Sanction Count (selected reasons)** restricted to the match date and to the home and away club of that match.
+**Data source (0_markdown.md):** `FactAttendance` (one row per home match: ClubKey, MatchKey, DateKey, **FillRatePct**), `DimMatch` (HomeClubKey, AwayClubKey), `FactSanction` (ClubKey, SanctionDateKey, Reason). The measure below counts sanctions for that match date and the two clubs, restricted to the 12 selected reasons (no dependency on another measure).
 
 **Grain:** One point per match. Use **FactAttendance** as the source (one row per match = home side); each row has FillRatePct for that match. The Y-axis is a measure that counts sanctions on that match’s date for the two clubs (home + away).
 
 **DAX measure (sanctions on match day for the two clubs)**
 
-In the context of a FactAttendance row (one match), count sanctions on that date for the home club or the away club:
+In the context of a FactAttendance row (one match), count sanctions on that date for the home or away club, **restricted to the 12 selected reasons** (logic inline so you don’t depend on another measure):
 
 ```dax
 Sanctions This Match =
@@ -321,16 +321,30 @@ VAR HomeClub = MAX(FactAttendance[ClubKey])
 VAR AwayClub = MAX(DimMatch[AwayClubKey])
 RETURN
     CALCULATE(
-        [Sanction Count (selected reasons)],
-        FactSanction[SanctionDateKey] = MatchDate,
+        COUNTROWS(FactSanction),
         FILTER(
             FactSanction,
-            FactSanction[ClubKey] = HomeClub || FactSanction[ClubKey] = AwayClub
+            FactSanction[SanctionDateKey] = MatchDate
+                && (FactSanction[ClubKey] = HomeClub || FactSanction[ClubKey] = AwayClub)
+                && (
+                    FactSanction[Reason] = "Abusive language in mixed zone"
+                    || FactSanction[Reason] = "Accumulation of yellow cards"
+                    || FactSanction[Reason] = "Deliberate elbow strike"
+                    || FactSanction[Reason] = "Inappropriate gesture towards an opponent"
+                    || FactSanction[Reason] = "Insulting the referee"
+                    || FactSanction[Reason] = "On-field brawl"
+                    || FactSanction[Reason] = "Red card - last man foul"
+                    || FactSanction[Reason] = "Repeated protesting"
+                    || FactSanction[Reason] = "Simulation"
+                    || FactSanction[Reason] = "Spitting"
+                    || FactSanction[Reason] = "Straight red card - dangerous tackle"
+                    || FactSanction[Reason] = "Unsportsmanlike conduct"
+                )
         )
     )
 ```
 
-Assumes a relationship **FactAttendance → DimMatch** (via MatchKey) so that `DimMatch[AwayClubKey]` is in context for the current match.
+Assumes a relationship **FactAttendance → DimMatch** (via MatchKey) so that `DimMatch[AwayClubKey]` is in context for the current match. If your column **Reason** uses different spelling or case (e.g. "unsportsmanlike conduct"), adjust the strings to match.
 
 **Power BI setup**
 
