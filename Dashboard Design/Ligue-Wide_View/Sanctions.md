@@ -123,3 +123,92 @@ Allow users to switch between a single line (total cumulative sanctions) and mul
 4. Optional: add a **slicer** on Reason (or Club) so that in breakdown view users can filter to specific reasons or clubs; the cumulative measure will respect filters.
 
 No change to the cumulative measure is required; only the Legend configuration and bookmarks/buttons define the two (or more) display modes.
+
+---
+
+## C. Red and yellow cards by club (donut chart)
+
+**Visual type:** Donut chart (Graphique en anneau)
+
+**Purpose:** Show the **cumulative** number of red and yellow cards per club as a share of the league total. One segment per club; the value is the count of sanctions that correspond to red cards or yellow cards (from `FactSanction[Reason]`). Compare discipline (cards) across clubs at a glance.
+
+**Roles:**
+
+| Role | Field | Notes |
+|------|--------|--------|
+| **Legend** (or **Axis**) | `DimClub[ClubName]` | One segment per club. |
+| **Values** | Count of card sanctions | Number of rows in FactSanction per club where Reason is red- or yellow-card related. |
+
+**Data source:** `FactSanction`, `DimClub`. Card type is derived from **Reason**: e.g. red = “Red card - last man foul”, “Straight red card - dangerous tackle”; yellow = “Accumulation of yellow cards”. Other reasons (e.g. “Simulation”, “Spitting”) can be excluded or included depending on whether you want “cards only” or all sanctions; for “cartons rouges et jaunes” restrict to card reasons.
+
+**DAX measures:**
+
+Define a measure that counts only card-related sanctions (red + yellow). If you do not have a column `CardType` or `IsCard`, use a filter on **Reason**:
+
+```dax
+Card Count =
+CALCULATE(
+    COUNTROWS(FactSanction),
+    FILTER(
+        FactSanction,
+        FactSanction[Reason] = "Red card - last man foul"
+            || FactSanction[Reason] = "Straight red card - dangerous tackle"
+            || FactSanction[Reason] = "Accumulation of yellow cards"
+    )
+)
+```
+
+Alternatively, add a calculated column in Power Query or DAX on `FactSanction`, e.g. `CardType` = "Red", "Yellow" or BLANK(), then:
+
+```dax
+Card Count = CALCULATE( COUNTROWS(FactSanction), FactSanction[CardType] <> BLANK() )
+```
+
+**Power BI setup:**
+
+1. Add a **Donut chart** (Graphique en anneau).
+2. **Legend** (or **Axis**): `DimClub[ClubName]`.
+3. **Values:** `[Card Count]`.
+4. **Sort:** Optionally sort by Card Count descending so the clubs with the most cards appear first.
+5. Apply **Visual Charter** colours for clubs (Format by field value from the Club Colors table).
+6. **Tooltips:** ClubName, Card Count, and optionally percentage of total.
+7. **Center label (optional):** Show total card count or “Cartons par club” in the center.
+
+**Variant — Two donuts (red vs yellow):** Use two measures, e.g. `[Red Card Count]` and `[Yellow Card Count]` (each filtering on the relevant reasons), and create two donut charts side by side: one “Cartons rouges par club”, one “Cartons jaunes par club”. Or use a **single** donut with **Legend** = CardType (Red / Yellow) and **Axis** = Club so each club has two segments (red + yellow); Values = count.
+
+---
+
+## D. Sanction count by reason (donut chart)
+
+**Visual type:** Donut chart (Graphique en anneau)
+
+**Purpose:** Show the **distribution of sanctions by reason** across the league: one segment per reason, value = number of sanctions for that reason. Highlights which types of incidents (e.g. red cards, accumulation of yellows, simulation, unsportsmanlike conduct) are most frequent overall.
+
+**Roles:**
+
+| Role | Field | Notes |
+|------|--------|--------|
+| **Legend** (or **Axis**) | `FactSanction[Reason]` | One segment per distinct reason. |
+| **Values** | Sanction count | Number of rows in FactSanction per reason. |
+
+**Data source:** `FactSanction`. Use the existing **Reason** column (from `disciplinary_sanctions.csv`).
+
+**DAX measure:**
+
+Reuse the same measure as in section A:
+
+```dax
+Sanction Count = COUNTROWS(FactSanction)
+```
+
+**Power BI setup:**
+
+1. Add a **Donut chart** (Graphique en anneau).
+2. **Legend** (or **Axis**): `FactSanction[Reason]`.
+3. **Values:** `[Sanction Count]`.
+4. **Sort:** Optionally sort by Sanction Count descending so the most frequent reasons appear first.
+5. Use a **distinct palette** for reasons so each segment is readable (avoid club colours here; this is reason-based).
+6. **Tooltips:** Reason, Sanction Count, and optionally percentage of total.
+7. **Center label (optional):** Show total sanction count or “Sanctions par raison” in the center.
+
+**Note:** If there are many distinct reasons, consider showing only the top N (e.g. filter or “Top 10” in the visual) or use a slicer on Reason so users can focus on a subset.
