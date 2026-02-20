@@ -42,21 +42,20 @@ Use **Sanction Count** in the **Value** well. Power BI will aggregate by Club (a
 
 ---
 
-## B. Cumulative sanction count by matchday (line + stacked column chart)
+## B. Cumulative sanction count by matchday (line chart)
 
-**Visual type:** Line and stacked column chart (Graphique en courbes et en barres empilées)
+**Visual type:** Line chart (Graphique en lignes)
 
-**Purpose:** Show the **cumulative** number of sanctions over the season (line) and the **number of matches on each matchday** (stacked bars) on the same X-axis. X = matchday (1–38). Highlights how discipline accumulates and contextualizes with match volume per day.
+**Purpose:** Show the **cumulative** number of sanctions over the season: X = matchday (1–38), Y = total sanctions counted up to that matchday. Highlights how discipline incidents accumulate across the season (league-wide or per club if filtered).
 
 **Axes:**
 
 | Role | Field | Notes |
 |------|--------|--------|
-| **X-axis** | Matchday (1–38) | One category per matchday. Use **`DimMatch[Matchday]`** on the axis; Power BI shows 38 categories. No need for a separate Matchday table. |
-| **Y-axis (line)** | Cumulative sanction count | Number of sanctions with `SanctionDateKey` ≤ end of that matchday. |
-| **Y-axis (bars)** | Number of matches per matchday | Count of matches on that matchday (stacked bars). Optionally stack by a dimension (e.g. Result W/D/L, or leave single segment = total matches). |
+| **X-axis** | Matchday (1–38) | One point per matchday. Use **`DimMatch[Matchday]`** on the axis; Power BI shows one category per distinct value (38 points). No need for a separate Matchday table. |
+| **Y-axis** | Cumulative sanction count | Number of sanctions with `SanctionDateKey` ≤ end of that matchday. |
 
-**Data source:** `FactSanction` (SanctionDateKey → DimDate), `DimMatch` (Matchday, DateKey → DimDate), and for the bars `FactClubMatch` or `DimMatch` (one row per match). There is no direct relationship between FactSanction and DimMatch; use the date of the match(es) on that matchday as cutoff. Per 0_markdown.md, DimMatch has **DateKey** (FK to DimDate). To get "end of matchday N", use `MAX(DimMatch[DateKey])` for that Matchday. Number of matches per matchday: count rows in `DimMatch` (or `FactClubMatch` with one row per match) in context of that Matchday.
+**Data source:** `FactSanction` (SanctionDateKey → DimDate), `DimMatch` (Matchday, DateKey → DimDate). There is no direct relationship between FactSanction and DimMatch; use the date of the match(es) on that matchday as cutoff. Per 0_markdown.md, DimMatch has **DateKey** (FK to DimDate). To get "end of matchday N", use `MAX(DimMatch[DateKey])` for that Matchday.
 
 **Option A — Use DimMatch for the axis (recommended)**
 
@@ -79,15 +78,7 @@ RETURN
     )
 ```
 
-**Measure for stacked bars (number of matches per matchday):**
-
-```dax
-Matches per Matchday = COUNTROWS(DimMatch)
-```
-
-When `DimMatch[Matchday]` is on the X-axis, this gives the number of matches for that matchday. To **stack** the bars, add a **Legend** to the column series (e.g. `FactClubMatch[Result]` for W/D/L, or leave empty for a single segment per matchday).
-
-**X-axis:** `DimMatch[Matchday]`. **Line Y-axis:** `[Cumulative Sanction Count]`. **Column Y-axis:** `[Matches per Matchday]`. No extra table needed.
+**X-axis:** `DimMatch[Matchday]`. **Y-axis:** `[Cumulative Sanction Count]`. No extra table needed.
 
 *Optional:* If you prefer a dedicated dimension with exactly one row per matchday (1–38), create a small table **DimMatchday** with column **Matchday**, use it on the X-axis, and in the measure use `MAX(DimMatchday[Matchday])` instead of `MAX(DimMatch[Matchday])`; the rest of the measure stays the same.
 
@@ -106,30 +97,29 @@ RETURN
     )
 ```
 
-X-axis: the Matchday column (from a table that has one row per matchday, e.g. DimMatchday or summarized FactSanction by Matchday). Line Y-axis: this measure. Column Y-axis: use `[Matches per Matchday]` (with DimMatch or a table linked to Matchday on the axis so the count is per matchday).
+X-axis: the Matchday column (from a table that has one row per matchday, e.g. DimMatchday or summarized FactSanction by Matchday). Y-axis: this measure.
 
 **Power BI setup:**
 
-1. Add a **Line and stacked column chart** (Graphique en courbes et en barres empilées).
-2. **X-axis:** `DimMatch[Matchday]` (Option A) or Matchday from DimMatchday / FactSanction (Option B); ensure **one category per matchday** and sort by Matchday ascending.
-3. **Column Y-axis (barres):** `[Matches per Matchday]`. Optionally add a **Legend** to the column series to stack (e.g. `FactClubMatch[Result]` for W/D/L, or none for one bar per matchday).
-4. **Line Y-axis (courbe):** `[Cumulative Sanction Count]`.
-5. **Legend for the line (optional):** Add `DimClub[ClubName]` if you want one line per club (cumulative per club); otherwise one line for the whole league.
-6. **Format:** Both Y-axes = Whole number; no decimals. X-axis min/max 1–38 if needed. Assign line to the right axis and bars to the left (or vice versa) if scales differ.
-7. **Tooltips:** Matchday, Cumulative Sanction Count, Matches per Matchday (and ClubName / Result if used in legends).
+1. Add a **Line chart** (Graphique en lignes).
+2. **X-axis:** `DimMatch[Matchday]` (Option A) or Matchday from DimMatchday / FactSanction (Option B); ensure **one point per matchday** and sort by Matchday ascending.
+3. **Y-axis:** `[Cumulative Sanction Count]`.
+4. **Legend (optional):** Add `DimClub[ClubName]` if you want one line per club (cumulative per club); otherwise one line for the whole league.
+5. **Format:** Y-axis = Whole number; no decimals. X-axis min/max 1–38 if needed.
+6. **Tooltips:** Matchday, Cumulative Sanction Count (and ClubName if by club).
 
 **Alternating between total and breakdown (by reason / by club):**
 
-Allow users to switch between a single line (total cumulative sanctions) and multiple lines (cumulative by reason or by club) without changing the DAX measures.
+Allow users to switch between a single line (total cumulative sanctions) and multiple lines (cumulative by reason or by club) without changing the DAX measure.
 
-- **Total view:** No field in **Legend** → one line (league-wide cumulative) and bars per matchday (single segment or stacked as configured).
-- **Breakdown view:** **Legend** = `FactSanction[Reason]` (one line per reason) or **Legend** = `DimClub[ClubName]` (one line per club). In Power BI combo charts the same legend often applies to both series (line and column); if you need the line split by club but bars to show only total matches, use bookmarks to switch legend on for the line only, or accept bars stacked by the same dimension.
+- **Total view:** Same line chart with **no field in Legend** → one line for league-wide cumulative count.
+- **Breakdown view:** Same line chart with **Legend** = `FactSanction[Reason]` (one line per reason) or **Legend** = `DimClub[ClubName]` (one line per club).
 
 **Implementation — Buttons + bookmarks (recommended):**
 
-1. Create the combo chart in **total** mode (Legend well empty). Create a **bookmark** (e.g. "Cumul total"); in Bookmark pane, uncheck "Data" if you want the bookmark to only capture visual state.
+1. Create the line chart in **total** mode (Legend well empty). Create a **bookmark** (e.g. "Cumul total"); in Bookmark pane, uncheck "Data" if you want the bookmark to only capture visual state.
 2. Add **Reason** (or **ClubName**) to the chart **Legend**. Create a second **bookmark** (e.g. "Cumul par raison" or "Cumul par club").
 3. Add **buttons** (Insert → Boutons) or a simple shape/segment: e.g. "Total" and "Par raison" (or "Par club"). Set each button's action to **Bookmark** → select the corresponding bookmark.
 4. Optional: add a **slicer** on Reason (or Club) so that in breakdown view users can filter to specific reasons or clubs; the cumulative measure will respect filters.
 
-No change to the measures is required; only the Legend configuration and bookmarks/buttons define the two (or more) display modes.
+No change to the cumulative measure is required; only the Legend configuration and bookmarks/buttons define the two (or more) display modes.
