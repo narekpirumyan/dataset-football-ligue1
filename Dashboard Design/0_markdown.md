@@ -94,7 +94,7 @@ All relationships are one-to-many (1:*), with dimensions on the "1" side and fac
 |-----------|------|-------------|
 | `MatchKey` | Text (PK) | Primary key - match identifier |
 | `DateKey` | Date (FK) | Foreign key to DimDate |
-| `Matchday` | Integer (Measure) | Matchday number (1-38) |
+| `Matchday` | Integer | Matchday number (1-38) |
 | `HomeClubKey` | Integer (FK) | Foreign key to DimClub (home team) |
 | `AwayClubKey` | Integer (FK) | Foreign key to DimClub (away team) |
 | `Stadium` | Text | Stadium where match was played |

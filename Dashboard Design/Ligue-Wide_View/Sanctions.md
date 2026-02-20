@@ -55,18 +55,18 @@ Use **Sanction Count** in the **Value** well. Power BI will aggregate by Club (a
 | **X-axis** | Matchday (1–38) | One point per matchday. Use **`DimMatch[Matchday]`** on the axis; Power BI shows one category per distinct value (38 points). No need for a separate Matchday table. |
 | **Y-axis** | Cumulative sanction count | Number of sanctions with `SanctionDateKey` ≤ end of that matchday. |
 
-**Data source:** `FactSanction` (SanctionDateKey), `DimMatch` (Matchday, MatchDate). To get "end of matchday N", use the date of the match(es) on that matchday (e.g. `MAX(DimMatch[MatchDate])` for that Matchday).
+**Data source:** `FactSanction` (SanctionDateKey → DimDate), `DimMatch` (Matchday, DateKey → DimDate). There is no direct relationship between FactSanction and DimMatch; use the date of the match(es) on that matchday as cutoff. Per 0_markdown.md, DimMatch has **DateKey** (FK to DimDate), not MatchDate. To get "end of matchday N", use `MAX(DimMatch[DateKey])` for that Matchday.
 
 **Option A — Use DimMatch for the axis (recommended)**
 
-Put **`DimMatch[Matchday]`** on the X-axis. Power BI groups by distinct Matchday, so you get 38 points. For each point, the measure gets the end date of that matchday from `DimMatch`, then counts sanctions up to that date:
+Put **`DimMatch[Matchday]`** on the X-axis. Power BI groups by distinct Matchday, so you get 38 points. For each point, the measure gets the end date of that matchday from `DimMatch` (DateKey is the match date per schema), then counts sanctions up to that date:
 
 ```dax
 Cumulative Sanction Count =
 VAR MatchdayVal = MAX(DimMatch[Matchday])
 VAR EndDate =
     CALCULATE(
-        MAX(DimMatch[MatchDate]),
+        MAX(DimMatch[DateKey]),
         ALL(DimMatch),
         DimMatch[Matchday] = MatchdayVal
     )
