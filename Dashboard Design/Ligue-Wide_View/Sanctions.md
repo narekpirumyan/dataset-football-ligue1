@@ -223,39 +223,53 @@ When the visual groups by city, this gives total sanctions in that city. For the
 
 ## E. Sanctions at home vs away (bar chart)
 
-**Visual type:** Bar chart (Graphique à barres) — two bars: one for sanctions at home (domicile), one for sanctions away (extérieur).
+**Visual type:** Bar chart (Graphique à barres) — one visual with two bars: Domicile and Extérieur.
 
-**Purpose:** Compare the **number of sanctions at home** vs **away** (league-wide or per club if filtered). One bar = total sanctions in “domicile” context, one bar = total in “extérieur” context.
+**Purpose:** Compare the **number of sanctions at home** vs **away** (league-wide or per club if filtered). No change to the data model: home/away is derived from **DimMatch** (HomeClubKey / AwayClubKey) in DAX only.
 
-**Data source:** `FactSanction`, `DimClub`. The current schema (0_markdown.md) does **not** include a home/away attribute on `FactSanction`. You need a way to associate each sanction with a match context (home or away for the sanctioned club).
+**Data source:** `FactSanction` (ClubKey, SanctionDateKey), `DimMatch` (DateKey, HomeClubKey, AwayClubKey). For each sanction, the club played one match on that date — either as home or away. We count sanctions where the club was home (HomeClubKey = ClubKey on that date) vs away (AwayClubKey = ClubKey).
 
-**Enriching the model with Venue (Domicile / Extérieur)**
-
-Add a column to `FactSanction` (in Power Query or as a calculated column) that indicates whether the sanction occurred in a **home** or **away** context for the club:
-
-- **Option A — Power Query:** For each sanction, match `SanctionDateKey` and `ClubKey` to the match(es) where that club played on that date (via `DimMatch` + `FactClubMatch`: same date and club). If the club was home in that match, set `Venue = "Domicile"`; if away, `Venue = "Extérieur"`. If a club played twice on the same day, use matchday or a rule (e.g. first match). Load as `FactSanction[Venue]` (Text) or `FactSanction[IsHome]` (Boolean).
-- **Option B — Calculated column (DAX):** If you can uniquely identify the match (e.g. you add `MatchKey` to FactSanction), then `Venue = IF(LOOKUPVALUE(FactClubMatch[IsHome], FactClubMatch[MatchKey], FactSanction[MatchKey], FactClubMatch[ClubKey], FactSanction[ClubKey]), "Domicile", "Extérieur")`. Otherwise prefer Power Query.
-
-If you cannot link sanctions to a specific match, you can approximate: e.g. for each sanction date and club, take the **matchday** where that club played and get IsHome from `FactClubMatch` for that club and matchday (one row per club per match, so one IsHome value per club per match). Matching on (ClubKey, Date) to (FactClubMatch via DimMatch date) gives the match and thus IsHome.
-
-**DAX measures**
-
-Once `FactSanction` has a **Venue** column (e.g. `"Domicile"` / `"Extérieur"`):
+**DAX measures (no new columns, no new tables)**
 
 ```dax
-Sanction Count = COUNTROWS(FactSanction)
+Sanctions Domicile =
+SUMX(
+    FactSanction,
+    IF(
+        COUNTROWS(
+            FILTER(
+                DimMatch,
+                DimMatch[DateKey] = FactSanction[SanctionDateKey]
+                    && DimMatch[HomeClubKey] = FactSanction[ClubKey]
+            )
+        ) > 0,
+        1,
+        0
+    )
+)
+
+Sanctions Extérieur =
+SUMX(
+    FactSanction,
+    IF(
+        COUNTROWS(
+            FILTER(
+                DimMatch,
+                DimMatch[DateKey] = FactSanction[SanctionDateKey]
+                    && DimMatch[AwayClubKey] = FactSanction[ClubKey]
+            )
+        ) > 0,
+        1,
+        0
+    )
+)
 ```
 
-Use this in the **Value** well; Power BI will slice by the field you put on the axis.
+**Power BI setup (one graph)**
 
-**Power BI setup**
-
-1. Add a **Bar chart** (Graphique à barres) or **Clustered bar chart**.
-2. **Axis (Category):** `FactSanction[Venue]` (or a table with two rows: "Domicile", "Extérieur") so you get exactly two bars.
-3. **Value:** `[Sanction Count]` (or drag FactSanction with Count). You get one bar for Domicile and one for Extérieur.
-4. **Sort:** Optionally sort by value descending.
-5. **Format:** Whole numbers; optional data labels on the bars.
-6. **Tooltips:** Venue, Sanction Count; optionally ClubName if filtered by club.
-7. Use a **slicer** on Club to show home/away sanctions for a selected club, or leave unfiltered for league totals.
-
-**Alternative axis:** If you prefer a small **dimension table** with two rows (e.g. `DimVenue`: VenueKey, VenueName = "Domicile" / "Extérieur"`) and a measure that filters by it, you can put `DimVenue[VenueName]` on the axis and use a measure that counts sanctions where `FactSanction[Venue] = MAX(DimVenue[VenueName])` (or relate FactSanction to DimVenue on Venue). Same result: two bars.
+1. Add a **Bar chart** (Graphique à barres).
+2. **Y-axis (Category):** Add **Measure names** (Noms des mesures) — Power BI exposes this when you use several measures. This gives two categories: "Sanctions Domicile" and "Sanctions Extérieur".
+3. **X-axis (Value):** Add both measures **`[Sanctions Domicile]`** and **`[Sanctions Extérieur]`** in the **Values** well. You get one bar per measure in the same chart.
+4. **Format:** Whole numbers; optional data labels on the bars. Optionally rename the measure display names (Format → Data labels or Legend) to "Domicile" and "Extérieur".
+5. **Tooltips:** Measure name and value; optionally ClubName if a club slicer is used.
+6. **Slicer:** Add a **Club** slicer to show home/away for a selected club, or leave unfiltered for league totals.
