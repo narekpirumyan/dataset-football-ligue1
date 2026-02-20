@@ -304,20 +304,36 @@ SUMX(
 
 **Visual type:** Scatter chart (Nuage de points)
 
-**Purpose:** Visualize the **number of sanctions** (on the day of the match) in relation to the **stadium fill rate** (taux de remplissage) for that match. One point per match: X = fill rate (%), Y = number of sanctions attributed to that match date for the two clubs involved (home + away). Helps explore whether attendance/fill rate is associated with more or fewer sanctions.
+**Purpose:** Visualize the **number of sanctions** (on the day of the match) in relation to the **stadium fill rate** (taux de remplissage) for that match. One point per match: X = fill rate (%), Y = number of sanctions for the two clubs that day. No model change: the scatter is based on **DimMatch** (one row per match), with two measures for X and Y.
 
-**Data source (0_markdown.md):** `FactAttendance` (one row per home match: ClubKey, MatchKey, DateKey, **FillRatePct**), `DimMatch` (HomeClubKey, AwayClubKey), `FactSanction` (ClubKey, SanctionDateKey, Reason). The measure below counts sanctions for that match date and the two clubs, restricted to the 12 selected reasons (no dependency on another measure).
+**Data source (0_markdown.md):** `DimMatch` (one row per match: MatchKey, DateKey, HomeClubKey, AwayClubKey), `FactAttendance` (FillRatePct, MatchKey), `FactSanction` (ClubKey, SanctionDateKey, Reason).
 
-**Grain:** One point per match. Use **FactAttendance** as the source (one row per match = home side); each row has FillRatePct for that match. The Y-axis is a measure that counts sanctions on that match’s date for the two clubs (home + away).
+**Grain:** One point per match. Use **DimMatch** as the base of the visual (Légende = MatchKey) so Power BI iterates over every match. X and Y are two measures that, in context of the current match, return fill rate and sanction count.
 
-**DAX measure (sanctions on match day for the two clubs)**
+**DAX measures (contexte = une ligne DimMatch)**
 
-In the context of a FactAttendance row (one match), count sanctions on that date for the home or away club, **restricted to the 12 selected reasons** (logic inline so you don’t depend on another measure):
+Deux mesures à créer. En contexte d’un match (une ligne DimMatch), elles renvoient le taux de remplissage de ce match et le nombre de sanctions (date du match + deux clubs), sans toucher au modèle.
+
+**1. Taux de remplissage pour ce match (axe X)**
+
+```dax
+Fill Rate This Match =
+VAR MatchKeyCurrent = MAX(DimMatch[MatchKey])
+RETURN
+    CALCULATE(
+        MAX(FactAttendance[FillRatePct]),
+        FactAttendance[MatchKey] = MatchKeyCurrent
+    )
+```
+
+(Suppose une relation FactAttendance → DimMatch sur MatchKey, ou au moins que FactAttendance contienne MatchKey.)
+
+**2. Sanctions ce jour pour les deux clubs du match (axe Y)**
 
 ```dax
 Sanctions This Match =
-VAR MatchDate = MAX(FactAttendance[DateKey])
-VAR HomeClub = MAX(FactAttendance[ClubKey])
+VAR MatchDate = MAX(DimMatch[DateKey])
+VAR HomeClub = MAX(DimMatch[HomeClubKey])
 VAR AwayClub = MAX(DimMatch[AwayClubKey])
 RETURN
     CALCULATE(
@@ -344,15 +360,15 @@ RETURN
     )
 ```
 
-Assumes a relationship **FactAttendance → DimMatch** (via MatchKey) so that `DimMatch[AwayClubKey]` is in context for the current match. If your column **Reason** uses different spelling or case (e.g. "unsportsmanlike conduct"), adjust the strings to match.
+Adapter les libellés de **Reason** si la casse diffère dans ton modèle.
 
 **Power BI setup**
 
-1. Add a **Scatter chart** (Nuage de points).
-2. **X-axis:** `FactAttendance[FillRatePct]` (taux de remplissage du stade le jour du match).
-3. **Y-axis:** `[Sanctions This Match]` (nombre de sanctions ce jour-là pour les deux clubs du match).
-4. **Details (optional):** Add `FactAttendance[MatchKey]` or `DimClub[ClubName]` (home) so each point is identifiable; or use **Legend** for home club.
-5. **Tooltips:** FillRatePct, Sanctions This Match, MatchKey, ClubName (home), Opponent (or away club), DateKey.
-6. **Format:** X-axis as percentage (0–100%); Y-axis as whole number. Add a trend line (Format → Analytics) if useful.
+1. **Nuage de points** : base du visuel = **DimMatch** (ne mets pas FactAttendance en source du graphique).
+2. **Légende :** **`DimMatch[MatchKey]`** — un point par match (autant de points que de matchs dans DimMatch).
+3. **Axe X :** **`[Fill Rate This Match]`** (mesure).
+4. **Axe Y :** **`[Sanctions This Match]`** (mesure).
+5. **Info-bulles :** [Fill Rate This Match], [Sanctions This Match], DimMatch[MatchKey], et si tu veux les noms de clubs, des champs de DimClub liés à HomeClubKey/AwayClubKey.
+6. **Format :** axe X en % (0–100 %), axe Y en entier ; optionnel : courbe de tendance.
 
-**Note:** Sanctions are attributed to the **match date** (date of the match), not to the sanction decision date. Only the 12 selected reasons are counted (see scope at the top of this doc).
+**Note:** Si FactAttendance n’a pas de ligne pour certains matchs (MatchKey manquant ou non renseigné), [Fill Rate This Match] sera vide pour ces matchs et les points peuvent ne pas s’afficher ou apparaître à 0. Vérifier que FactAttendance couvre bien les matchs de DimMatch (via MatchKey).
