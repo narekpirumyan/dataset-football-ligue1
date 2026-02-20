@@ -56,4 +56,36 @@ Use `[Defence Score]` as Y so that higher = fewer goals conceded. Otherwise use 
 6. Apply the **Visual Charter** club colours (Format by field value from the Club Colors table loaded from `club_colors.json`).
 7. Add tooltips: ClubName, Goals For per Match, Goals Against per Match, Total Points (and optionally Goals For, Goals Against).
 
+---
+
+### Quadrant divider (cross at centre)
+
+Power BI scatter charts do not support reference lines. To divide the chart into four quadrants with a cross, use **shapes** or an **image** placed behind the scatter and aligned manually.
+
+**Option 1 — Two line shapes (recommended)**
+
+1. **Add the scatter chart** and fix its size and position on the report page. Do not resize it after adding the lines, or you will need to realign.
+2. **Insert → Formes (Shapes) → Ligne** (or the line tool). Draw a **vertical line** long enough to span the scatter height. In the Format pane: set a light colour (e.g. grey), thin stroke; set **Arrière-plan (Send to back)** so the scatter stays on top.
+3. Insert a second shape: **Ligne** again, and draw a **horizontal line** spanning the scatter width. Same formatting and send to back.
+4. **Align to centre (manual):**
+   - Use the **median** (or average) of your data as the crossing point so the quadrants are balanced. For example, note the approximate X value (e.g. median Goals for per match ≈ 1.2) and Y value (e.g. median Goals against per match ≈ 1.2) from your axes.
+   - Move the **vertical line** so it passes through that X position on the scatter (use the axis labels as a guide).
+   - Move the **horizontal line** so it passes through that Y position. The two lines should cross at the centre of the data.
+5. **Group (optional):** Select both lines → right‑click → **Grouper (Group)** so they move together if you reposition the scatter later.
+6. Place the **scatter visual on top**: right‑click the scatter → **Mettre au premier plan (Bring to front)** so the bubbles are always above the lines.
+
+**Option 2 — Image (cross)**
+
+1. Use the provided image **`quadrant_cross.png`** in this folder (transparent background, grey cross). Or create your own PNG (two thin lines crossing, transparent background).
+2. **Insert → Image** and load `quadrant_cross.png`. Resize and position it so the centre of the cross matches the desired centre of the scatter (use axis labels to align).
+3. **Send to back** for the image; **Bring to front** for the scatter so points are visible above the cross.
+
+**Tips**
+
+- **Reference values:** Use a card or table with two measures (e.g. median X, median Y) on the same page to know where the “centre” is, then align the lines or image to those values on the axes.
+- **Lock:** After alignment, you can lock the shapes (Format shape → Lock) to avoid moving them by mistake.
+- If you change filters or data and the axis scale changes, realign the lines or image so the cross stays at the intended centre.
+
+---
+
 **Interpretation:** Top-left = few goals conceded (strong defence); right = many goals scored (strong attack). Dominant clubs sit top-right (attack + defence); fragile clubs right and down; pragmatic clubs left and up; weak clubs bottom-left.
