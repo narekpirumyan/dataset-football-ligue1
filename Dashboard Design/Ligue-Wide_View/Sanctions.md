@@ -106,3 +106,19 @@ X-axis: the Matchday column (from a table that has one row per matchday, e.g. Di
 4. **Legend (optional):** Add `DimClub[ClubName]` if you want one line per club (cumulative per club); otherwise one line for the whole league.
 5. **Format:** Y-axis = Whole number; no decimals. X-axis min/max 1–38 if needed.
 6. **Tooltips:** Matchday, Cumulative Sanction Count (and ClubName if by club).
+
+**Alternating between total and breakdown (by reason / by club):**
+
+Allow users to switch between a single line (total cumulative sanctions) and multiple lines (cumulative by reason or by club) without changing the DAX measure.
+
+- **Total view:** Same line chart with **no field in Legend** → one line for league-wide cumulative count.
+- **Breakdown view:** Same line chart with **Legend** = `FactSanction[Reason]` (one line per reason) or **Legend** = `DimClub[ClubName]` (one line per club).
+
+**Implementation — Buttons + bookmarks (recommended):**
+
+1. Create the line chart in **total** mode (Legend well empty). Create a **bookmark** (e.g. "Cumul total"); in Bookmark pane, uncheck "Data" if you want the bookmark to only capture visual state.
+2. Add **Reason** (or **ClubName**) to the chart **Legend**. Create a second **bookmark** (e.g. "Cumul par raison" or "Cumul par club").
+3. Add **buttons** (Insert → Boutons) or a simple shape/segment: e.g. "Total" and "Par raison" (or "Par club"). Set each button's action to **Bookmark** → select the corresponding bookmark.
+4. Optional: add a **slicer** on Reason (or Club) so that in breakdown view users can filter to specific reasons or clubs; the cumulative measure will respect filters.
+
+No change to the cumulative measure is required; only the Legend configuration and bookmarks/buttons define the two (or more) display modes.
