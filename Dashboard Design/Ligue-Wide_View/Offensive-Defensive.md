@@ -73,12 +73,14 @@ Power BI scatter charts do not support reference lines. To divide the chart into
    - Move the **horizontal line** so it passes through that Y position. The two lines should cross at the centre of the data.
 5. **Group (optional):** Select both lines → right‑click → **Grouper (Group)** so they move together if you reposition the scatter later.
 6. Place the **scatter visual on top**: right‑click the scatter → **Mettre au premier plan (Bring to front)** so the bubbles are always above the lines.
+7. **Make the scatter background transparent:** Select the scatter → **Format** → **General** → **Effects** → **Background** → Transparency 100% (or no fill) so the lines behind are visible.
 
 **Option 2 — Image (cross)**
 
-1. Use the provided image **`quadrant_cross.png`** in this folder (transparent background, grey cross). Or create your own PNG (two thin lines crossing, transparent background).
-2. **Insert → Image** and load `quadrant_cross.png`. Resize and position it so the centre of the cross matches the desired centre of the scatter (use axis labels to align).
+1. Use the provided image **`quadrant_cross.jpg`** (recommended: JPEG, white background, black cross, thick stroke) or **`quadrant_cross.png`** (transparent background, black cross). Both use a black, thick cross for visibility.
+2. **Insert → Image** and load `quadrant_cross.jpg` (often works better in Power BI than PNG). Resize and position it so the centre of the cross matches the desired centre of the scatter (use axis labels to align).
 3. **Send to back** for the image; **Bring to front** for the scatter so points are visible above the cross.
+4. **Important — make the scatter background transparent:** Select the scatter chart → **Format** (paint roller) → **General** → **Effects** → **Background**. Set **Transparency** to 100% (or “Aucune” / no fill) so the image behind shows through. Without this, the scatter’s opaque background hides the image.
 
 **Tips**
 
