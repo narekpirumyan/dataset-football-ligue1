@@ -16,7 +16,7 @@ The following sections count only sanctions whose **Reason** is in this list (ot
 - Straight red card - dangerous tackle  
 - Unsportsmanlike conduct  
 
-Use the measure **Sanction Count (selected reasons)** below wherever a sanction count is needed; for home/away (section E) the same filter is applied in the iteration.
+Use the measure **Sanction Count (selected reasons)** below wherever a sanction count is needed; for home/away (section D) the same filter is applied in the iteration.
 
 **Base measure (use in visuals)**
 
@@ -195,56 +195,7 @@ No change to the cumulative measure is required; only the Legend configuration a
 
 ---
 
-## D. Total sanctions by city (map with bubble size)
-
-**Visual type:** Map (Carte) — bubbles sized by value
-
-**Purpose:** Display **total sanctions per city** on a map: one point per city (from `DimClub[city]`), with **bubble size** proportional to the total number of sanctions in that city (all clubs in the city combined). Gives a league-wide geographic view of discipline by location.
-
-**Data source (0_markdown.md):** `FactSanction` (via `ClubKey`), `DimClub` (`city`). No Latitude/Longitude in the schema — use **city** for geocoding (Power BI/Bing recognizes French city names).
-
-**One point per city — recommended: summarized table**
-
-To avoid duplicate points when several clubs share the same city, use a table with **one row per city** and total sanctions. Use **Sanction Count (selected reasons)** so only the 12 reasons are included.
-
-**Option A — Calculated table (DAX)**
-
-Create a calculated table, e.g. `CitySanctions`:
-
-```dax
-CitySanctions =
-SUMMARIZE(
-    DimClub,
-    DimClub[city],
-    "TotalSanctions", CALCULATE( [Sanction Count (selected reasons)] )
-)
-```
-
-Result: columns `city`, `TotalSanctions`. Use this table as the source for the map (no relationship needed if you only need this visual; otherwise relate via `city` to a dimension if you use one).
-
-**Option B — Power Query**
-
-- Start from `DimClub` (or a query that joins DimClub and FactSanction).
-- Group by `city`.
-- Add column: total sanctions = count of related `FactSanction` rows (or sum of a count column). Output columns: `city`, `TotalSanctions`.
-- Load as a table, e.g. `CitySanctions`.
-
-**If you keep using DimClub directly:** Put `DimClub[city]` in Location and **Size:** `[Sanction Count (selected reasons)]`. You may get one point per club; if two clubs share a city, you can get two overlapping points. Prefer the summarized table for one bubble per city. For the summarized table, use the column `TotalSanctions` in the **Size** well.
-
-**Power BI setup**
-
-1. Add a **Map** visual (Carte).
-2. **Location:** `City` (from `CitySanctions`) or `DimClub[city]` — one value per city so Power BI geocodes the city name.
-3. **Size:** `TotalSanctions` (from `CitySanctions`) or `[Sanction Count]` if using DimClub. Bubble size = total sanctions in that city.
-4. **Legend (optional):** Add `DimClub[ClubName]` only if you need one point per club; for one point per city, leave legend empty or use a tooltip.
-5. **Tooltips:** City, Total Sanctions (and optionally list of clubs in that city).
-6. **Format:** Adjust size range (min/max) so bubbles are readable; optional labels.
-
-**Note:** Geocoding uses the **city** name only (e.g. Paris, Lyon). For more precise stadium locations you would need Latitude/Longitude columns (not in the current schema).
-
----
-
-## E. Sanctions at home vs away (bar chart)
+## D. Sanctions at home vs away (bar chart)
 
 **Visual type:** Bar chart (Graphique à barres) — one visual with two bars: Domicile and Extérieur.
 
@@ -346,3 +297,48 @@ SUMX(
 4. **Format:** Whole numbers; optional data labels on the bars. Optionally rename the measure display names (Format → Data labels or Legend) to "Domicile" and "Extérieur".
 5. **Tooltips:** Measure name and value; optionally ClubName if a club slicer is used.
 6. **Slicer:** Add a **Club** slicer to show home/away for a selected club, or leave unfiltered for league totals.
+
+---
+
+## E. Sanctions vs stadium fill rate (scatter plot)
+
+**Visual type:** Scatter chart (Nuage de points)
+
+**Purpose:** Visualize the **number of sanctions** (on the day of the match) in relation to the **stadium fill rate** (taux de remplissage) for that match. One point per match: X = fill rate (%), Y = number of sanctions attributed to that match date for the two clubs involved (home + away). Helps explore whether attendance/fill rate is associated with more or fewer sanctions.
+
+**Data source (0_markdown.md):** `FactAttendance` (one row per home match: ClubKey, MatchKey, DateKey, **FillRatePct**), `DimMatch` (HomeClubKey, AwayClubKey), `FactSanction` (ClubKey, SanctionDateKey). Use **Sanction Count (selected reasons)** restricted to the match date and to the home and away club of that match.
+
+**Grain:** One point per match. Use **FactAttendance** as the source (one row per match = home side); each row has FillRatePct for that match. The Y-axis is a measure that counts sanctions on that match’s date for the two clubs (home + away).
+
+**DAX measure (sanctions on match day for the two clubs)**
+
+In the context of a FactAttendance row (one match), count sanctions on that date for the home club or the away club:
+
+```dax
+Sanctions This Match =
+VAR MatchDate = MAX(FactAttendance[DateKey])
+VAR HomeClub = MAX(FactAttendance[ClubKey])
+VAR AwayClub = MAX(DimMatch[AwayClubKey])
+RETURN
+    CALCULATE(
+        [Sanction Count (selected reasons)],
+        FactSanction[SanctionDateKey] = MatchDate,
+        FILTER(
+            FactSanction,
+            FactSanction[ClubKey] = HomeClub || FactSanction[ClubKey] = AwayClub
+        )
+    )
+```
+
+Assumes a relationship **FactAttendance → DimMatch** (via MatchKey) so that `DimMatch[AwayClubKey]` is in context for the current match.
+
+**Power BI setup**
+
+1. Add a **Scatter chart** (Nuage de points).
+2. **X-axis:** `FactAttendance[FillRatePct]` (taux de remplissage du stade le jour du match).
+3. **Y-axis:** `[Sanctions This Match]` (nombre de sanctions ce jour-là pour les deux clubs du match).
+4. **Details (optional):** Add `FactAttendance[MatchKey]` or `DimClub[ClubName]` (home) so each point is identifiable; or use **Legend** for home club.
+5. **Tooltips:** FillRatePct, Sanctions This Match, MatchKey, ClubName (home), Opponent (or away club), DateKey.
+6. **Format:** X-axis as percentage (0–100%); Y-axis as whole number. Add a trend line (Format → Analytics) if useful.
+
+**Note:** Sanctions are attributed to the **match date** (date of the match), not to the sanction decision date. Only the 12 selected reasons are counted (see scope at the top of this doc).
