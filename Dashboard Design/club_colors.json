@@ -1,0 +1,22 @@
+[
+  { "club_name": "Paris SG", "color": "#004D9A" },
+  { "club_name": "Olympique Lyonnais", "color": "#003366" },
+  { "club_name": "Olympique de Marseille", "color": "#0099CC" },
+  { "club_name": "AS Monaco", "color": "#C41E3A" },
+  { "club_name": "LOSC Lille", "color": "#E32219" },
+  { "club_name": "Stade Rennais", "color": "#1A1A1A" },
+  { "club_name": "RC Lens", "color": "#F9D616" },
+  { "club_name": "OGC Nice", "color": "#8B0000" },
+  { "club_name": "RC Strasbourg", "color": "#1565C0" },
+  { "club_name": "FC Nantes", "color": "#F4D20C" },
+  { "club_name": "Montpellier HSC", "color": "#F57B2B" },
+  { "club_name": "Toulouse FC", "color": "#5D2E8C" },
+  { "club_name": "Stade Brestois", "color": "#D32F2F" },
+  { "club_name": "Stade de Reims", "color": "#8B4513" },
+  { "club_name": "Le Havre AC", "color": "#0288D1" },
+  { "club_name": "FC Lorient", "color": "#FF6600" },
+  { "club_name": "Clermont Foot", "color": "#B71C1C" },
+  { "club_name": "FC Metz", "color": "#6B2D5C" },
+  { "club_name": "AS Saint-Etienne", "color": "#00843D" },
+  { "club_name": "Girondins de Bordeaux", "color": "#4A148C" }
+]
