@@ -1,5 +1,50 @@
 
+**Scope — selected reasons only**
 
+The following sections count only sanctions whose **Reason** is in this list (others, e.g. "Controversial social media post", "Late for anti-doping control", are excluded):
+
+- Abusive language in mixed zone  
+- Accumulation of yellow cards  
+- Deliberate elbow strike  
+- Inappropriate gesture towards an opponent  
+- Insulting the referee  
+- On-field brawl  
+- Red card - last man foul  
+- Repeated protesting  
+- Simulation  
+- Spitting  
+- Straight red card - dangerous tackle  
+- Unsportsmanlike conduct  
+
+Use the measure **Sanction Count (selected reasons)** below wherever a sanction count is needed; for home/away (section E) the same filter is applied in the iteration.
+
+**Base measure (use in visuals)**
+
+```dax
+Sanction Count (selected reasons) =
+CALCULATE(
+    COUNTROWS(FactSanction),
+    FILTER(
+        FactSanction,
+        FactSanction[Reason] = "Abusive language in mixed zone"
+            || FactSanction[Reason] = "Accumulation of yellow cards"
+            || FactSanction[Reason] = "Deliberate elbow strike"
+            || FactSanction[Reason] = "Inappropriate gesture towards an opponent"
+            || FactSanction[Reason] = "Insulting the referee"
+            || FactSanction[Reason] = "On-field brawl"
+            || FactSanction[Reason] = "Red card - last man foul"
+            || FactSanction[Reason] = "Repeated protesting"
+            || FactSanction[Reason] = "Simulation"
+            || FactSanction[Reason] = "Spitting"
+            || FactSanction[Reason] = "Straight red card - dangerous tackle"
+            || FactSanction[Reason] = "Unsportsmanlike conduct"
+    )
+)
+```
+
+Ensure spelling and case match `FactSanction[Reason]` in your model (e.g. "Unsportsmanlike conduct" vs "unsportsmanlike conduct").
+
+---
 
 ## A. Sanctions by club (stacked by reason)
 
@@ -17,19 +62,13 @@
 
 **Data source:** `FactSanction`, `DimClub`. FactSanction must have a **Reason** (or similar) column from `disciplinary_sanctions.csv` (reason).
 
-**DAX measure:**
-
-```dax
-Sanction Count = COUNTROWS(FactSanction)
-```
-
-Use **Sanction Count** in the **Value** well. Power BI will aggregate by Club (axis) and by Reason (legend), so you get one bar per club and segments per reason.
+**DAX measure:** Use **Sanction Count (selected reasons)** (defined at the top of this doc) in the **Value** well so only the selected reasons are counted. Power BI will aggregate by Club (axis) and by Reason (legend), so you get one bar per club and segments per reason (only the 12 reasons above appear).
 
 **Power BI setup:**
 
 1. Add a **Stacked bar chart** (Barres empilées) visual.
 2. **Axis** (Y for horizontal bars): `DimClub[ClubName]`.
-3. **Value** (Length): `[Sanction Count]` (or drag `FactSanction` and set aggregation to Count of rows if you prefer).
+3. **Value** (Length): `[Sanction Count (selected reasons)]`.
 4. **Legend**: `FactSanction[Reason]` (or the column that stores the sanction reason in your model). This creates the stack: each reason is one segment.
 5. **Sort:** Optionally sort bars by total sanctions (descending) so the most sanctioned clubs appear first.
 6. Apply **Visual Charter** colours for clubs if the chart uses club on axis; for the legend (reasons), use a distinct palette so each reason is readable. Optionally use a single colour for “total” view and distinct colours per reason for the stack.
@@ -72,13 +111,13 @@ VAR EndDate =
     )
 RETURN
     CALCULATE(
-        COUNTROWS(FactSanction),
+        [Sanction Count (selected reasons)],
         FactSanction[SanctionDateKey] <= EndDate,
         ALL(FactSanction[SanctionDateKey])
     )
 ```
 
-**X-axis:** `DimMatch[Matchday]`. **Y-axis:** `[Cumulative Sanction Count]`. No extra table needed.
+**X-axis:** `DimMatch[Matchday]`. **Y-axis:** `[Cumulative Sanction Count]`. The measure above uses **Sanction Count (selected reasons)** so only the 12 reasons are cumulated. No extra table needed.
 
 *Optional:* If you prefer a dedicated dimension with exactly one row per matchday (1–38), create a small table **DimMatchday** with column **Matchday**, use it on the X-axis, and in the measure use `MAX(DimMatchday[Matchday])` instead of `MAX(DimMatch[Matchday])`; the rest of the measure stays the same.
 
@@ -140,22 +179,14 @@ No change to the cumulative measure is required; only the Legend configuration a
 | **Values** | Sanction count | Number of rows in FactSanction per reason. |
 
 
-**Data source:** `FactSanction`. Use the existing **Reason** column (from `disciplinary_sanctions.csv`).
-
-**DAX measure:**
-
-Reuse the same measure as in section A:
-
-```dax
-Sanction Count = COUNTROWS(FactSanction)
-```
+**Data source:** `FactSanction`. Use the existing **Reason** column. To restrict to the **selected reasons** only, use **Sanction Count (selected reasons)** (defined at the top of this doc) so the donut shows only those 12 reasons and their counts.
 
 **Power BI setup:**
 
 1. Add a **Donut chart** (Graphique en anneau).
 2. **Legend** (or **Axis**): `FactSanction[Reason]`.
-3. **Values:** `[Sanction Count]`.
-4. **Sort:** Optionally sort by Sanction Count descending so the most frequent reasons appear first.
+3. **Values:** `[Sanction Count (selected reasons)]`.
+4. **Sort:** Optionally sort by value descending so the most frequent reasons appear first.
 5. Use a **distinct palette** for reasons so each segment is readable (avoid club colours here; this is reason-based).
 6. **Tooltips:** Reason, Sanction Count, and optionally percentage of total.
 7. **Center label (optional):** Show total sanction count or "Sanctions par raison" in the center.
@@ -174,7 +205,7 @@ Sanction Count = COUNTROWS(FactSanction)
 
 **One point per city — recommended: summarized table**
 
-To avoid duplicate points when several clubs share the same city, use a table with **one row per city** and total sanctions.
+To avoid duplicate points when several clubs share the same city, use a table with **one row per city** and total sanctions. Use **Sanction Count (selected reasons)** so only the 12 reasons are included.
 
 **Option A — Calculated table (DAX)**
 
@@ -185,7 +216,7 @@ CitySanctions =
 SUMMARIZE(
     DimClub,
     DimClub[city],
-    "TotalSanctions", CALCULATE( COUNTROWS(FactSanction) )
+    "TotalSanctions", CALCULATE( [Sanction Count (selected reasons)] )
 )
 ```
 
@@ -198,15 +229,7 @@ Result: columns `city`, `TotalSanctions`. Use this table as the source for the m
 - Add column: total sanctions = count of related `FactSanction` rows (or sum of a count column). Output columns: `city`, `TotalSanctions`.
 - Load as a table, e.g. `CitySanctions`.
 
-**If you keep using DimClub directly:** Put `DimClub[city]` in Location and a measure in Size (see below). You may get one point per club; if two clubs share a city, you can get two overlapping points. Prefer the summarized table for one bubble per city.
-
-**DAX measure (when using DimClub or for tooltips)**
-
-```dax
-Sanction Count = COUNTROWS(FactSanction)
-```
-
-When the visual groups by city, this gives total sanctions in that city. For the summarized table, use the column `TotalSanctions` in the **Size** well.
+**If you keep using DimClub directly:** Put `DimClub[city]` in Location and **Size:** `[Sanction Count (selected reasons)]`. You may get one point per club; if two clubs share a city, you can get two overlapping points. Prefer the summarized table for one bubble per city. For the summarized table, use the column `TotalSanctions` in the **Size** well.
 
 **Power BI setup**
 
@@ -231,12 +254,26 @@ When the visual groups by city, this gives total sanctions in that city. For the
 
 **DAX measures (no new columns, no new tables)**
 
-For each sanction we take the club’s **last match date ≤ SanctionDateKey**, then check if the club was Home (HomeClubKey) or Away (AwayClubKey) in that match:
+Same **selected reasons** filter as at the top of this doc. For each sanction in that set we take the club’s **last match date ≤ SanctionDateKey**, then check if the club was Home or Away in that match. The iteration is over `FILTER(FactSanction, Reason = … || …)` with the same 12 reasons.
 
 ```dax
 Sanctions Domicile =
 SUMX(
-    FactSanction,
+    FILTER(
+        FactSanction,
+        FactSanction[Reason] = "Abusive language in mixed zone"
+            || FactSanction[Reason] = "Accumulation of yellow cards"
+            || FactSanction[Reason] = "Deliberate elbow strike"
+            || FactSanction[Reason] = "Inappropriate gesture towards an opponent"
+            || FactSanction[Reason] = "Insulting the referee"
+            || FactSanction[Reason] = "On-field brawl"
+            || FactSanction[Reason] = "Red card - last man foul"
+            || FactSanction[Reason] = "Repeated protesting"
+            || FactSanction[Reason] = "Simulation"
+            || FactSanction[Reason] = "Spitting"
+            || FactSanction[Reason] = "Straight red card - dangerous tackle"
+            || FactSanction[Reason] = "Unsportsmanlike conduct"
+    ),
     VAR LastMatchDate =
         CALCULATE(
             MAX(DimMatch[DateKey]),
@@ -261,7 +298,21 @@ SUMX(
 
 Sanctions Extérieur =
 SUMX(
-    FactSanction,
+    FILTER(
+        FactSanction,
+        FactSanction[Reason] = "Abusive language in mixed zone"
+            || FactSanction[Reason] = "Accumulation of yellow cards"
+            || FactSanction[Reason] = "Deliberate elbow strike"
+            || FactSanction[Reason] = "Inappropriate gesture towards an opponent"
+            || FactSanction[Reason] = "Insulting the referee"
+            || FactSanction[Reason] = "On-field brawl"
+            || FactSanction[Reason] = "Red card - last man foul"
+            || FactSanction[Reason] = "Repeated protesting"
+            || FactSanction[Reason] = "Simulation"
+            || FactSanction[Reason] = "Spitting"
+            || FactSanction[Reason] = "Straight red card - dangerous tackle"
+            || FactSanction[Reason] = "Unsportsmanlike conduct"
+    ),
     VAR LastMatchDate =
         CALCULATE(
             MAX(DimMatch[DateKey]),
