@@ -2,9 +2,7 @@
 
 **Category:** Confrontations directes entre clubs (rivalités, derbys, classiques).
 
-**Data source:** `DimMatch` (HomeClubKey, AwayClubKey, MatchKey, DateKey, Matchday), `FactClubMatch` (Points, GoalsFor, GoalsAgainst, Result par club par match), `FactAttendance`, `FactSanction`, `DimClub`, `DimDate`.
-
-**Principe:** Une « rivalité » est ici une paire de clubs qui se sont affrontés (au moins un match dans la saison). Les visuels reposent soit sur la **sélection de deux clubs** (slicers), soit sur une **liste de paires** dérivée de DimMatch.
+**Principe :** Une rivalité = une paire de clubs qui se sont affrontés. Visuels 1 et 4 : slicer « 2 clubs » sur DimClub. Visuels 2, 3 et 5 : table calculée RivalryPair (une ligne par paire Home/Away issue de DimMatch).
 
 ---
 
@@ -309,5 +307,3 @@ CALCULATE(
 | 5 | Matrice ou tableau | Qui bat qui (points ou écart de buts par paire) |
 
 **Interactions :** Lier le slicer « 2 clubs » aux visuels 1 et 4. Optionnel : drill-through ou filtre croisé depuis le visuel 2 ou 3 (clic sur une paire) vers une page détail ou le visuel 4.
-
-**Référence modèle :** `0_markdown.md` (DimMatch, FactClubMatch, FactAttendance, FactSanction, DimClub, DimDate). Table calculée **RivalryPair** utilisée pour les visuels 2, 3 et 5 (une ligne par paire Home/Away).
