@@ -230,6 +230,30 @@ Si elle est dans **FactAttendance** (lié à DimMatch par MatchKey) : même FILT
 
 ---
 
+## 3 BIS. Taux de remplissage (FillRate) dans les confrontations directes
+
+**Type :** Barres horizontales ou tableau.
+
+**But :** Comme le visuel 3, mais avec le **taux de remplissage moyen** (FillRatePct) au lieu de l’affluence — identifier les paires dont les matchs remplissent le plus le stade (en %).
+
+**Données :** Table **RivalryPair**. Le taux de remplissage est dans **FactAttendance[FillRatePct]** (relation FactAttendance → DimMatch via MatchKey).
+
+**Mesure DAX (contexte = une ligne RivalryPair) :**
+
+```dax
+Avg Fill Rate in Rivalry =
+CALCULATE(
+    AVERAGE(FactAttendance[FillRatePct]),
+    FILTER(DimMatch,
+        DimMatch[HomeClubKey] = MAX(RivalryPair[HomeClubKey])
+            && DimMatch[AwayClubKey] = MAX(RivalryPair[AwayClubKey]))
+)
+```
+
+**Power BI — étapes :** Barres horizontales. Axe Y = `RivalryPair[PairLabel]`, Valeur = `[Avg Fill Rate in Rivalry]`. Trier décroissant, Top N (ex. 15). **Format :** afficher la valeur en **%** (Format du champ → Pourcentage). Tooltips : PairLabel, [Avg Fill Rate in Rivalry] ; optionnel : [Avg Attendance in Rivalry] pour comparer.
+
+---
+
 ## 4. Historique des matchs d’une rivalité (chronologie)
 
 **Type :** Table ou timeline.
@@ -296,14 +320,15 @@ CALCULATE(
 
 ---
 
-## Récap des 5 visuels
+## Récap des visuels
 
 | # | Visuel | Objectif principal |
 |---|--------|-------------------|
 | 1 | KPI + donut/barres W–D–L, buts | Bilan tête-à-tête pour 2 clubs choisis |
 | 2 | Barres / tableau | Top paires par buts ou par sanctions (rivalités « chaudes ») |
 | 3 | Barres / tableau | Top paires par affluence (classiques à fort enjeu) |
+| 3 BIS | Barres / tableau | Top paires par taux de remplissage (FillRate %) |
 | 4 | Table / timeline | Liste chronologique des matchs pour 2 clubs sélectionnés |
 | 5 | Matrice ou tableau | Qui bat qui (points ou écart de buts par paire) |
 
-**Interactions :** Lier le slicer « 2 clubs » aux visuels 1 et 4. Optionnel : drill-through ou filtre croisé depuis le visuel 2 ou 3 (clic sur une paire) vers une page détail ou le visuel 4.
+**Interactions :** Lier le slicer « 2 clubs » aux visuels 1 et 4. Optionnel : drill-through ou filtre croisé depuis le visuel 2, 3 ou 3 BIS (clic sur une paire) vers une page détail ou le visuel 4.
