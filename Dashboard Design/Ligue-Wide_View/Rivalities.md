@@ -165,7 +165,17 @@ RETURN
 
 **Power BI — étapes :**
 
-1. Créer un **slicer** avec `DimClub[ClubName]`, mode **liste** ou **dropdown**, avec **sélection multiple** activée. Indiquer à l’utilisateur de choisir **exactement 2 clubs** (ou ajouter une alerte si ≠ 2).
+**1. Mise en place du slicer (sélection multiple)**
+
+- **Ajouter le slicer :** Dans le ruban **Visualisations**, cliquer sur l’icône **Slicer**. Une zone vide apparaît sur la page.
+- **Champ du slicer :** Dans le panneau **Données** (à droite), dans **Champs du visuel**, glisser **`DimClub[ClubName]`** (ou `DimClub[ClubKey]` si tu préfères filtrer par clé ; les mesures utilisent ClubKey, le nom est plus lisible pour l’utilisateur).
+- **Style d’affichage :** Avec le slicer sélectionné, ouvrir le panneau **Format du visuel** (icône rouleau de peinture). Sous **Sélection** (ou **Options** selon la version) :
+  - **Style visuel** : choisir **Liste** (cases à cocher) ou **Liste déroulante**.
+  - Activer **Sélection multiple** (option « Plusieurs sélections » ou « Multi-select ») pour permettre de cocher plusieurs clubs.
+- **Comportement :** L’utilisateur peut cocher **exactement 2 clubs** pour voir le tête-à-tête. Si 0, 1 ou plus de 2 clubs sont sélectionnés, les mesures renvoient BLANK() (grâce au test `COUNTROWS(VALUES(DimClub[ClubKey])) <> 2`).
+- **Indication à l’utilisateur :** Optionnel : ajouter une **zone de texte** au-dessus ou à côté du slicer avec le libellé « Choisir 2 clubs pour le bilan tête-à-tête » pour rappeler la règle.
+- **Liaison aux visuels :** Par défaut, le slicer filtre tous les visuels de la page qui utilisent le modèle (cartes, graphiques). Si une page a plusieurs slicers, vérifier dans **Modélisation** ou dans **Modifier les interactions** (Format → Modifier les interactions) que ce slicer filtre bien les visuels 1 et 4.
+
 2. **KPI / cartes :** ajouter 4–6 visuels « Carte » : titre + valeur.  
    - Carte 1 : titre « Victoires [Club 1] », valeur `[Rivalry Wins Club1]`.  
    - Carte 2 : « Nuls », valeur `[Rivalry Draws]`.  
