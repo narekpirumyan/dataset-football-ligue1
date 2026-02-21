@@ -213,6 +213,73 @@ Variante : même idée pour compter les sanctions (FactSanction filtrée par San
 
 ---
 
+## 2 BIS. Sanctions par rivalité (raisons sélectionnées, exclusions)
+
+**Type :** Graphique en barres horizontales ou tableau.
+
+**But :** Pour chaque paire de clubs, afficher le **nombre de sanctions** survenues lors de leurs confrontations directes, en ne comptant que certaines raisons et en **excluant** : « Accumulation of yellow cards », « Controversial social media post », « Late for anti-doping control ». Permet de comparer l’intensité disciplinaire (hors cartons accumulés et hors faits hors-terrain) entre les rivalités.
+
+**Raisons retenues (à inclure dans la mesure) :**  
+Toutes celles utilisées dans le document Sanctions (Ligue-Wide) **sauf** les trois ci‑dessus. Liste à utiliser dans le FILTER sur `FactSanction[Reason]` :
+- Abusive language in mixed zone  
+- Deliberate elbow strike  
+- Inappropriate gesture towards an opponent  
+- Insulting the referee  
+- On-field brawl  
+- Red card - last man foul  
+- Repeated protesting  
+- Simulation  
+- Spitting  
+- Straight red card - dangerous tackle  
+- Unsportsmanlike conduct  
+
+**Données :** Table **RivalryPair**, **FactSanction** (ClubKey, SanctionDateKey, Reason), **DimMatch**. Les sanctions sont rattachées aux matchs de la paire par date (SanctionDateKey = date du match) et par club (ClubKey = HomeClubKey ou AwayClubKey de la paire).
+
+**Mesure DAX (contexte = une ligne RivalryPair) :**
+
+On restreint les sanctions aux **dates des matchs** de la paire (FactSanction n’étant pas liée à DimMatch, on utilise les DateKey de ces matchs) et aux **clubs** de la paire, puis on filtre sur les raisons (exclusion des 3 indiquées, inclusion des 11 autres).
+
+```dax
+Sanctions in Rivalry (selected reasons) =
+VAR HomeK = MAX(RivalryPair[HomeClubKey])
+VAR AwayK = MAX(RivalryPair[AwayClubKey])
+VAR MatchDates =
+    CALCULATETABLE(
+        VALUES(DimMatch[DateKey]),
+        FILTER(DimMatch, DimMatch[HomeClubKey] = HomeK && DimMatch[AwayClubKey] = AwayK)
+    )
+RETURN
+    CALCULATE(
+        COUNTROWS(FactSanction),
+        FILTER(FactSanction,
+            (FactSanction[ClubKey] = HomeK || FactSanction[ClubKey] = AwayK)
+            && CONTAINS(MatchDates, [DateKey], FactSanction[SanctionDateKey])
+            && FactSanction[Reason] <> "Accumulation of yellow cards"
+            && FactSanction[Reason] <> "Controversial social media post"
+            && FactSanction[Reason] <> "Late for anti-doping control"
+            && (
+                FactSanction[Reason] = "Abusive language in mixed zone"
+                || FactSanction[Reason] = "Deliberate elbow strike"
+                || FactSanction[Reason] = "Inappropriate gesture towards an opponent"
+                || FactSanction[Reason] = "Insulting the referee"
+                || FactSanction[Reason] = "On-field brawl"
+                || FactSanction[Reason] = "Red card - last man foul"
+                || FactSanction[Reason] = "Repeated protesting"
+                || FactSanction[Reason] = "Simulation"
+                || FactSanction[Reason] = "Spitting"
+                || FactSanction[Reason] = "Straight red card - dangerous tackle"
+                || FactSanction[Reason] = "Unsportsmanlike conduct"
+            )
+        )
+    )
+```
+
+*Note :* CONTAINS(MatchDates, DimMatch[DateKey], FactSanction[SanctionDateKey]) exige que la table `MatchDates` ait une colonne avec la même référence que DimMatch[DateKey]. Si la table calculée a une colonne nommée différemment (ex. `[DateKey]` sans préfixe), utiliser cette colonne dans CONTAINS. Adapter la casse des libellés **Reason** si le modèle diffère.
+
+**Power BI — étapes :** Barres horizontales. Axe Y = `RivalryPair[PairLabel]`, Valeur = `[Sanctions in Rivalry (selected reasons)]`. Trier décroissant, Top N (ex. 15). Tooltips : PairLabel, [Sanctions in Rivalry (selected reasons)]. Optionnel : ajouter [Total Goals in Rivalry] en tooltip pour comparer buts et sanctions.
+
+---
+
 ## 3. Affluence dans les confrontations directes
 
 **Type :** Barres horizontales ou tableau.
@@ -236,19 +303,24 @@ Si elle est dans **FactAttendance** (lié à DimMatch par MatchKey) : même FILT
 
 **But :** Comme le visuel 3, mais avec le **taux de remplissage moyen** (FillRatePct) au lieu de l’affluence — identifier les paires dont les matchs remplissent le plus le stade (en %).
 
-**Données :** Table **RivalryPair**. Le taux de remplissage est dans **FactAttendance[FillRatePct]** (relation FactAttendance → DimMatch via MatchKey).
+**Schéma :** RivalryPair n’a **aucune relation directe** vers DimMatch ni FactAttendance (uniquement vers DimClub via HomeClubKey et AwayClubKey). FillRatePct est dans **FactAttendance** ; FactAttendance est liée à **DimMatch** par MatchKey. Pour obtenir le bon contexte « matchs de cette paire », il faut filtrer explicitement DimMatch puis laisser ce filtre se propager à FactAttendance. En outre, le filtre RivalryPair → DimClub peut sur-filtrer FactAttendance (toutes les lignes où le club est l’un des deux), au lieu de ne garder que les matchs **entre** ces deux clubs ; il faut donc neutraliser le filtre sur DimClub dans la mesure et ne s’appuyer que sur le filtre DimMatch.
 
 **Mesure DAX (contexte = une ligne RivalryPair) :**
 
 ```dax
 Avg Fill Rate in Rivalry =
-CALCULATE(
-    AVERAGE(FactAttendance[FillRatePct]),
-    FILTER(DimMatch,
-        DimMatch[HomeClubKey] = MAX(RivalryPair[HomeClubKey])
-            && DimMatch[AwayClubKey] = MAX(RivalryPair[AwayClubKey]))
-)
+VAR HomeK = MAX(RivalryPair[HomeClubKey])
+VAR AwayK = MAX(RivalryPair[AwayClubKey])
+RETURN
+    CALCULATE(
+        AVERAGE(FactAttendance[FillRatePct]),
+        FILTER(DimMatch,
+            DimMatch[HomeClubKey] = HomeK && DimMatch[AwayClubKey] = AwayK),
+        REMOVEFILTERS(DimClub)
+    )
 ```
+
+*Pourquoi REMOVEFILTERS(DimClub) :* en contexte d’une ligne RivalryPair, les relations RivalryPair → DimClub filtrent DimClub sur les deux clubs de la paire ; ce filtre se répercute sur FactAttendance (liée à DimClub par ClubKey) et peut donner un résultat incorrect (tous les matchs à domicile de l’un ou l’autre club au lieu des matchs **entre** les deux). En retirant le filtre sur DimClub, on ne garde que le filtre explicite sur DimMatch (matchs de la paire), qui se propage à FactAttendance via MatchKey et restreint bien aux lignes d’affluence de ces matchs.
 
 **Power BI — étapes :** Barres horizontales. Axe Y = `RivalryPair[PairLabel]`, Valeur = `[Avg Fill Rate in Rivalry]`. Trier décroissant, Top N (ex. 15). **Format :** afficher la valeur en **%** (Format du champ → Pourcentage). Tooltips : PairLabel, [Avg Fill Rate in Rivalry] ; optionnel : [Avg Attendance in Rivalry] pour comparer.
 
@@ -326,9 +398,10 @@ CALCULATE(
 |---|--------|-------------------|
 | 1 | KPI + donut/barres W–D–L, buts | Bilan tête-à-tête pour 2 clubs choisis |
 | 2 | Barres / tableau | Top paires par buts ou par sanctions (rivalités « chaudes ») |
+| 2 BIS | Barres / tableau | Sanctions par paire (raisons sélectionnées ; exclusions : accumulation yellow cards, social media, anti-doping) |
 | 3 | Barres / tableau | Top paires par affluence (classiques à fort enjeu) |
 | 3 BIS | Barres / tableau | Top paires par taux de remplissage (FillRate %) |
 | 4 | Table / timeline | Liste chronologique des matchs pour 2 clubs sélectionnés |
 | 5 | Matrice ou tableau | Qui bat qui (points ou écart de buts par paire) |
 
-**Interactions :** Lier le slicer « 2 clubs » aux visuels 1 et 4. Optionnel : drill-through ou filtre croisé depuis le visuel 2, 3 ou 3 BIS (clic sur une paire) vers une page détail ou le visuel 4.
+**Interactions :** Lier le slicer « 2 clubs » aux visuels 1 et 4. Optionnel : drill-through ou filtre croisé depuis le visuel 2, 2 BIS, 3 ou 3 BIS (clic sur une paire) vers une page détail ou le visuel 4.
