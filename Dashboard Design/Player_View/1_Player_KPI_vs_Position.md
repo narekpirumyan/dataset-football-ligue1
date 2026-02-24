@@ -94,12 +94,37 @@ Répéter le même pattern pour chaque KPI (Starts, YellowCards, Shots, etc.).
 
 ---
 
-## 4. Mise en page Power BI (fiche côte à côte)
+## 4. Jauges par KPI (min, max, moyenne en repère)
 
+Pour chaque KPI, une **jauge** affiche la valeur du joueur sélectionné avec un repère visuel par rapport à l’échelle et à la moyenne.
+
+**Comportement des jauges :**
+
+- **Valeur affichée :** celle du joueur (mesures « Player … », ex. `[Player Goals]`).
+- **Min et Max de l’échelle :** définissent les bornes de la jauge. Deux modes possibles (paramétrable, ex. slicer ou paramètre) :
+  - **Global :** min et max calculés sur **tous les joueurs** (ex. `MIN(FactPlayerSeason[Goals])` et `MAX(FactPlayerSeason[Goals])` en `ALL(DimPlayer)` ou équivalent).
+  - **Même poste :** min et max calculés uniquement parmi les joueurs ayant le **même poste** que le joueur sélectionné (même logique que les mesures « Avg … Same Position », avec `MIN` / `MAX` au lieu de `AVERAGE`).
+- **Ligne « objectif » (repère) :** la **moyenne** (globale ou du poste, selon le même choix que min/max) est affichée comme **ligne de référence** (constant line / objectif) sur la jauge. Ce n’est **pas un objectif à atteindre** : le but est d’avoir un **trait comme repère** pour comparer visuellement la valeur du joueur à cette moyenne.
+
+**Résumé :**
+
+| Élément jauge | Option « Global » | Option « Même poste » |
+|---------------|-------------------|------------------------|
+| Min | Min du KPI sur tous les joueurs | Min du KPI sur les joueurs du même poste |
+| Max | Max du KPI sur tous les joueurs | Max du KPI sur les joueurs du même poste |
+| Ligne repère | Moyenne du KPI (tous les joueurs) | Moyenne du KPI (même poste) — ex. `[Avg Goals Same Position]` |
+
+**Mesures DAX suggérées pour min/max :** même pattern que les moyennes, en remplaçant `AVERAGE` par `MIN` et `MAX`, avec `ALL(DimPlayer)` pour le global et `FILTER(DimPlayer, DimPlayer[Position] = CurrentPosition)` pour le poste.
+
+---
+
+## 5. Mise en page Power BI (fiche côte à côte)
+
+- **Une jauge par KPI** (cf. section 4) : valeur = joueur ; min/max = global ou même poste ; ligne repère = moyenne (affichée comme « objectif » sans être un objectif).
 - **Deux colonnes** (ou deux blocs) sur la même page :
-  - **Colonne 1 — Joueur sélectionné :** titre « [Nom du joueur] » ou « Joueur ». Cartes KPI : `[Player Goals]`, `[Player Assists]`, `[Player MinutesPlayed]`, etc. (ou tableau avec une ligne « Valeur » et les mesures joueur).
-  - **Colonne 2 — Moyenne du poste :** titre « Moyenne [Position] » (ex. « Moyenne Forward »). Cartes KPI : `[Avg Goals Same Position]`, `[Avg Assists Same Position]`, `[Avg MinutesPlayed Same Position]`, etc.
-- **Une ligne par KPI** : optionnel — tableau avec colonnes « KPI », « Joueur », « Moyenne poste » : axe = liste des noms de KPI (table calculée ou colonne), valeur 1 = mesure joueur, valeur 2 = mesure moyenne poste (avec des mesures qui renvoient la bonne valeur selon le KPI affiché, ou plusieurs champs).
+  - **Colonne 1 — Joueur sélectionné :** titre « [Nom du joueur] » ou « Joueur ». Cartes KPI ou jauges : `[Player Goals]`, `[Player Assists]`, `[Player MinutesPlayed]`, etc.
+  - **Colonne 2 — Moyenne du poste :** titre « Moyenne [Position] » (ex. « Moyenne Forward »). Cartes KPI : `[Avg Goals Same Position]`, etc., ou repère intégré dans les jauges.
+- **Choix min/max :** slicer ou paramètre pour basculer entre **min/max global** (tous les joueurs) et **min/max même poste**.
 - **Slicer** : `DimPlayer[FullName]` (sélection unique), placé en haut ou à gauche ; il filtre toute la page.
 
 **Résumé visuel :**
@@ -113,7 +138,7 @@ Répéter le même pattern pour chaque KPI (Starts, YellowCards, Shots, etc.).
 
 ---
 
-## 5. Option : titre dynamique « Moyenne [Position] »
+## 6. Option : titre dynamique « Moyenne [Position] »
 
 Pour afficher le libellé du poste dans le titre du bloc « Moyenne poste » :
 
@@ -123,7 +148,7 @@ Pour afficher le libellé du poste dans le titre du bloc « Moyenne poste » :
 
 ---
 
-## 6. Précisions
+## 7. Précisions
 
 - **Un seul joueur sélectionné :** les mesures « Player … » donnent les totaux de ce joueur ; les mesures « Avg … Same Position » donnent la moyenne des joueurs du même poste (tous, sans exclure le joueur sélectionné). Pour une moyenne **hors ce joueur**, utiliser `FILTER(DimPlayer, DimPlayer[Position] = CurrentPosition && DimPlayer[PlayerKey] <> SELECTEDVALUE(DimPlayer[PlayerKey]))` dans le CALCULATE.
 - **Grain FactPlayerSeason :** une ligne par joueur par saison ; si plusieurs saisons, SUM sur la page donne le total multi-saisons du joueur. Pour la **moyenne du poste** :
