@@ -51,8 +51,8 @@
       "*": {
         "background": [{
           "show": true,
-          "color": { "solid": { "color": "#333333" } },
-          "transparency": 50
+          "color": { "solid": { "color": "#1a1a1a" } },
+          "transparency": 41
         }],
         "title": [{
           "show": true,
