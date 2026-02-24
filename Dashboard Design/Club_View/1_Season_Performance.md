@@ -110,14 +110,14 @@ VAR vPointsFmt =
         FORMAT ( vTotalPoints, "#,0" )
     )
 
--- Determine rank color (green for top 3, yellow for mid-table, red for bottom)
+-- Determine rank color (theme: good / neutral / orange / bad)
 VAR vRankColor = 
     IF (
         ISBLANK ( vFinalRank ),
-        "#666",
-        IF ( vFinalRank <= 3, "#2e7d32",
-            IF ( vFinalRank <= 10, "#f0c000",
-                IF ( vFinalRank <= 17, "#ff9800", "#c62828" )
+        "#808080",
+        IF ( vFinalRank <= 3, "#1AAB40",
+            IF ( vFinalRank <= 10, "#FFC107",
+                IF ( vFinalRank <= 17, "#E65C00", "#D64554" )
             )
         )
     )
@@ -140,7 +140,7 @@ RETURN
   .rank-title {
     font-size: 14px;
     font-weight: 600;
-    color: #333;
+    color: #E0E0E0;
     text-align: center;
     margin-bottom: 4px;
   }
@@ -157,20 +157,20 @@ RETURN
     padding: 14px 10px;
     border-radius: 10px;
     text-align: center;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     transition: transform 0.2s ease;
   }
   .rank-card:hover, .points-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
   }
   .rank-card {
-    background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+    background: linear-gradient(135deg, #2A4F4F 0%, #1C3737 100%);
     border-left: 4px solid " & vRankColor & ";
   }
   .points-card {
-    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-    border-left: 4px solid #2196f3;
+    background: linear-gradient(135deg, #1a3050 0%, #0d1f33 100%);
+    border-left: 4px solid #0066CC;
   }
   .card-icon {
     font-size: 20px;
@@ -180,12 +180,12 @@ RETURN
   .card-value {
     font-size: 22px;
     font-weight: 700;
-    color: #111;
+    color: #E0E0E0;
     margin-bottom: 4px;
   }
   .card-label {
     font-size: 11px;
-    color: #555;
+    color: #B0B0B0;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
@@ -617,7 +617,7 @@ RETURN
   .disc-title {
     font-size: 14px;
     font-weight: 600;
-    color: #333;
+    color: #E0E0E0;
     text-align: center;
     margin-bottom: 4px;
   }
@@ -634,28 +634,28 @@ RETURN
     padding: 14px 10px;
     border-radius: 10px;
     text-align: center;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     transition: transform 0.2s ease;
   }
   .disc-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
   }
   .disc-yellow { 
-    background: linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%);
-    border-left: 4px solid #f0c000;
+    background: linear-gradient(135deg, #2A4F4F 0%, #1C3737 100%);
+    border-left: 4px solid #FFC107;
   }
   .disc-red { 
-    background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
-    border-left: 4px solid #c62828;
+    background: linear-gradient(135deg, #2A4F4F 0%, #1C3737 100%);
+    border-left: 4px solid #D64554;
   }
   .disc-suspend { 
-    background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
-    border-left: 4px solid #616161;
+    background: linear-gradient(135deg, #2A4F4F 0%, #1C3737 100%);
+    border-left: 4px solid #808080;
   }
   .disc-fines { 
-    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-    border-left: 4px solid #2e7d32;
+    background: linear-gradient(135deg, #2A4F4F 0%, #1C3737 100%);
+    border-left: 4px solid #1AAB40;
   }
   .disc-icon {
     font-size: 24px;
@@ -665,12 +665,12 @@ RETURN
   .disc-value {
     font-size: 24px;
     font-weight: 700;
-    color: #111;
+    color: #E0E0E0;
     margin-bottom: 4px;
   }
   .disc-label {
     font-size: 11px;
-    color: #555;
+    color: #B0B0B0;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
@@ -699,7 +699,7 @@ RETURN
       <div class='disc-label'>Total Fines</div>
     </div>
   </div>
-  <div style='font-size: 10px; color: #888; text-align: center; margin-top: 8px;'>
+  <div style='font-size: 10px; color: #808080; text-align: center; margin-top: 8px;'>
     Cards: Match statistics | Sanctions: Official disciplinary actions
   </div>
   </div>
@@ -1000,7 +1000,7 @@ RETURN
   .top-players-title {
     font-size: 14px;
     font-weight: 600;
-    color: #333;
+    color: #E0E0E0;
     text-align: center;
     margin-bottom: 4px;
   }
@@ -1017,31 +1017,31 @@ RETURN
     padding: 14px 10px;
     border-radius: 10px;
     text-align: center;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     transition: transform 0.2s ease;
   }
   .player-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
   }
   .scorer-card {
-    background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
-    border-left: 4px solid #ff9800;
+    background: linear-gradient(135deg, #2A4F4F 0%, #1C3737 100%);
+    border-left: 4px solid #E65C00;
   }
   .assister-card {
-    background: linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%);
-    border-left: 4px solid #3f51b5;
+    background: linear-gradient(135deg, #1a3050 0%, #0d1f33 100%);
+    border-left: 4px solid #0066CC;
   }
   .player-icon {
     width: 24px;
     height: 24px;
     margin: 0 auto 6px;
-    color: #555;
+    color: #B0B0B0;
   }
   .player-name {
     font-size: 11px;
     font-weight: 600;
-    color: #333;
+    color: #E0E0E0;
     margin-bottom: 4px;
     line-height: 1.2;
     word-wrap: break-word;
@@ -1049,12 +1049,12 @@ RETURN
   .player-stat {
     font-size: 22px;
     font-weight: 700;
-    color: #111;
+    color: #E0E0E0;
     margin-bottom: 2px;
   }
   .player-label {
     font-size: 10px;
-    color: #555;
+    color: #B0B0B0;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
