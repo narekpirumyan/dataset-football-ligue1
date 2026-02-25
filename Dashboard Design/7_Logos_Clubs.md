@@ -2,7 +2,9 @@
 
 **Objectif :** Utiliser les logos des clubs (URLs dans `club_logos.json`) dans le rapport Power BI, notamment dans un **visuel HTML Content**.
 
-**Fichier source :** `Dashboard Design/club_logos.json` — tableau avec `club_name` et `logo_url` (une URL par club, ex. Wikimedia Commons).
+**Référence :** Ce guide est aligné avec **`Docs/0_POWER_BI_DASHBOARD_SPECIFICATION.md`** (noms des clubs, cohérence cross-fichiers). Les libellés de clubs doivent être identiques à ceux utilisés dans les données (match_results, player_stats, transfers, etc.) — ex. « Paris SG », « Olympique Lyonnais ».
+
+**Fichier source :** `Dashboard Design/club_logos.json` — tableau avec **`club_name`** et **`logo_url`** (une URL par club, ex. Wikimedia Commons). Les valeurs **`club_name`** correspondent à celles de **`club_colors.json`** et à la liste des clubs du jeu de données (cf. spécification).
 
 ---
 
@@ -10,17 +12,17 @@
 
 1. **Charger le JSON dans Power BI**  
    - Power Query : **Obtenir des données → Fichier → À partir de JSON**.  
-   - Choisir **`club_logos.json`**.  
-   - Le tableau chargé doit contenir au moins : **`club_name`**, **`logo_url`**.  
-   - Renommer les colonnes si besoin pour correspondre à ton modèle (ex. `club_name` → **ClubName** si tu utilises ce libellé partout).
+   - Choisir **`Dashboard Design/club_logos.json`**.  
+   - Le tableau chargé contient **`club_name`** et **`logo_url`**.  
+   - Renommer **`club_name`** en **ClubName** (ou en le nom de la colonne club utilisé dans ton modèle) pour rester cohérent avec la dimension club et avec **`club_colors.json`** (cf. Visual Charter).
 
 2. **Liaison avec la dimension club**  
-   - Créer une **relation** entre la table des logos et ta dimension club (ex. **DimClub**) sur le nom du club (ex. **ClubName** / **club_name**).  
-   - La relation permet d’obtenir l’URL du logo pour le club sélectionné (slicer, filtre, contexte du visuel).
+   - Créer une **relation** entre la table des logos (ex. **ClubLogos**) et la **dimension club** du modèle (ex. **DimClub** ou table équivalente dérivée des données) sur le **nom du club** (ex. **ClubName**).  
+   - La relation permet d’obtenir l’URL du logo pour le club sélectionné (slicer, filtre, contexte du visuel). Les noms de clubs doivent être identiques à ceux des fichiers sources (cf. spécification, section « Cross-file checks »).
 
 3. **Synchronisation avec la liste des clubs**  
-   - Garder **`club_logos.json`** aligné avec la liste des clubs (ex. `club_colors.json` ou `Dataset/clubs.xlsx`) : mêmes libellés **club_name** (casse et orthographe).  
-   - En ajoutant ou renommant un club, mettre à jour le JSON et rafraîchir le rapport.
+   - Garder **`club_logos.json`** aligné avec **`club_colors.json`** et avec la liste des clubs du jeu de données (match_results : `home_team` / `away_team`, player_stats : `club`, etc.) : mêmes libellés **club_name** (casse et orthographe).  
+   - En ajoutant ou renommant un club, mettre à jour **`club_logos.json`** (et **`club_colors.json`** si besoin), puis rafraîchir le rapport.
 
 ---
 
@@ -32,7 +34,7 @@ Pour afficher le logo du club **sélectionné** (slicer, filtre, etc.) dans un v
    - Récupérer l’URL via **LOOKUPVALUE** (ou **RELATED** si le contexte est une ligne de la dimension club) à partir de la table des logos.  
    - Adapter les noms de tables/colonnes à ton modèle.
 
-**Exemple de mesure (à adapter aux noms de tes tables/colonnes) :**
+**Exemple de mesure DAX** (adapter les noms de tables/colonnes à ton modèle ; ici : dimension club **DimClub** avec colonne **ClubName**, table des logos **ClubLogos** avec **club_name** et **logo_url**) :
 
 ```dax
 Logo Club HTML =
@@ -45,6 +47,8 @@ RETURN
         ""
     )
 ```
+
+*Si ta dimension club ou ta table de logos ont d’autres noms (ex. colonne `club` au lieu de `ClubName`), remplacer dans la mesure en conséquence.*
 
 2. **Utiliser la mesure dans le visuel**  
    - Insérer un visuel **HTML Content** (visuel personnalisé si nécessaire).  
@@ -61,15 +65,17 @@ RETURN
 
 - **URLs manquantes ou invalides :** Certaines URLs dans `club_logos.json` peuvent être obsolètes (404). En cas d’image non affichée, remplacer l’URL par celle de l’image sur [Wikimedia Commons](https://commons.wikimedia.org) ou [fr.wikipedia](https://fr.wikipedia.org) (clic droit sur l’image → « Copier l’adresse de l’image »), puis mettre à jour le JSON et rafraîchir.
 - **Sécurité / réseau :** Les images sont chargées depuis les URLs au moment de l’affichage. Vérifier que l’environnement Power BI (Desktop / Service) peut accéder à ces domaines (ex. upload.wikimedia.org).
-- **Cohérence des noms :** Les valeurs **club_name** dans `club_logos.json` doivent correspondre exactement à celles utilisées dans la dimension club (et dans `club_colors.json`) pour que la relation et LOOKUPVALUE fonctionnent.
+- **Cohérence des noms :** Les valeurs **club_name** dans `club_logos.json` doivent correspondre exactement à celles utilisées dans la dimension club, dans **`club_colors.json`** et dans les données sources (cf. **`Docs/0_POWER_BI_DASHBOARD_SPECIFICATION.md`** — champs `club`, `home_team`, `away_team`). Une seule orthographe par club dans tout le rapport (ex. « Paris SG », « Olympique Lyonnais »).
 
 ---
 
 ## 4. Résumé
 
+La table des logos s’intègre au modèle Power BI décrit dans **`Docs/0_POWER_BI_DASHBOARD_SPECIFICATION.md`** (section « Next steps » : modèle avec dimension club) et **`Docs/1_POWER_BI_STAR_SCHEMA_DESIGN.md`** (DimClub, ClubName). Les noms de clubs dans `club_logos.json` doivent être ceux utilisés dans les fichiers sources listés dans la spécification (match_results, player_stats, transfers, etc.).
+
 | Étape | Action |
 |-------|--------|
 | 1 | Charger `club_logos.json` en requête Power Query. |
-| 2 | Créer la relation table des logos ↔ dimension club (sur le nom du club). |
+| 2 | Créer la relation table des logos ↔ dimension club (DimClub) sur le nom du club (ClubName). |
 | 3 | Créer la mesure DAX qui renvoie `<img src='...' />` avec l’URL du club courant. |
 | 4 | Utiliser cette mesure dans un visuel **HTML Content**. |
