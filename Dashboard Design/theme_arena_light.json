@@ -78,6 +78,26 @@
           "labelColor": { "solid": { "color": "#1a1a1a" } }
         }]
       }
+    },
+    "tableEx": {
+      "*": {
+        "background": [{ "show": true, "color": { "solid": { "color": "#FFFFFF" } }, "transparency": 43 }],
+        "border": [{ "show": true, "color": { "solid": { "color": "#E0E0E0" } }, "radius": 4, "borderWidth": 1 }],
+        "grid": [{ "gridVerticalColor": { "solid": { "color": "#404040" } }, "gridHorizontalColor": { "solid": { "color": "#404040" } }, "outlineColor": { "solid": { "color": "#404040" } } }],
+        "columnHeaders": [{ "fontColor": { "solid": { "color": "#1a1a1a" } }, "backColor": { "solid": { "color": "#F3F2F1" } } }],
+        "values": [{ "fontColorPrimary": { "solid": { "color": "#1a1a1a" } }, "backColorPrimary": { "solid": { "color": "#FFFFFF" } } }],
+        "total": [{ "fontColor": { "solid": { "color": "#1a1a1a" } }, "backColor": { "solid": { "color": "#E0E0E0" } } }]
+      }
+    },
+    "pivotTable": {
+      "*": {
+        "background": [{ "show": true, "color": { "solid": { "color": "#FFFFFF" } }, "transparency": 43 }],
+        "border": [{ "show": true, "color": { "solid": { "color": "#E0E0E0" } }, "radius": 4, "borderWidth": 1 }],
+        "grid": [{ "gridVerticalColor": { "solid": { "color": "#404040" } }, "gridHorizontalColor": { "solid": { "color": "#404040" } }, "outlineColor": { "solid": { "color": "#404040" } } }],
+        "columnHeaders": [{ "fontColor": { "solid": { "color": "#1a1a1a" } }, "backColor": { "solid": { "color": "#F3F2F1" } } }],
+        "values": [{ "fontColorPrimary": { "solid": { "color": "#1a1a1a" } }, "backColorPrimary": { "solid": { "color": "#FFFFFF" } } }],
+        "total": [{ "fontColor": { "solid": { "color": "#1a1a1a" } }, "backColor": { "solid": { "color": "#E0E0E0" } } }]
+      }
     }
   }
 }
