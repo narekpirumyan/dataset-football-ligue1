@@ -128,64 +128,64 @@ RETURN
   * { box-sizing: border-box; }
   body {
     margin: 0;
-    padding: 16px;
+    padding: 10px;
     font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
     background: transparent;
   }
   .rank-points-widget {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
   }
   .rank-title {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
-    color: #E0E0E0;
+    color: #1a1a1a;
     text-align: center;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
   }
   .rank-cards {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 6px;
     justify-content: center;
   }
   .rank-card, .points-card {
-    flex: 1 1 100px;
-    min-width: 80px;
-    max-width: 120px;
-    padding: 14px 10px;
-    border-radius: 10px;
+    flex: 1 1 90px;
+    min-width: 70px;
+    max-width: 110px;
+    padding: 10px 8px;
+    border-radius: 8px;
     text-align: center;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     transition: transform 0.2s ease;
   }
   .rank-card:hover, .points-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
   }
   .rank-card {
-    background: linear-gradient(135deg, #2A4F4F 0%, #1C3737 100%);
+    background: linear-gradient(135deg, #FFFFFF 0%, #F3F2F1 100%);
     border-left: 4px solid " & vRankColor & ";
   }
   .points-card {
-    background: linear-gradient(135deg, #1a3050 0%, #0d1f33 100%);
+    background: linear-gradient(135deg, #E8F4FC 0%, #D0E8F7 100%);
     border-left: 4px solid #0066CC;
   }
   .card-icon {
-    font-size: 20px;
-    margin-bottom: 4px;
+    font-size: 18px;
+    margin-bottom: 2px;
     line-height: 1;
   }
   .card-value {
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 700;
-    color: #E0E0E0;
-    margin-bottom: 4px;
+    color: #1a1a1a;
+    margin-bottom: 2px;
   }
   .card-label {
-    font-size: 11px;
-    color: #B0B0B0;
+    font-size: 10px;
+    color: #404040;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
@@ -605,72 +605,72 @@ RETURN
   * { box-sizing: border-box; }
   body {
     margin: 0;
-    padding: 16px;
+    padding: 10px;
     font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
     background: transparent;
   }
   .disc-widget {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
   }
   .disc-title {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
-    color: #E0E0E0;
+    color: #1a1a1a;
     text-align: center;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
   }
   .disc-cards {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 6px;
     justify-content: center;
   }
   .disc-card {
-    flex: 1 1 100px;
-    min-width: 80px;
-    max-width: 120px;
-    padding: 14px 10px;
-    border-radius: 10px;
+    flex: 1 1 90px;
+    min-width: 70px;
+    max-width: 110px;
+    padding: 10px 8px;
+    border-radius: 8px;
     text-align: center;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     transition: transform 0.2s ease;
   }
   .disc-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
   }
   .disc-yellow { 
-    background: linear-gradient(135deg, #2A4F4F 0%, #1C3737 100%);
+    background: linear-gradient(135deg, #FFFFFF 0%, #FFF9E6 100%);
     border-left: 4px solid #FFC107;
   }
   .disc-red { 
-    background: linear-gradient(135deg, #2A4F4F 0%, #1C3737 100%);
+    background: linear-gradient(135deg, #FFFFFF 0%, #FFEBEE 100%);
     border-left: 4px solid #D64554;
   }
   .disc-suspend { 
-    background: linear-gradient(135deg, #2A4F4F 0%, #1C3737 100%);
+    background: linear-gradient(135deg, #FFFFFF 0%, #F3F2F1 100%);
     border-left: 4px solid #808080;
   }
   .disc-fines { 
-    background: linear-gradient(135deg, #2A4F4F 0%, #1C3737 100%);
+    background: linear-gradient(135deg, #FFFFFF 0%, #E8F5E9 100%);
     border-left: 4px solid #1AAB40;
   }
   .disc-icon {
-    font-size: 24px;
-    margin-bottom: 6px;
+    font-size: 20px;
+    margin-bottom: 3px;
     line-height: 1;
   }
   .disc-value {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 700;
-    color: #E0E0E0;
-    margin-bottom: 4px;
+    color: #1a1a1a;
+    margin-bottom: 2px;
   }
   .disc-label {
-    font-size: 11px;
-    color: #B0B0B0;
+    font-size: 10px;
+    color: #404040;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
@@ -699,7 +699,7 @@ RETURN
       <div class='disc-label'>Total Fines</div>
     </div>
   </div>
-  <div style='font-size: 10px; color: #808080; text-align: center; margin-top: 8px;'>
+  <div style='font-size: 9px; color: #404040; text-align: center; margin-top: 4px;'>
     Cards: Match statistics | Sanctions: Official disciplinary actions
   </div>
   </div>
@@ -988,73 +988,73 @@ RETURN
   * { box-sizing: border-box; }
   body {
     margin: 0;
-    padding: 16px;
+    padding: 10px;
     font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
     background: transparent;
   }
   .top-players-widget {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
   }
   .top-players-title {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
-    color: #E0E0E0;
+    color: #1a1a1a;
     text-align: center;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
   }
   .top-players-cards {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 6px;
     justify-content: center;
   }
   .player-card {
-    flex: 1 1 100px;
-    min-width: 80px;
-    max-width: 120px;
-    padding: 14px 10px;
-    border-radius: 10px;
+    flex: 1 1 90px;
+    min-width: 70px;
+    max-width: 110px;
+    padding: 10px 8px;
+    border-radius: 8px;
     text-align: center;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     transition: transform 0.2s ease;
   }
   .player-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
   }
   .scorer-card {
-    background: linear-gradient(135deg, #2A4F4F 0%, #1C3737 100%);
+    background: linear-gradient(135deg, #FFFFFF 0%, #FFF3E0 100%);
     border-left: 4px solid #E65C00;
   }
   .assister-card {
-    background: linear-gradient(135deg, #1a3050 0%, #0d1f33 100%);
+    background: linear-gradient(135deg, #E8F4FC 0%, #D0E8F7 100%);
     border-left: 4px solid #0066CC;
   }
   .player-icon {
-    width: 24px;
-    height: 24px;
-    margin: 0 auto 6px;
-    color: #B0B0B0;
+    width: 20px;
+    height: 20px;
+    margin: 0 auto 3px;
+    color: #404040;
   }
   .player-name {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 600;
-    color: #E0E0E0;
-    margin-bottom: 4px;
+    color: #1a1a1a;
+    margin-bottom: 2px;
     line-height: 1.2;
     word-wrap: break-word;
   }
   .player-stat {
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 700;
-    color: #E0E0E0;
-    margin-bottom: 2px;
+    color: #1a1a1a;
+    margin-bottom: 1px;
   }
   .player-label {
-    font-size: 10px;
-    color: #B0B0B0;
+    font-size: 9px;
+    color: #404040;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }

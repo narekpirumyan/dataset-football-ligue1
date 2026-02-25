@@ -76,6 +76,11 @@
         }],
         "legend": [{
           "labelColor": { "solid": { "color": "#1a1a1a" } }
+        }],
+        "visualTooltip": [{
+          "background": { "solid": { "color": "#FFFFFF" } },
+          "fontColor": { "solid": { "color": "#1a1a1a" } },
+          "titleFontColor": { "solid": { "color": "#1a1a1a" } }
         }]
       }
     },
