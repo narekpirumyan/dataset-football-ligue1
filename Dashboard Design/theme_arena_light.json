@@ -52,7 +52,7 @@
         "background": [{
           "show": true,
           "color": { "solid": { "color": "#FFFFFF" } },
-          "transparency": 8
+          "transparency": 43
         }],
         "title": [{
           "show": true,
