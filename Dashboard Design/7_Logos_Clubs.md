@@ -38,13 +38,32 @@ Si tu as **ajouté une colonne d’URL des logos directement dans la table DimCl
 
 ## 2. Affichage du logo dans un visuel HTML Content
 
-Pour afficher le logo du club **sélectionné** (slicer, filtre, etc.) dans un visuel HTML :
+Pour afficher le logo du club dans un visuel HTML, la mesure DAX dépend du **contexte de filtre** (cf. **`Docs/0_POWER_BI_DASHBOARD_SPECIFICATION.md`** : données joueur dans `player_stats_season.csv` avec `full_name`, `club` ; modèle : **DimPlayer** (FullName), **FactPlayerSeason** (PlayerKey, ClubKey), **DimClub**).
 
-1. **Créer une mesure DAX** qui renvoie du HTML contenant une balise `<img>` avec l’URL du logo.  
-   - Récupérer l’URL via **LOOKUPVALUE** (ou **RELATED** si le contexte est une ligne de la dimension club) à partir de la table des logos.  
-   - Adapter les noms de tables/colonnes à ton modèle.
+### Contexte : filtre sur le **joueur** (FullName)
 
-**Si l’URL est dans DimClub** (option A — colonne ex. **LogoUrl**) :
+C’est le cas le plus courant en **vue joueur** : le slicer ou le filtre porte sur **DimPlayer[FullName]** (nom du joueur). Le club du joueur est alors obtenu via **FactPlayerSeason** (une ligne joueur = un ClubKey pour la saison), puis l’URL du logo depuis **DimClub** (cf. **`Docs/1_POWER_BI_STAR_SCHEMA_DESIGN.md`** : FactPlayerSeason[PlayerKey] → DimPlayer, FactPlayerSeason[ClubKey] → DimClub).
+
+**Mesure à utiliser** (URL des logos dans DimClub, colonne ex. **LogoUrl**) :
+
+```dax
+Logo Club HTML =
+VAR ClubKey = SELECTEDVALUE( FactPlayerSeason[ClubKey] )
+VAR UrlLogo = LOOKUPVALUE( DimClub[LogoUrl], DimClub[ClubKey], ClubKey )
+RETURN
+    IF(
+        NOT ISBLANK( UrlLogo ),
+        "<img src='" & UrlLogo & "' alt='Logo' style='max-width:80px; height:auto;' />",
+        ""
+    )
+```
+
+- Quand un **seul joueur** est sélectionné (slicer sur **FullName**), le filtre remonte à **FactPlayerSeason** via **PlayerKey** : `FactPlayerSeason[ClubKey]` donne le club de ce joueur pour la saison, puis **LOOKUPVALUE** récupère **DimClub[LogoUrl]** pour ce **ClubKey**.
+- Remplace **LogoUrl** par le nom exact de ta colonne dans DimClub (ex. `logo_url`) si besoin.
+
+### Contexte : filtre sur le **club** (ClubName)
+
+Si le filtre porte directement sur le **club** (slicer sur **DimClub[ClubName]**), l’URL est dans DimClub :
 
 ```dax
 Logo Club HTML =
@@ -57,14 +76,15 @@ RETURN
     )
 ```
 
-*Remplace **LogoUrl** par le nom exact de ta colonne dans DimClub (ex. `logo_url`).*
+### Si tu utilises une table des logos séparée (option B — ClubLogos)
 
-**Si tu utilises une table des logos séparée** (option B — **ClubLogos**) :
+Avec filtre sur le **joueur** (FullName), récupérer d’abord le club du joueur via FactPlayerSeason, puis l’URL depuis la table des logos (colonne ex. **club_name**, **logo_url**) :
 
 ```dax
 Logo Club HTML =
-VAR NomClub = SELECTEDVALUE( DimClub[ClubName] )
-VAR UrlLogo  = LOOKUPVALUE( ClubLogos[logo_url], ClubLogos[club_name], NomClub )
+VAR ClubKey = SELECTEDVALUE( FactPlayerSeason[ClubKey] )
+VAR NomClub = LOOKUPVALUE( DimClub[ClubName], DimClub[ClubKey], ClubKey )
+VAR UrlLogo = LOOKUPVALUE( ClubLogos[logo_url], ClubLogos[club_name], NomClub )
 RETURN
     IF(
         NOT ISBLANK( UrlLogo ),
@@ -73,7 +93,7 @@ RETURN
     )
 ```
 
-*Si ta dimension club ou ta table de logos ont d’autres noms (ex. colonne `club` au lieu de `ClubName`), remplacer dans la mesure en conséquence.*
+Avec filtre sur le **club** : `VAR NomClub = SELECTEDVALUE( DimClub[ClubName] )` puis `LOOKUPVALUE( ClubLogos[logo_url], ClubLogos[club_name], NomClub )` comme précédemment.
 
 2. **Utiliser la mesure dans le visuel**  
    - Insérer un visuel **HTML Content** (visuel personnalisé si nécessaire).  
@@ -98,13 +118,15 @@ RETURN
 
 La table des logos (ou la colonne URL dans DimClub) s’intègre au modèle Power BI décrit dans **`Docs/0_POWER_BI_DASHBOARD_SPECIFICATION.md`** et **`Docs/1_POWER_BI_STAR_SCHEMA_DESIGN.md`** (DimClub, ClubName). Les noms de clubs dans `club_logos.json` doivent être ceux utilisés dans les fichiers sources (match_results, player_stats, transfers, etc.).
 
-**Quand l’URL est dans DimClub (option A) :**
+**Filtre sur le joueur (FullName)** — URL dans DimClub (option A) :
 
 | Étape | Action |
 |-------|--------|
 | 1 | Colonne URL déjà dans DimClub (ex. **LogoUrl**). |
-| 2 | Créer la mesure DAX qui renvoie `<img src='...' />` avec `SELECTEDVALUE(DimClub[LogoUrl])`. |
-| 3 | Utiliser cette mesure dans un visuel **HTML Content**. |
+| 2 | Créer la mesure DAX : `ClubKey = SELECTEDVALUE(FactPlayerSeason[ClubKey])`, puis `LOOKUPVALUE(DimClub[LogoUrl], DimClub[ClubKey], ClubKey)` pour l’URL. |
+| 3 | Utiliser cette mesure dans un visuel **HTML Content** ; le slicer/filtre sur **DimPlayer[FullName]** affichera le logo du **club du joueur** sélectionné. |
+
+**Filtre sur le club (ClubName)** — URL dans DimClub : mesure avec `SELECTEDVALUE(DimClub[LogoUrl])` uniquement.
 
 **Quand tu utilises une table des logos séparée (option B) :**
 
