@@ -1,0 +1,22 @@
+[
+  { "club_name": "Paris SG", "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Logo_Paris_SG_1992.svg/250px-Logo_Paris_SG_1992.svg.png" },
+  { "club_name": "Olympique Lyonnais", "logo_url": "https://upload.wikimedia.org/wikipedia/commons/3/3b/OL_Lion_Symbol.png" },
+  { "club_name": "Olympique de Marseille", "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Olympique_Marseille_logo.svg/250px-Olympique_Marseille_logo.svg.png" },
+  { "club_name": "AS Monaco", "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/AS_Monaco_Logo.svg/250px-AS_Monaco_Logo.svg.png" },
+  { "club_name": "LOSC Lille", "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Lille_OSC_2018_logo.svg/250px-Lille_OSC_2018_logo.svg.png" },
+  { "club_name": "Stade Rennais", "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Stade_Rennais_%28logo_1960%29.svg/250px-Stade_Rennais_%28logo_1960%29.svg.png" },
+  { "club_name": "RC Lens", "logo_url": "https://upload.wikimedia.org/wikipedia/fr/thumb/0/0f/RC_Lens_2018.svg/250px-RC_Lens_2018.svg.png" },
+  { "club_name": "OGC Nice", "logo_url": "https://upload.wikimedia.org/wikipedia/fr/thumb/2/2e/OGC_Nice.svg/250px-OGC_Nice.svg.png" },
+  { "club_name": "RC Strasbourg", "logo_url": "https://upload.wikimedia.org/wikipedia/fr/thumb/8/8a/Racing_Club_de_Strasbourg_Alsace.svg/250px-Racing_Club_de_Strasbourg_Alsace.svg.png" },
+  { "club_name": "FC Nantes", "logo_url": "https://upload.wikimedia.org/wikipedia/fr/thumb/2/2b/FC_Nantes_2019.svg/250px-FC_Nantes_2019.svg.png" },
+  { "club_name": "Montpellier HSC", "logo_url": "https://upload.wikimedia.org/wikipedia/fr/thumb/4/4c/Montpellier_H%C3%A9rault_Sport_Club.svg/250px-Montpellier_H%C3%A9rault_Sport_Club.svg.png" },
+  { "club_name": "Toulouse FC", "logo_url": "https://upload.wikimedia.org/wikipedia/fr/thumb/2/2b/Toulouse_FC_logo.svg/250px-Toulouse_FC_logo.svg.png" },
+  { "club_name": "Stade Brestois", "logo_url": "https://upload.wikimedia.org/wikipedia/fr/thumb/0/0f/Stade_Brestois_29_logo.svg/250px-Stade_Brestois_29_logo.svg.png" },
+  { "club_name": "Stade de Reims", "logo_url": "https://upload.wikimedia.org/wikipedia/fr/thumb/2/2b/Stade_de_Reims.svg/250px-Stade_de_Reims.svg.png" },
+  { "club_name": "Le Havre AC", "logo_url": "https://upload.wikimedia.org/wikipedia/fr/thumb/9/9c/Le_Havre_AC_logo.svg/250px-Le_Havre_AC_logo.svg.png" },
+  { "club_name": "FC Lorient", "logo_url": "https://upload.wikimedia.org/wikipedia/fr/thumb/8/8a/FC_Lorient.svg/250px-FC_Lorient.svg.png" },
+  { "club_name": "Clermont Foot", "logo_url": "https://upload.wikimedia.org/wikipedia/fr/thumb/0/0f/Clermont_Foot_63_2019.svg/250px-Clermont_Foot_63_2019.svg.png" },
+  { "club_name": "FC Metz", "logo_url": "https://upload.wikimedia.org/wikipedia/fr/thumb/2/2b/FC_Metz_logo.svg/250px-FC_Metz_logo.svg.png" },
+  { "club_name": "AS Saint-Etienne", "logo_url": "https://upload.wikimedia.org/wikipedia/fr/thumb/2/2e/AS_Saint-%C3%89tienne_logo.svg/250px-AS_Saint-%C3%89tienne_logo.svg.png" },
+  { "club_name": "Girondins de Bordeaux", "logo_url": "https://upload.wikimedia.org/wikipedia/fr/thumb/2/2b/FC_des_Girondins_de_Bordeaux.svg/250px-FC_des_Girondins_de_Bordeaux.svg.png" }
+]
