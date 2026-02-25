@@ -1,5 +1,5 @@
 {
-  "name": "Arena (fond arène)",
+  "name": "Arena (fond arène) — clair",
   "dataColors": [
     "#0066CC",
     "#E65C00",
@@ -10,9 +10,9 @@
     "#5C9EFF",
     "#FFCC99"
   ],
-  "firstLevelElements": "#E0E0E0",
-  "secondLevelElements": "#B0B0B0",
-  "thirdLevelElements": "#FFFFFF",
+  "firstLevelElements": "#252423",
+  "secondLevelElements": "#605E5C",
+  "thirdLevelElements": "#F3F2F1",
   "fourthLevelElements": "#808080",
   "background": "#1C3737",
   "secondaryBackground": "#2A4F4F",
@@ -28,22 +28,22 @@
     "callout": {
       "fontSize": 45,
       "fontFace": "Segoe UI",
-      "color": "#E0E0E0"
+      "color": "#252423"
     },
     "title": {
       "fontSize": 18,
       "fontFace": "Segoe UI Semibold",
-      "color": "#E0E0E0"
+      "color": "#252423"
     },
     "header": {
       "fontSize": 12,
       "fontFace": "Segoe UI Semibold",
-      "color": "#E0E0E0"
+      "color": "#252423"
     },
     "label": {
       "fontSize": 10,
       "fontFace": "Segoe UI",
-      "color": "#E0E0E0"
+      "color": "#605E5C"
     }
   },
   "visualStyles": {
@@ -51,18 +51,18 @@
       "*": {
         "background": [{
           "show": true,
-          "color": { "solid": { "color": "#121212" } },
-          "transparency": 15
+          "color": { "solid": { "color": "#FFFFFF" } },
+          "transparency": 8
         }],
         "title": [{
           "show": true,
-          "fontColor": { "solid": { "color": "#E0E0E0" } },
+          "fontColor": { "solid": { "color": "#252423" } },
           "fontSize": 12,
           "fontFamily": "Segoe UI"
         }],
         "border": [{
           "show": true,
-          "color": { "solid": { "color": "#121212" } },
+          "color": { "solid": { "color": "#E0E0E0" } },
           "radius": 4,
           "borderWidth": 1
         }]
