@@ -103,6 +103,38 @@
         "values": [{ "fontColorPrimary": { "solid": { "color": "#1a1a1a" } }, "backColorPrimary": { "solid": { "color": "#FFFFFF" } } }],
         "total": [{ "fontColor": { "solid": { "color": "#1a1a1a" } }, "backColor": { "solid": { "color": "#E0E0E0" } } }]
       }
+    },
+    "pageNavigator": {
+      "*": {
+        "border": [{ "show": false }],
+        "title": [{ "show": false }],
+        "visualHeader": [{ "show": false }],
+        "outline": [
+          { "show": true },
+          { "$id": "default", "transparency": 0, "lineColor": { "solid": { "color": "#E0E0E0" } }, "weight": 1 },
+          { "$id": "hover", "transparency": 0, "lineColor": { "solid": { "color": "#0066CC" } }, "weight": 2 },
+          { "$id": "press", "transparency": 0, "lineColor": { "solid": { "color": "#0066CC" } }, "weight": 2 },
+          { "$id": "selected", "transparency": 0, "lineColor": { "solid": { "color": "#0066CC" } }, "weight": 2 },
+          { "$id": "disabled", "transparency": 0, "lineColor": { "solid": { "color": "#808080" } }, "weight": 1 }
+        ],
+        "fill": [
+          { "show": true },
+          { "$id": "default", "transparency": 0, "fillColor": { "solid": { "color": "#F3F2F1" } } },
+          { "$id": "hover", "transparency": 0, "fillColor": { "solid": { "color": "#E0E0E0" } } },
+          { "$id": "press", "transparency": 0, "fillColor": { "solid": { "color": "#E0E0E0" } } },
+          { "$id": "selected", "transparency": 0, "fillColor": { "solid": { "color": "#FFFFFF" } } },
+          { "$id": "disabled", "transparency": 0, "fillColor": { "solid": { "color": "#F3F2F1" } } }
+        ],
+        "text": [
+          { "show": true },
+          { "$id": "default", "fontFamily": "Segoe UI", "fontSize": 10, "fontColor": { "solid": { "color": "#1a1a1a" } }, "horizontalAlignment": "center", "verticalAlignment": "middle" },
+          { "$id": "hover", "fontSize": 10, "fontColor": { "solid": { "color": "#1a1a1a" } }, "fontFamily": "Segoe UI" },
+          { "$id": "press", "fontSize": 10, "fontColor": { "solid": { "color": "#1a1a1a" } }, "fontFamily": "Segoe UI" },
+          { "$id": "selected", "fontSize": 10, "fontColor": { "solid": { "color": "#0066CC" } }, "fontFamily": "Segoe UI Semibold" },
+          { "$id": "disabled", "fontSize": 10, "fontColor": { "solid": { "color": "#808080" } }, "fontFamily": "Segoe UI" }
+        ],
+        "shape": [{ "$id": "default", "roundEdge": 4, "tileShape": "rectangleRounded" }]
+      }
     }
   }
 }
