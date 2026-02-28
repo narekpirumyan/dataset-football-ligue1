@@ -15,8 +15,7 @@
   "thirdLevelElements": "#404040",
   "fourthLevelElements": "#808080",
   "background": "#FFFFFF",
-  "secondaryBackground": [{
-    "show": true,
+  "secondaryBackground": [{    
     "color": { "solid": { "color": "#FFFFFF" } },
     "transparency": 43
   }],
