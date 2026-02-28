@@ -2,7 +2,21 @@
 
 **Category:** Confrontations directes entre clubs (rivalités, derbys, classiques).
 
-**Principe :** Une rivalité = une paire de clubs qui se sont affrontés. Visuels 1 et 4 : slicer « 2 clubs » sur DimClub. Visuels 2, 3 et 5 : table calculée RivalryPair (une ligne par paire Home/Away issue de DimMatch).
+---
+
+## Logique corrigée (une rivalité = tous les matchs entre 2 clubs)
+
+**Problème :** Avec l’ancienne logique, la table **RivalryPair** avait une ligne par couple (Domicile, Extérieur) issu de DimMatch. Donc « Paris SG – Marseille » et « Marseille – Paris SG » étaient deux lignes distinctes, et les mesures ne filtraient que sur un sens (ex. seulement les matchs où le premier club était à domicile). Les totaux de buts, affluence, sanctions et points ne portaient que sur la moitié des confrontations.
+
+**Correction :**  
+- **RivalryPair** : une seule ligne par **paire non orientée** (colonnes **ClubKey1**, **ClubKey2** avec ClubKey1 &lt; ClubKey2), et **PairLabel** = "Club1 – Club2".  
+- **Toutes les mesures** (Total Goals, Sanctions, Avg Attendance, Avg Fill Rate, Points Club1/Club2) filtrent les matchs avec **(Home = C1 AND Away = C2) OR (Home = C2 AND Away = C1)** pour inclure les deux sens.  
+
+En Power BI : recréer la table calculée **RivalryPair** avec la définition ci‑dessous (ClubKey1, ClubKey2 au lieu de HomeClubKey, AwayClubKey), puis mettre à jour les mesures qui l’utilisent.
+
+---
+
+**Principe :** Une rivalité = une **paire non orientée** de clubs (tous les matchs entre ces deux clubs, quel que soit le sens Domicile/Extérieur). Visuels 1 et 4 : slicer « 2 clubs » sur DimClub. Visuels 2, 3 et 5 : table calculée **RivalryPair** avec **une seule ligne par paire** (ClubKey1 ≤ ClubKey2), et toutes les mesures doivent inclure **les deux sens** (Home=A Away=B **ou** Home=B Away=A).
 
 ---
 
@@ -193,31 +207,41 @@ RETURN
 
 **But :** Montrer les paires de clubs qui ont produit le plus de buts (ou le plus de sanctions) dans leurs confrontations directes — repérer les chocs les plus animés ou les plus tendus.
 
-**Données :** Une ligne par paire (HomeClub, AwayClub) issue de DimMatch. Créer une **table calculée** des paires (sans modifier les tables existantes), par ex. :
+**Données :** **Une ligne par paire non orientée** (chaque duel A–B n’apparaît qu’une fois). La table doit utiliser ClubKey1 = MIN(Home, Away) et ClubKey2 = MAX(Home, Away) pour dédupliquer, sinon on ne compte que les matchs dans un seul sens (ex. seulement PSG domicile vs OM extérieur).
 
 - **Table calculée** (Modélisation → Nouvelle table) :
   ```dax
   RivalryPair =
-  ADDCOLUMNS(
-      SUMMARIZE(DimMatch, DimMatch[HomeClubKey], DimMatch[AwayClubKey]),
-      "PairLabel",
-          LOOKUPVALUE(DimClub[ClubName], DimClub[ClubKey], [HomeClubKey])
-              & " – " & LOOKUPVALUE(DimClub[ClubName], DimClub[ClubKey], [AwayClubKey])
-  )
+  VAR PairsWithOrder =
+      ADDCOLUMNS(
+          SUMMARIZE(DimMatch, DimMatch[HomeClubKey], DimMatch[AwayClubKey]),
+          "ClubKey1", IF([HomeClubKey] < [AwayClubKey], [HomeClubKey], [AwayClubKey]),
+          "ClubKey2", IF([HomeClubKey] < [AwayClubKey], [AwayClubKey], [HomeClubKey])
+      )
+  VAR UnorderedPairs = SUMMARIZE(PairsWithOrder, [ClubKey1], [ClubKey2])
+  RETURN
+      ADDCOLUMNS(
+          UnorderedPairs,
+          "PairLabel",
+              LOOKUPVALUE(DimClub[ClubName], DimClub[ClubKey], [ClubKey1])
+                  & " – " & LOOKUPVALUE(DimClub[ClubName], DimClub[ClubKey], [ClubKey2])
+      )
   ```
-- **Mesures** à créer (contexte = une ligne RivalryPair) :
+- **Mesure Total Goals** (contexte = une ligne RivalryPair) — **les deux sens** (Home/Away ou Away/Home) :
   ```dax
   Total Goals in Rivalry =
-  CALCULATE(SUM(FactClubMatch[GoalsFor]),
-      FILTER(DimMatch,
-          DimMatch[HomeClubKey] = MAX(RivalryPair[HomeClubKey])
-              && DimMatch[AwayClubKey] = MAX(RivalryPair[AwayClubKey])))
+  VAR C1 = MAX(RivalryPair[ClubKey1])
+  VAR C2 = MAX(RivalryPair[ClubKey2])
+  RETURN
+      CALCULATE(
+          SUM(FactClubMatch[GoalsFor]),
+          FILTER(DimMatch,
+              (DimMatch[HomeClubKey] = C1 && DimMatch[AwayClubKey] = C2)
+                  || (DimMatch[HomeClubKey] = C2 && DimMatch[AwayClubKey] = C1)
+          )
+      )
   ```
-  Variante sanctions : CALCULATE(COUNTROWS(FactSanction), FILTER(FactSanction, ClubKey = HomeK ou AwayK), FILTER(DimMatch, ...)) en récupérant les dates des matchs de la paire.
-
-**Mesure (dans le contexte d’une ligne RivalryPair) :**  
-Total buts dans les matchs de cette paire = CALCULATE(SUM(FactClubMatch[GoalsFor]), FILTER(DimMatch, DimMatch[HomeClubKey] = MAX(RivalryPair[HomeClubKey]) && DimMatch[AwayClubKey] = MAX(RivalryPair[AwayClubKey]))).  
-Variante : même idée pour compter les sanctions (FactSanction filtrée par SanctionDateKey = dates des matchs de la paire et ClubKey ∈ {HomeClubKey, AwayClubKey}).
+  Variante sanctions : idem en filtrant les matchs par (Home=C1 AND Away=C2) OR (Home=C2 AND Away=C1), puis FactSanction par dates de ces matchs et ClubKey ∈ {C1, C2}.
 
 **Power BI — étapes :** Barres horizontales → Axe Y = `RivalryPair[PairLabel]`, Valeur = `[Total Goals in Rivalry]` (ou `[Sanctions in Rivalry]`). Trier décroissant ; Filtre visuel Top N (ex. 15). Tooltips : PairLabel, les deux mesures.
 
@@ -251,18 +275,21 @@ On restreint les sanctions aux **dates des matchs** de la paire (FactSanction n�
 
 ```dax
 Sanctions in Rivalry (selected reasons) =
-VAR HomeK = MAX(RivalryPair[HomeClubKey])
-VAR AwayK = MAX(RivalryPair[AwayClubKey])
+VAR C1 = MAX(RivalryPair[ClubKey1])
+VAR C2 = MAX(RivalryPair[ClubKey2])
 VAR MatchDates =
     CALCULATETABLE(
         VALUES(DimMatch[DateKey]),
-        FILTER(DimMatch, DimMatch[HomeClubKey] = HomeK && DimMatch[AwayClubKey] = AwayK)
+        FILTER(DimMatch,
+            (DimMatch[HomeClubKey] = C1 && DimMatch[AwayClubKey] = C2)
+                || (DimMatch[HomeClubKey] = C2 && DimMatch[AwayClubKey] = C1)
+        )
     )
 RETURN
     CALCULATE(
         COUNTROWS(FactSanction),
         FILTER(FactSanction,
-            (FactSanction[ClubKey] = HomeK || FactSanction[ClubKey] = AwayK)
+            (FactSanction[ClubKey] = C1 || FactSanction[ClubKey] = C2)
             && CONTAINS(MatchDates, [DateKey], FactSanction[SanctionDateKey])
             && FactSanction[Reason] <> "Accumulation of yellow cards"
             && FactSanction[Reason] <> "Controversial social media post"
@@ -298,10 +325,10 @@ RETURN
 
 **Données :** Même table de paires RivalryPair (ou liste de matchs). Mesure d’affluence dans le contexte « matchs de cette paire » : utiliser FactAttendance (Attendance, FillRatePct) ou DimMatch[Attendance] selon le modèle, en filtrant les matchs par (HomeClubKey, AwayClubKey).
 
-**Mesure DAX (contexte = une ligne RivalryPair) :**  
+**Mesure DAX (contexte = une ligne RivalryPair)** — inclure **les deux sens** (matchs A–B et B–A) :  
 Si l’affluence est dans **DimMatch[Attendance]** :  
-`Avg Attendance in Rivalry = CALCULATE(AVERAGE(DimMatch[Attendance]), FILTER(DimMatch, DimMatch[HomeClubKey] = MAX(RivalryPair[HomeClubKey]) && DimMatch[AwayClubKey] = MAX(RivalryPair[AwayClubKey])))`.  
-Si elle est dans **FactAttendance** (lié à DimMatch par MatchKey) : même FILTER sur DimMatch, puis CALCULATE(AVERAGE(FactAttendance[Attendance])).
+`Avg Attendance in Rivalry = VAR C1 = MAX(RivalryPair[ClubKey1]) VAR C2 = MAX(RivalryPair[ClubKey2]) RETURN CALCULATE(AVERAGE(DimMatch[Attendance]), FILTER(DimMatch, (DimMatch[HomeClubKey] = C1 && DimMatch[AwayClubKey] = C2) || (DimMatch[HomeClubKey] = C2 && DimMatch[AwayClubKey] = C1)))`.  
+Si elle est dans **FactAttendance** (lié à DimMatch par MatchKey) : même FILTER sur DimMatch (avec les deux sens), puis CALCULATE(AVERAGE(FactAttendance[Attendance])).
 
 **Power BI — étapes :** Barres horizontales. Axe Y = `RivalryPair[PairLabel]`, Valeur = `[Avg Attendance in Rivalry]`. Trier décroissant, Top N (ex. 15). Tooltips : PairLabel, [Avg Attendance in Rivalry].
 
@@ -319,18 +346,20 @@ Si elle est dans **FactAttendance** (lié à DimMatch par MatchKey) : même FILT
 
 ```dax
 Avg Fill Rate in Rivalry =
-VAR HomeK = MAX(RivalryPair[HomeClubKey])
-VAR AwayK = MAX(RivalryPair[AwayClubKey])
+VAR C1 = MAX(RivalryPair[ClubKey1])
+VAR C2 = MAX(RivalryPair[ClubKey2])
 RETURN
     CALCULATE(
         AVERAGE(FactAttendance[FillRatePct]),
         FILTER(DimMatch,
-            DimMatch[HomeClubKey] = HomeK && DimMatch[AwayClubKey] = AwayK),
+            (DimMatch[HomeClubKey] = C1 && DimMatch[AwayClubKey] = C2)
+                || (DimMatch[HomeClubKey] = C2 && DimMatch[AwayClubKey] = C1)),
         REMOVEFILTERS(DimClub)
     )
 ```
 
-*Pourquoi REMOVEFILTERS(DimClub) :* en contexte d’une ligne RivalryPair, les relations RivalryPair → DimClub filtrent DimClub sur les deux clubs de la paire ; ce filtre se répercute sur FactAttendance (liée à DimClub par ClubKey) et peut donner un résultat incorrect (tous les matchs à domicile de l’un ou l’autre club au lieu des matchs **entre** les deux). En retirant le filtre sur DimClub, on ne garde que le filtre explicite sur DimMatch (matchs de la paire), qui se propage à FactAttendance via MatchKey et restreint bien aux lignes d’affluence de ces matchs.
+*Pourquoi les deux sens :* une rivalité = tous les matchs entre les deux clubs ; il faut inclure (Home=C1, Away=C2) **et** (Home=C2, Away=C1).  
+*Pourquoi REMOVEFILTERS(DimClub) :* en contexte d’une ligne RivalryPair, les relations RivalryPair → DimClub filtrent DimClub sur les deux clubs ; ce filtre peut sur-filtrer FactAttendance. En le retirant, on ne garde que le filtre explicite sur DimMatch (matchs de la paire), qui se propage à FactAttendance via MatchKey.
 
 **Power BI — étapes :** Barres horizontales. Axe Y = `RivalryPair[PairLabel]`, Valeur = `[Avg Fill Rate in Rivalry]`. Trier décroissant, Top N (ex. 15). **Format :** afficher la valeur en **%** (Format du champ → Pourcentage). Tooltips : PairLabel, [Avg Fill Rate in Rivalry] ; optionnel : [Avg Attendance in Rivalry] pour comparer.
 
@@ -372,33 +401,39 @@ RETURN
 **But :** Vue ligue : pour chaque paire (Club i vs Club j), afficher un indicateur (points remportés par le club en ligne à domicile ou sur l’ensemble des confrontations, ou différence de buts). Permet de repérer d’un coup d’œil les rapports de force.
 
 **Option A — Tableau simple (recommandé)**  
-Source = **RivalryPair**. Colonnes : `RivalryPair[PairLabel]`, puis une mesure **Points club 1 (Home) dans la paire** = en contexte de la ligne RivalryPair, somme des points du club Home dans les matchs de cette paire (CALCULATE(SUM(FactClubMatch[Points]), FactClubMatch[ClubKey] = MAX(RivalryPair[HomeClubKey]), FILTER(DimMatch, ...))). Idem pour le club Away. Colonne optionnelle : différence de buts ou « vainqueur » (texte). Trier par points ou par libellé.
+Source = **RivalryPair** (une ligne par paire non orientée, ClubKey1 / ClubKey2). Colonnes : `RivalryPair[PairLabel]`, puis une mesure **Points club 1 dans la paire** = somme des points du club ClubKey1 dans **tous** les matchs de la paire (sens A→B et B→A). Idem **Points club 2 dans la paire** pour ClubKey2. Colonne optionnelle : différence de buts ou « vainqueur » (texte). Trier par points ou par libellé.
 
 **Option B — Matrice « qui bat qui »**  
 Il faut **deux dimensions** (club en ligne, club en colonne). Power BI ne permet pas facilement d’utiliser deux fois la même table avec des rôles différents pour Lignes et Colonnes avec une mesure qui dépend des deux. **Contournement :** créer une table **DimClubOpponent** = copie de DimClub (ou même table avec un rôle « Adversaire »). Lignes = DimClub[ClubName], Colonnes = DimClubOpponent[ClubName], Valeur = mesure qui, pour le club ligne et le club colonne, renvoie les points du club ligne dans les matchs les opposant. Cette mesure nécessite de connaître « club ligne » et « club colonne » : utiliser MAX(DimClub[ClubKey]) et MAX(DimClubOpponent[ClubKey]) si les deux tables sont dans le contexte (relations vers FactClubMatch / DimMatch à gérer).
 
-**Mesure pour Option A (points du club domicile dans la paire) :**
+**Mesures pour Option A (points de chaque club dans la paire, tous matchs confondus) :**
 
 ```dax
-Points Home in Rivalry =
-CALCULATE(
-    SUM(FactClubMatch[Points]),
-    FactClubMatch[ClubKey] = MAX(RivalryPair[HomeClubKey]),
-    FILTER(DimMatch,
-        DimMatch[HomeClubKey] = MAX(RivalryPair[HomeClubKey])
-            && DimMatch[AwayClubKey] = MAX(RivalryPair[AwayClubKey]))
-)
-Points Away in Rivalry =
-CALCULATE(
-    SUM(FactClubMatch[Points]),
-    FactClubMatch[ClubKey] = MAX(RivalryPair[AwayClubKey]),
-    FILTER(DimMatch,
-        DimMatch[HomeClubKey] = MAX(RivalryPair[HomeClubKey])
-            && DimMatch[AwayClubKey] = MAX(RivalryPair[AwayClubKey]))
-)
+Points Club1 in Rivalry =
+VAR C1 = MAX(RivalryPair[ClubKey1])
+VAR C2 = MAX(RivalryPair[ClubKey2])
+RETURN
+    CALCULATE(
+        SUM(FactClubMatch[Points]),
+        FactClubMatch[ClubKey] = C1,
+        FILTER(DimMatch,
+            (DimMatch[HomeClubKey] = C1 && DimMatch[AwayClubKey] = C2)
+                || (DimMatch[HomeClubKey] = C2 && DimMatch[AwayClubKey] = C1))
+    )
+Points Club2 in Rivalry =
+VAR C1 = MAX(RivalryPair[ClubKey1])
+VAR C2 = MAX(RivalryPair[ClubKey2])
+RETURN
+    CALCULATE(
+        SUM(FactClubMatch[Points]),
+        FactClubMatch[ClubKey] = C2,
+        FILTER(DimMatch,
+            (DimMatch[HomeClubKey] = C1 && DimMatch[AwayClubKey] = C2)
+                || (DimMatch[HomeClubKey] = C2 && DimMatch[AwayClubKey] = C1))
+    )
 ```
 
-**Power BI — étapes (Option A) :** Visuel **Table**. Champs : `RivalryPair[PairLabel]`, `[Points Home in Rivalry]`, `[Points Away in Rivalry]`. Optionnel : colonne calculée ou mesure « Vainqueur » (si Points Home > Points Away alors "Domicile", sinon si Points Away > alors "Extérieur", sinon "Nul"). Trier par une des colonnes de points (décroissant).
+**Power BI — étapes (Option A) :** Visuel **Table**. Champs : `RivalryPair[PairLabel]`, `[Points Club1 in Rivalry]`, `[Points Club2 in Rivalry]`. Optionnel : mesure « Vainqueur » (si Points Club1 > Points Club2 alors nom Club 1, sinon si Points Club2 > alors nom Club 2, sinon "Nul"). Trier par une des colonnes de points (décroissant).
 
 ---
 

@@ -7521,11 +7521,11 @@
         "columns": [
           {
             "type": "calculatedTableColumn",
-            "name": "HomeClubKey",
+            "name": "ClubKey1",
             "dataType": "int64",
             "isNameInferred": true,
             "isDataTypeInferred": true,
-            "sourceColumn": "DimMatch[HomeClubKey]",
+            "sourceColumn": "[ClubKey1]",
             "formatString": "0",
             "lineageTag": "9c3ced32-39c2-4fa5-9364-68b8ec8c8d91",
             "summarizeBy": "count",
@@ -7538,11 +7538,11 @@
           },
           {
             "type": "calculatedTableColumn",
-            "name": "AwayClubKey",
+            "name": "ClubKey2",
             "dataType": "int64",
             "isNameInferred": true,
             "isDataTypeInferred": true,
-            "sourceColumn": "DimMatch[AwayClubKey]",
+            "sourceColumn": "[ClubKey2]",
             "formatString": "0",
             "lineageTag": "ed368441-97ff-47ae-a8d4-c4234f87cfed",
             "summarizeBy": "count",
@@ -7578,12 +7578,14 @@
               "type": "calculated",
               "expression": [
                 "",
-                "ADDCOLUMNS(",
+                "VAR PairsWithOrder = ADDCOLUMNS(",
                 "    SUMMARIZE(DimMatch, DimMatch[HomeClubKey], DimMatch[AwayClubKey]),",
-                "    \"PairLabel\",",
-                "        LOOKUPVALUE(DimClub[ClubName], DimClub[ClubKey], [HomeClubKey])",
-                "            & \" – \" & LOOKUPVALUE(DimClub[ClubName], DimClub[ClubKey], [AwayClubKey])",
-                ")"
+                "    \"ClubKey1\", IF([HomeClubKey] < [AwayClubKey], [HomeClubKey], [AwayClubKey]),",
+                "    \"ClubKey2\", IF([HomeClubKey] < [AwayClubKey], [AwayClubKey], [HomeClubKey])",
+                ")",
+                "VAR UnorderedPairs = SUMMARIZE(PairsWithOrder, [ClubKey1], [ClubKey2])",
+                "RETURN ADDCOLUMNS(UnorderedPairs, \"PairLabel\",",
+                "    LOOKUPVALUE(DimClub[ClubName], DimClub[ClubKey], [ClubKey1]) & \" – \" & LOOKUPVALUE(DimClub[ClubName], DimClub[ClubKey], [ClubKey2]))"
               ]
             }
           }
@@ -7593,17 +7595,17 @@
             "name": "Total Goals in Rivalry",
             "expression": [
               "",
-              "CALCULATE(SUM(FactClubMatch[GoalsFor]),",
-              "    FILTER(DimMatch,",
-              "        DimMatch[HomeClubKey] = MAX(RivalryPair[HomeClubKey])",
-              "            && DimMatch[AwayClubKey] = MAX(RivalryPair[AwayClubKey])))"
+              "VAR C1 = MAX(RivalryPair[ClubKey1])",
+              "VAR C2 = MAX(RivalryPair[ClubKey2])",
+              "RETURN CALCULATE(SUM(FactClubMatch[GoalsFor]),",
+              "    FILTER(DimMatch, (DimMatch[HomeClubKey] = C1 && DimMatch[AwayClubKey] = C2) || (DimMatch[HomeClubKey] = C2 && DimMatch[AwayClubKey] = C1)))"
             ],
             "formatString": "0",
             "lineageTag": "e6a3ca88-365f-4112-845e-ac33d1e6b0b0"
           },
           {
             "name": "Avg Attendance in Rivalry",
-            "expression": "CALCULATE(AVERAGE(DimMatch[Attendance]), FILTER(DimMatch, DimMatch[HomeClubKey] = MAX(RivalryPair[HomeClubKey]) && DimMatch[AwayClubKey] = MAX(RivalryPair[AwayClubKey])))",
+            "expression": "VAR C1 = MAX(RivalryPair[ClubKey1]) VAR C2 = MAX(RivalryPair[ClubKey2]) RETURN CALCULATE(AVERAGE(DimMatch[Attendance]), FILTER(DimMatch, (DimMatch[HomeClubKey] = C1 && DimMatch[AwayClubKey] = C2) || (DimMatch[HomeClubKey] = C2 && DimMatch[AwayClubKey] = C1)))",
             "lineageTag": "c68d1e31-ab53-43c8-994d-194dda9ef0cb",
             "annotations": [
               {
@@ -7616,18 +7618,85 @@
             "name": "Avg Fill Rate in Rivalry",
             "expression": [
               "",
-              "VAR HomeK = MAX(RivalryPair[HomeClubKey])",
-              "VAR AwayK = MAX(RivalryPair[AwayClubKey])",
-              "RETURN",
-              "    CALCULATE(",
-              "        AVERAGE(FactAttendance[FillRatePct]),",
-              "        FILTER(DimMatch,",
-              "            DimMatch[HomeClubKey] = HomeK && DimMatch[AwayClubKey] = AwayK),",
-              "        REMOVEFILTERS(DimClub)",
-              "    )"
+              "VAR C1 = MAX(RivalryPair[ClubKey1])",
+              "VAR C2 = MAX(RivalryPair[ClubKey2])",
+              "RETURN CALCULATE(AVERAGE(FactAttendance[FillRatePct]),",
+              "    FILTER(DimMatch, (DimMatch[HomeClubKey] = C1 && DimMatch[AwayClubKey] = C2) || (DimMatch[HomeClubKey] = C2 && DimMatch[AwayClubKey] = C1)),",
+              "    REMOVEFILTERS(DimClub))"
             ],
             "formatString": "0",
             "lineageTag": "236fbccd-a455-4729-89da-0c9102f8477b"
+          },
+          {
+            "name": "Sanctions in Rivalry (selected reasons)",
+            "expression": [
+              "VAR C1 = MAX(RivalryPair[ClubKey1])",
+              "VAR C2 = MAX(RivalryPair[ClubKey2])",
+              "VAR MatchDates = CALCULATETABLE(VALUES(DimMatch[DateKey]), FILTER(DimMatch, (DimMatch[HomeClubKey] = C1 && DimMatch[AwayClubKey] = C2) || (DimMatch[HomeClubKey] = C2 && DimMatch[AwayClubKey] = C1)))",
+              "RETURN CALCULATE(COUNTROWS(FactSanction), FILTER(FactSanction, (FactSanction[ClubKey] = C1 || FactSanction[ClubKey] = C2) && CONTAINS(MatchDates, [DateKey], FactSanction[SanctionDateKey]) && FactSanction[Reason] <> \"Accumulation of yellow cards\" && FactSanction[Reason] <> \"Controversial social media post\" && FactSanction[Reason] <> \"Late for anti-doping control\" && (FactSanction[Reason] = \"Abusive language in mixed zone\" || FactSanction[Reason] = \"Deliberate elbow strike\" || FactSanction[Reason] = \"Inappropriate gesture towards an opponent\" || FactSanction[Reason] = \"Insulting the referee\" || FactSanction[Reason] = \"On-field brawl\" || FactSanction[Reason] = \"Red card - last man foul\" || FactSanction[Reason] = \"Repeated protesting\" || FactSanction[Reason] = \"Simulation\" || FactSanction[Reason] = \"Spitting\" || FactSanction[Reason] = \"Straight red card - dangerous tackle\" || FactSanction[Reason] = \"Unsportsmanlike conduct\")))"
+            ],
+            "formatString": "0",
+            "lineageTag": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+          },
+          {
+            "name": "Points Club1 in Rivalry",
+            "expression": "VAR C1 = MAX(RivalryPair[ClubKey1]) VAR C2 = MAX(RivalryPair[ClubKey2]) RETURN CALCULATE(SUM(FactClubMatch[Points]), FactClubMatch[ClubKey] = C1, FILTER(DimMatch, (DimMatch[HomeClubKey] = C1 && DimMatch[AwayClubKey] = C2) || (DimMatch[HomeClubKey] = C2 && DimMatch[AwayClubKey] = C1)))",
+            "formatString": "0",
+            "lineageTag": "b2c3d4e5-f6a7-8901-bcde-f12345678901"
+          },
+          {
+            "name": "Points Club2 in Rivalry",
+            "expression": "VAR C1 = MAX(RivalryPair[ClubKey1]) VAR C2 = MAX(RivalryPair[ClubKey2]) RETURN CALCULATE(SUM(FactClubMatch[Points]), FactClubMatch[ClubKey] = C2, FILTER(DimMatch, (DimMatch[HomeClubKey] = C1 && DimMatch[AwayClubKey] = C2) || (DimMatch[HomeClubKey] = C2 && DimMatch[AwayClubKey] = C1)))",
+            "formatString": "0",
+            "lineageTag": "c3d4e5f6-a7b8-9012-cdef-123456789012"
+          },
+          {
+            "name": "Rivalry Match Count",
+            "expression": "VAR ClubKeys = VALUES(DimClub[ClubKey]) VAR C1 = MIN(DimClub[ClubKey]) VAR C2 = MAX(DimClub[ClubKey]) RETURN IF(COUNTROWS(ClubKeys) <> 2, BLANK(), CALCULATE(COUNTROWS(DimMatch), FILTER(DimMatch, (DimMatch[HomeClubKey] = C1 && DimMatch[AwayClubKey] = C2) || (DimMatch[HomeClubKey] = C2 && DimMatch[AwayClubKey] = C1))))",
+            "formatString": "0",
+            "lineageTag": "d4e5f6a7-b8c9-0123-def0-234567890123"
+          },
+          {
+            "name": "Rivalry Wins Club1",
+            "expression": "VAR C1 = MIN(DimClub[ClubKey]) VAR C2 = MAX(DimClub[ClubKey]) RETURN IF(COUNTROWS(VALUES(DimClub[ClubKey])) <> 2, BLANK(), CALCULATE(COUNTROWS(FactClubMatch), FactClubMatch[Result] = \"W\", FactClubMatch[ClubKey] = C1, FILTER(DimMatch, (DimMatch[HomeClubKey] = C1 && DimMatch[AwayClubKey] = C2) || (DimMatch[HomeClubKey] = C2 && DimMatch[AwayClubKey] = C1))))",
+            "formatString": "0",
+            "lineageTag": "e5f6a7b8-c9d0-1234-ef01-345678901234"
+          },
+          {
+            "name": "Rivalry Wins Club2",
+            "expression": "VAR C1 = MIN(DimClub[ClubKey]) VAR C2 = MAX(DimClub[ClubKey]) RETURN IF(COUNTROWS(VALUES(DimClub[ClubKey])) <> 2, BLANK(), CALCULATE(COUNTROWS(FactClubMatch), FactClubMatch[Result] = \"W\", FactClubMatch[ClubKey] = C2, FILTER(DimMatch, (DimMatch[HomeClubKey] = C1 && DimMatch[AwayClubKey] = C2) || (DimMatch[HomeClubKey] = C2 && DimMatch[AwayClubKey] = C1))))",
+            "formatString": "0",
+            "lineageTag": "f6a7b8c9-d0e1-2345-f012-456789012345"
+          },
+          {
+            "name": "Rivalry Draws",
+            "expression": "VAR C1 = MIN(DimClub[ClubKey]) VAR C2 = MAX(DimClub[ClubKey]) RETURN IF(COUNTROWS(VALUES(DimClub[ClubKey])) <> 2, BLANK(), CALCULATE(COUNTROWS(DimMatch), FILTER(DimMatch, (DimMatch[HomeClubKey] = C1 && DimMatch[AwayClubKey] = C2) || (DimMatch[HomeClubKey] = C2 && DimMatch[AwayClubKey] = C1), CALCULATE(SUM(FactClubMatch[Points]), FactClubMatch[ClubKey] = C1) = 1)))",
+            "formatString": "0",
+            "lineageTag": "a7b8c9d0-e1f2-3456-0123-567890123456"
+          },
+          {
+            "name": "Rivalry Goals Club1",
+            "expression": "VAR C1 = MIN(DimClub[ClubKey]) VAR C2 = MAX(DimClub[ClubKey]) RETURN IF(COUNTROWS(VALUES(DimClub[ClubKey])) <> 2, BLANK(), CALCULATE(SUM(FactClubMatch[GoalsFor]), FactClubMatch[ClubKey] = C1, FILTER(DimMatch, (DimMatch[HomeClubKey] = C1 && DimMatch[AwayClubKey] = C2) || (DimMatch[HomeClubKey] = C2 && DimMatch[AwayClubKey] = C1))))",
+            "formatString": "0",
+            "lineageTag": "b8c9d0e1-f2a3-4567-1234-678901234567"
+          },
+          {
+            "name": "Rivalry Goals Club2",
+            "expression": "VAR C1 = MIN(DimClub[ClubKey]) VAR C2 = MAX(DimClub[ClubKey]) RETURN IF(COUNTROWS(VALUES(DimClub[ClubKey])) <> 2, BLANK(), CALCULATE(SUM(FactClubMatch[GoalsFor]), FactClubMatch[ClubKey] = C2, FILTER(DimMatch, (DimMatch[HomeClubKey] = C1 && DimMatch[AwayClubKey] = C2) || (DimMatch[HomeClubKey] = C2 && DimMatch[AwayClubKey] = C1))))",
+            "formatString": "0",
+            "lineageTag": "c9d0e1f2-a3b4-5678-2345-789012345678"
+          },
+          {
+            "name": "Rivalry Points Club1",
+            "expression": "VAR C1 = MIN(DimClub[ClubKey]) VAR C2 = MAX(DimClub[ClubKey]) RETURN IF(COUNTROWS(VALUES(DimClub[ClubKey])) <> 2, BLANK(), CALCULATE(SUM(FactClubMatch[Points]), FactClubMatch[ClubKey] = C1, FILTER(DimMatch, (DimMatch[HomeClubKey] = C1 && DimMatch[AwayClubKey] = C2) || (DimMatch[HomeClubKey] = C2 && DimMatch[AwayClubKey] = C1))))",
+            "formatString": "0",
+            "lineageTag": "d0e1f2a3-b4c5-6789-3456-890123456789"
+          },
+          {
+            "name": "Rivalry Points Club2",
+            "expression": "VAR C1 = MIN(DimClub[ClubKey]) VAR C2 = MAX(DimClub[ClubKey]) RETURN IF(COUNTROWS(VALUES(DimClub[ClubKey])) <> 2, BLANK(), CALCULATE(SUM(FactClubMatch[Points]), FactClubMatch[ClubKey] = C2, FILTER(DimMatch, (DimMatch[HomeClubKey] = C1 && DimMatch[AwayClubKey] = C2) || (DimMatch[HomeClubKey] = C2 && DimMatch[AwayClubKey] = C1))))",
+            "formatString": "0",
+            "lineageTag": "e1f2a3b4-c5d6-7890-4567-901234567890"
           }
         ],
         "annotations": [
