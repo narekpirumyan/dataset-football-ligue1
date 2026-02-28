@@ -268,7 +268,8 @@ in AddKey
   2. **Merge** with **Staging_Players**: left = current table (DimPlayer base), right = **Staging_Players**; join on **PlayerId** = **player_id** (or the player_id column name in Staging_Players). Join kind: **Left Outer** (keep all players even if not in Excel).  
   3. Expand the merged column: check only **Age**, **Nationality**, **Salary**, **MarketValue** (uncheck “Select all”; use original column names or rename to these).  
   4. Set types: PlayerKey Whole Number, PlayerId Text, FullName Text, Position Text, Age Whole Number, Nationality Text, Salary Decimal, MarketValue Decimal.  
-- **Output:** PlayerKey, PlayerId, FullName, Position, Age, Nationality, Salary, MarketValue.
+  5. **Dédoublonnage des FullName :** Si plusieurs joueurs partagent le même **FullName** (ex. homonymes), ajouter une colonne **FullName** unique en suffixant la nationalité entre parenthèses pour les doublons uniquement : grouper par FullName (count), fusionner le count, puis `FullNameUnique = if [Count] > 1 then [FullName] & " (" & (if [Nationality] = null or [Nationality] = "" then "?" else [Nationality]) & ")" else [FullName]`, supprimer Count et l’ancien FullName, renommer FullNameUnique en FullName. Ainsi les slicers et mesures basées sur FullName restent sans ambiguïté (cf. Data_Model.bim, requête DimPlayer).  
+- **Output:** PlayerKey, PlayerId, FullName (unique par joueur, avec nationalité entre parenthèses en cas de doublon), Position, Age, Nationality, Salary, MarketValue.
 
 ---
 
