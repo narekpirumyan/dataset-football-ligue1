@@ -15,10 +15,7 @@
   "thirdLevelElements": "#404040",
   "fourthLevelElements": "#808080",
   "background": "#FFFFFF",
-  "secondaryBackground": [{    
-    "color": { "solid": { "color": "#FFFFFF" } },
-    "transparency": 43
-  }],
+  "secondaryBackground": "#00A3E0",
   "tableAccent": "#0066CC",
   "good": "#1AAB40",
   "neutral": "#FFC107",
@@ -89,10 +86,10 @@
     },
     "card": {
       "*": {
-        "background": [{ "show": true, "color": { "solid": { "color": "#FFFFFF" } }, "transparency": 43 }],
+        "background": [{ "show": true, "color": { "solid": { "color": "#00A3E0" } }, "transparency": 0 }],
         "border": [{ "show": true, "color": { "solid": { "color": "#E0E0E0" } }, "radius": 4, "borderWidth": 1 }],
-        "categoryLabel": [{ "fontColor": { "solid": { "color": "#404040" } } }],
-        "callout": [{ "fontColor": { "solid": { "color": "#1a1a1a" } } }]
+        "categoryLabel": [{ "fontColor": { "solid": { "color": "#E0F0FF" } } }],
+        "callout": [{ "fontColor": { "solid": { "color": "#E0F0FF" } } }]
       }
     },
     "kpi": {
