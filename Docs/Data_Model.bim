@@ -7670,7 +7670,7 @@
           },
           {
             "name": "Rivalry Draws",
-            "expression": "VAR C1 = MIN(DimClub[ClubKey]) VAR C2 = MAX(DimClub[ClubKey]) RETURN IF(COUNTROWS(VALUES(DimClub[ClubKey])) <> 2, BLANK(), CALCULATE(COUNTROWS(DimMatch), FILTER(DimMatch, (DimMatch[HomeClubKey] = C1 && DimMatch[AwayClubKey] = C2) || (DimMatch[HomeClubKey] = C2 && DimMatch[AwayClubKey] = C1), CALCULATE(SUM(FactClubMatch[Points]), FactClubMatch[ClubKey] = C1) = 1)))",
+            "expression": "VAR C1 = MIN(DimClub[ClubKey]) VAR C2 = MAX(DimClub[ClubKey]) RETURN IF(COUNTROWS(VALUES(DimClub[ClubKey])) <> 2, BLANK(), CALCULATE(COUNTROWS(DimMatch), FILTER(DimMatch, ((DimMatch[HomeClubKey] = C1 && DimMatch[AwayClubKey] = C2) || (DimMatch[HomeClubKey] = C2 && DimMatch[AwayClubKey] = C1)) && CALCULATE(SUM(FactClubMatch[Points]), FactClubMatch[ClubKey] = C1) = 1)))",
             "formatString": "0",
             "lineageTag": "a7b8c9d0-e1f2-3456-0123-567890123456"
           },

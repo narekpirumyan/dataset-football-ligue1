@@ -122,9 +122,9 @@ RETURN
         CALCULATE(
             COUNTROWS(DimMatch),
             FILTER(DimMatch,
-                (DimMatch[HomeClubKey] = C1 && DimMatch[AwayClubKey] = C2)
-                    || (DimMatch[HomeClubKey] = C2 && DimMatch[AwayClubKey] = C1),
-                CALCULATE(SUM(FactClubMatch[Points]), FactClubMatch[ClubKey] = C1) = 1
+                ((DimMatch[HomeClubKey] = C1 && DimMatch[AwayClubKey] = C2)
+                    || (DimMatch[HomeClubKey] = C2 && DimMatch[AwayClubKey] = C1))
+                && CALCULATE(SUM(FactClubMatch[Points]), FactClubMatch[ClubKey] = C1) = 1
             )
         ))
 ```
