@@ -86,7 +86,7 @@
     },
     "card": {
       "*": {
-        "background": [{ "show": true, "color": { "solid": { "color": "#FFFFFF" } }, "transparency": 43 }],
+        "background": [{ "show": false, "color": { "solid": { "color": "#FFFFFF" } }, "transparency": 43 }],
         "border": [{ "show": true, "color": { "solid": { "color": "#E0E0E0" } }, "radius": 4, "borderWidth": 1 }],
         "categoryLabel": [{ "fontColor": { "solid": { "color": "#404040" } } }],
         "callout": [{ "fontColor": { "solid": { "color": "#1a1a1a" } } }]
