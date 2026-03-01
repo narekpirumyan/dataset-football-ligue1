@@ -4350,6 +4350,22 @@
                 "value": "Automatic"
               }
             ]
+          },
+          {
+            "type": "calculated",
+            "name": "HomeClubName",
+            "dataType": "string",
+            "expression": "LOOKUPVALUE(DimClub[ClubName], DimClub[ClubKey], DimMatch[HomeClubKey])",
+            "lineageTag": "a1b2c3d4-homeclubname-dimmatch",
+            "summarizeBy": "none"
+          },
+          {
+            "type": "calculated",
+            "name": "AwayClubName",
+            "dataType": "string",
+            "expression": "LOOKUPVALUE(DimClub[ClubName], DimClub[ClubKey], DimMatch[AwayClubKey])",
+            "lineageTag": "b2c3d4e5-awayclubname-dimmatch",
+            "summarizeBy": "none"
           }
         ],
         "partitions": [
@@ -4388,6 +4404,23 @@
             "expression": "COUNTROWS(DimMatch)",
             "formatString": "0",
             "lineageTag": "2e84e157-3360-4f0a-a416-e5a380f1b6d1"
+          },
+          {
+            "name": "Goals Home",
+            "expression": "CALCULATE(SUM(FactClubMatch[GoalsFor]), FactClubMatch[ClubKey] = MAX(DimMatch[HomeClubKey]))",
+            "formatString": "0",
+            "lineageTag": "c3d4e5f6-goalshome-dimmatch"
+          },
+          {
+            "name": "Goals Away",
+            "expression": "CALCULATE(SUM(FactClubMatch[GoalsFor]), FactClubMatch[ClubKey] = MAX(DimMatch[AwayClubKey]))",
+            "formatString": "0",
+            "lineageTag": "d4e5f6a7-goalsaway-dimmatch"
+          },
+          {
+            "name": "Is Rivalry Match",
+            "expression": "VAR SelectedKeys = VALUES(DimClub[ClubKey]) VAR HomeKey = MAX(DimMatch[HomeClubKey]) VAR AwayKey = MAX(DimMatch[AwayClubKey]) RETURN COUNTROWS(SelectedKeys) = 2 && CONTAINS(SelectedKeys, DimClub[ClubKey], HomeKey) && CONTAINS(SelectedKeys, DimClub[ClubKey], AwayKey) && HomeKey <> AwayKey",
+            "lineageTag": "e5f6a7b8-isrivalrymatch-dimmatch"
           }
         ],
         "annotations": [
@@ -7697,6 +7730,37 @@
             "expression": "VAR C1 = MIN(DimClub[ClubKey]) VAR C2 = MAX(DimClub[ClubKey]) RETURN IF(COUNTROWS(VALUES(DimClub[ClubKey])) <> 2, BLANK(), CALCULATE(SUM(FactClubMatch[Points]), FactClubMatch[ClubKey] = C2, FILTER(DimMatch, (DimMatch[HomeClubKey] = C1 && DimMatch[AwayClubKey] = C2) || (DimMatch[HomeClubKey] = C2 && DimMatch[AwayClubKey] = C1))))",
             "formatString": "0",
             "lineageTag": "e1f2a3b4-c5d6-7890-4567-901234567890"
+          },
+          {
+            "name": "Rivalry Head-to-Head Cards HTML",
+            "expression": [
+              "VAR vMatchCount = COALESCE([Rivalry Match Count], 0)",
+              "VAR vWins1 = COALESCE([Rivalry Wins Club1], 0)",
+              "VAR vWins2 = COALESCE([Rivalry Wins Club2], 0)",
+              "VAR vDraws = COALESCE([Rivalry Draws], 0)",
+              "VAR vGoals1 = COALESCE([Rivalry Goals Club1], 0)",
+              "VAR vGoals2 = COALESCE([Rivalry Goals Club2], 0)",
+              "VAR vTotalGoals = vGoals1 + vGoals2",
+              "VAR vMc = IF(vMatchCount = 0, \"0\", FORMAT(vMatchCount, \"0\"))",
+              "VAR vW1 = IF(vWins1 = 0, \"0\", FORMAT(vWins1, \"0\"))",
+              "VAR vW2 = IF(vWins2 = 0, \"0\", FORMAT(vWins2, \"0\"))",
+              "VAR vDr = IF(vDraws = 0, \"0\", FORMAT(vDraws, \"0\"))",
+              "VAR vTg = IF(vTotalGoals = 0, \"0\", FORMAT(vTotalGoals, \"0\"))",
+              "RETURN",
+              "IF(",
+              "    COUNTROWS(VALUES(DimClub[ClubKey])) <> 2,",
+              "    \"<div style='font-family:Segoe UI;padding:12px;color:#808080;'>Sélectionnez exactement 2 clubs</div>\",",
+              "    \"<style>.rival-cards{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:0;padding:10px;font-family:Segoe UI,sans-serif;}.rival-card{flex:1 1 90px;min-width:70px;max-width:120px;padding:12px 8px;border-radius:8px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.1);background:#fff;border:1px solid #E0E0E0;}.rival-card .val{font-size:22px;font-weight:700;color:#1a1a1a;}.rival-card .lbl{font-size:10px;color:#404040;margin-top:4px;}</style>\" &",
+              "    \"<div class='rival-cards'>\" &",
+              "    \"<div class='rival-card'><div class='val'>\" & vMc & \"</div><div class='lbl'>Matchs</div></div>\" &",
+              "    \"<div class='rival-card'><div class='val'>\" & vW1 & \"</div><div class='lbl'>Victoires Club 1</div></div>\" &",
+              "    \"<div class='rival-card'><div class='val'>\" & vW2 & \"</div><div class='lbl'>Victoires Club 2</div></div>\" &",
+              "    \"<div class='rival-card'><div class='val'>\" & vDr & \"</div><div class='lbl'>Nuls</div></div>\" &",
+              "    \"<div class='rival-card'><div class='val'>\" & vTg & \"</div><div class='lbl'>Total buts</div></div>\" &",
+              "    \"</div>\"",
+              ")"
+            ],
+            "lineageTag": "f2a3b4c5-rivalry-html-cards"
           }
         ],
         "annotations": [

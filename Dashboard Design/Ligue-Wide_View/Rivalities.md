@@ -111,6 +111,42 @@ RETURN
         )))
 ```
 
+**Visuel HTML Content (cartes W–D–L + total buts en une seule visualisation)**  
+Une seule mesure renvoie le HTML affichant **5 cartes** : Matchs, Victoires Club 1, Victoires Club 2, Nuls, **Total buts**. À utiliser dans un visuel **HTML Content**. Pour éviter l’affichage « - » ou vide lorsqu’une valeur est 0, chaque valeur est gérée avec `COALESCE(..., 0)` et un affichage explicite de `"0"` quand la valeur est 0. Si moins de 2 ou plus de 2 clubs sont sélectionnés, un message invite à sélectionner exactement 2 clubs.
+
+```dax
+Rivalry Head-to-Head Cards HTML =
+VAR vMatchCount = COALESCE([Rivalry Match Count], 0)
+VAR vWins1 = COALESCE([Rivalry Wins Club1], 0)
+VAR vWins2 = COALESCE([Rivalry Wins Club2], 0)
+VAR vDraws = COALESCE([Rivalry Draws], 0)
+VAR vGoals1 = COALESCE([Rivalry Goals Club1], 0)
+VAR vGoals2 = COALESCE([Rivalry Goals Club2], 0)
+VAR vTotalGoals = vGoals1 + vGoals2
+VAR vMc = IF(vMatchCount = 0, "0", FORMAT(vMatchCount, "0"))
+VAR vW1 = IF(vWins1 = 0, "0", FORMAT(vWins1, "0"))
+VAR vW2 = IF(vWins2 = 0, "0", FORMAT(vWins2, "0"))
+VAR vDr = IF(vDraws = 0, "0", FORMAT(vDraws, "0"))
+VAR vTg = IF(vTotalGoals = 0, "0", FORMAT(vTotalGoals, "0"))
+RETURN
+    IF(
+        COUNTROWS(VALUES(DimClub[ClubKey])) <> 2,
+        "<div style='font-family:Segoe UI;padding:12px;color:#808080;'>Sélectionnez exactement 2 clubs</div>",
+        "<style>...</style>"
+        & "<div class='rival-cards'>"
+        & "<div class='rival-card'><div class='val'>" & vMc & "</div><div class='lbl'>Matchs</div></div>"
+        & "<div class='rival-card'><div class='val'>" & vW1 & "</div><div class='lbl'>Victoires Club 1</div></div>"
+        & "<div class='rival-card'><div class='val'>" & vW2 & "</div><div class='lbl'>Victoires Club 2</div></div>"
+        & "<div class='rival-card'><div class='val'>" & vDr & "</div><div class='lbl'>Nuls</div></div>"
+        & "<div class='rival-card'><div class='val'>" & vTg & "</div><div class='lbl'>Total buts</div></div>"
+        & "</div>"
+    )
+```
+
+**Power BI — visuel HTML Content :** Ajouter un visuel **HTML Content**, placer la mesure **Rivalry Head-to-Head Cards HTML** (table **RivalryPair**) dans **Valeurs**. Lier le slicer « 2 clubs » au visuel. Les 5 cartes s’affichent côte à côte. Toute valeur nulle (0 match, 0 victoire, 0 nul, 0 but) s’affiche explicitement comme **0**, et non comme « - » ou vide.
+
+---
+
 Pour éviter la complexité des nuls, on peut compter simplement les matchs où **points du club 1 = 1** dans le contexte du match (une ligne FactClubMatch par club par match) :
 
 ```dax
@@ -371,26 +407,52 @@ RETURN
 
 **But :** Pour **deux clubs sélectionnés**, lister tous les matchs les opposant : date, journée, score (ou résultat W/D/L), éventuellement stade / affluence.
 
-**Prérequis :** Même slicer que pour le visuel 1 : **2 clubs** sélectionnés dans `DimClub[ClubName]` (sélection multiple). Le visuel Table est filtré par ce slicer ; il faut que les lignes affichées soient les **matchs** opposant ces deux clubs, donc la source du visuel doit être **DimMatch** (ou une table qui a une ligne par match avec Date, Matchday, domicile, extérieur, score).
+**Prérequis :** Même slicer que pour le visuel 1 : **2 clubs** sélectionnés dans `DimClub[ClubName]` (sélection multiple). Le visuel Table a pour source **DimMatch** ; pour n’afficher que les matchs entre ces deux clubs, utiliser la mesure **Is Rivalry Match** en filtre du visuel.
 
-**Champs à afficher :** Pour chaque match entre les 2 clubs : Date, Matchday, équipe à domicile, équipe à l’extérieur, buts domicile, buts extérieur, résultat.  
-- **DimMatch** fournit MatchKey, DateKey, Matchday, HomeClubKey, AwayClubKey, Stadium, Attendance.  
-- **DimDate** fournit la date affichable (via DateKey).  
-- Les noms des clubs : via **DimClub** (relation HomeClubKey / AwayClubKey). Pour avoir « Domicile » et « Extérieur » dans la même table visuelle, il faut soit deux colonnes calculées sur DimMatch (HomeClubName = LOOKUPVALUE(DimClub[ClubName], DimClub[ClubKey], DimMatch[HomeClubKey]), AwayClubName = idem), soit utiliser DimClub deux fois (rôle « Domicile » / « Extérieur ») si le visuel Table le permet.
+---
 
-**Mesures pour le score (optionnel si déjà dans FactClubMatch) :** En contexte d’une ligne DimMatch, buts domicile = CALCULATE(SUM(FactClubMatch[GoalsFor]), FactClubMatch[ClubKey] = DimMatch[HomeClubKey]). Buts extérieur = idem avec AwayClubKey.
+### Colonnes calculées (DimMatch)
 
-**Power BI — étapes :**
+Créées dans le modèle pour afficher les noms des clubs dans la table :
 
-1. Créer deux **colonnes calculées** sur **DimMatch** (si pas déjà fait) :  
-   `HomeClubName = LOOKUPVALUE(DimClub[ClubName], DimClub[ClubKey], DimMatch[HomeClubKey])`  
-   `AwayClubName = LOOKUPVALUE(DimClub[ClubName], DimClub[ClubKey], DimMatch[AwayClubKey])`
-2. Mesures pour les buts dans le contexte d’une ligne DimMatch :  
-   `Goals Home = CALCULATE(SUM(FactClubMatch[GoalsFor]), FactClubMatch[ClubKey] = MAX(DimMatch[HomeClubKey]))`  
-   `Goals Away = CALCULATE(SUM(FactClubMatch[GoalsFor]), FactClubMatch[ClubKey] = MAX(DimMatch[AwayClubKey]))`
-3. Visuel **Table**. Base = **DimMatch**. Colonnes : DimDate[Date] (ou DimMatch[Matchday]), DimMatch[HomeClubName], DimMatch[AwayClubName], [Goals Home], [Goals Away], et optionnel DimMatch[Stadium], DimMatch[Attendance].
-4. **Filtre :** Le slicer « 2 clubs » filtre DimClub ; pour que la table n’affiche que les matchs entre ces 2 clubs, DimMatch doit être filtré par HomeClubKey et AwayClubKey. Comme DimMatch est lié à DimClub via HomeClubKey et AwayClubKey, la sélection de 2 clubs dans DimClub ne filtre pas automatiquement « les matchs où Home et Away sont exactement ces 2 clubs ». Il faut un **filtre visuel** ou une **mesure** qui renvoie BLANK() pour les lignes qui ne sont pas des matchs entre les 2 clubs sélectionnés. Solution simple : **filtrer DimMatch** avec un filtre tel que « HomeClubKey est dans la liste des clubs sélectionnés ET AwayClubKey est dans la liste des clubs sélectionnés ET HomeClubKey <> AwayClubKey ». En Power BI, si le slicer est sur DimClub[ClubKey] (ou ClubName), la relation DimClub → DimMatch existe via HomeClubKey ; une seule relation est active, donc le filtre ne s’applique qu’à un côté. Pour filtrer les matchs « où les deux clubs sont ceux sélectionnés », utiliser une **mesure de filtre** : ajouter une colonne calculée sur DimMatch, ex. `IsRivalryMatch = (COUNTROWS(VALUES(DimClub[ClubKey])) = 2) && (DimMatch[HomeClubKey] IN VALUES(DimClub[ClubKey])) && (DimMatch[AwayClubKey] IN VALUES(DimClub[ClubKey])) && (DimMatch[HomeClubKey] <> DimMatch[AwayClubKey])`, puis Filtre du visuel Table : IsRivalryMatch = TRUE. (Ou créer une table dérivée / vue qui ne contient que ces matchs.)
-5. Trier par Date ou Matchday (croissant).
+```dax
+HomeClubName = LOOKUPVALUE(DimClub[ClubName], DimClub[ClubKey], DimMatch[HomeClubKey])
+AwayClubName = LOOKUPVALUE(DimClub[ClubName], DimClub[ClubKey], DimMatch[AwayClubKey])
+```
+
+---
+
+### Mesures (DimMatch)
+
+**Buts à domicile / à l’extérieur** (contexte = une ligne DimMatch) :
+
+```dax
+Goals Home = CALCULATE(SUM(FactClubMatch[GoalsFor]), FactClubMatch[ClubKey] = MAX(DimMatch[HomeClubKey]))
+Goals Away = CALCULATE(SUM(FactClubMatch[GoalsFor]), FactClubMatch[ClubKey] = MAX(DimMatch[AwayClubKey]))
+```
+
+**Filtre « match de la rivalité »** : renvoie TRUE lorsque exactement 2 clubs sont sélectionnés et que la ligne courante est un match entre ces deux clubs. À utiliser dans le **filtre du visuel Table** (Filtre sur ce visuel → **Is Rivalry Match** = TRUE).
+
+```dax
+Is Rivalry Match =
+VAR SelectedKeys = VALUES(DimClub[ClubKey])
+VAR HomeKey = MAX(DimMatch[HomeClubKey])
+VAR AwayKey = MAX(DimMatch[AwayClubKey])
+RETURN
+    COUNTROWS(SelectedKeys) = 2
+    && CONTAINS(SelectedKeys, DimClub[ClubKey], HomeKey)
+    && CONTAINS(SelectedKeys, DimClub[ClubKey], AwayKey)
+    && HomeKey <> AwayKey
+```
+
+---
+
+### Power BI — étapes
+
+1. **Colonnes et mesures** : Les colonnes calculées **HomeClubName**, **AwayClubName** et les mesures **Goals Home**, **Goals Away**, **Is Rivalry Match** sont définies sur la table **DimMatch** (voir ci‑dessus ou modèle .bim).
+2. **Visuel Table** : Source = **DimMatch**. Colonnes à ajouter : **DimMatch[Matchday]** (ou **DimDate[Date]** via la relation DateKey), **DimMatch[HomeClubName]**, **DimMatch[AwayClubName]**, **[Goals Home]**, **[Goals Away]**. Optionnel : **DimMatch[Stadium]**, **DimMatch[Attendance]**.
+3. **Filtre du visuel** : Filtre sur ce visuel → **Is Rivalry Match** = TRUE. Ainsi, lorsque l’utilisateur sélectionne exactement 2 clubs dans le slicer, la table n’affiche que les matchs entre ces deux clubs.
+4. **Tri** : Trier par **Matchday** ou **Date** (croissant).
 
 ---
 
