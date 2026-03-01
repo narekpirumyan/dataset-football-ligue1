@@ -1,10 +1,6 @@
-# Ligue 1 Dashboard — Analysis Report
-
 **Season 2023–2024 | Power BI | Star-schema data model**
 
 This report explains the approach, data model, visuals, and storytelling of the Ligue 1 dashboard. It is based on the documentation in **Dashboard Design** and **Docs**, with **Data_Model.bim** as the source of truth for the schema. For implementation details (DAX, Power Query steps, field lists), see the referenced design documents.
-
-**Document references.** Schema: `Docs/0_markdown.md`, `Data_Model.bim`. Dashboard structure: `Docs/0_POWER_BI_DASHBOARD_SPECIFICATION.md`. ETL and measures: `Docs/2_ETL_POWER_QUERY_AND_MEASURES.md`. Per-page design: `Dashboard Design/Club_View/*.md`, `Player_View/1_Player_KPI_vs_Position.md`, `Ligue-Wide_View/*.md`, `6_Visual_Charter.md`.
 
 ---
 
