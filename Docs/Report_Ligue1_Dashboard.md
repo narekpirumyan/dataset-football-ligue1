@@ -139,7 +139,3 @@ Across the report, the same model supports “drill down”: e.g. from a club’
 ---
 
 **Conclusion.** The Ligue 1 dashboard uses a single star-schema model (Data_Model.bim) fed by Power Query staging and dimensions/facts. Transformations in Power Query fix data quality and resolve keys so that the model is consistent and relationships work. Visuals are chosen per page to answer one main question (performance, squad, money, risk, fans, player comparison, league performance, style, rivalries, sanctions). The storytelling moves from results to drivers to context (club), or from comparison to average (player), or from league performance to style, rivalries, and discipline (league). Limitations include reliance on staging for quality and the need for USERELATIONSHIP and FILTER-based logic for transfers and rivalries.
-
----
-
-*For a PDF of approximately 10 pages, export this document with body font 11–12 pt and standard margins (e.g. 2.5 cm).*
