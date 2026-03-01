@@ -1,24 +1,16 @@
+# Ligue-Wide View — Sanctions
 
-**Scope — selected reasons only**
+**Purpose:** Explore what factors may influence players receiving sanctions (e.g. competition progress via matchday, player position regarding cards) and understand each club’s overall behaviour regarding sanctions.
 
-The following sections count only sanctions whose **Reason** is in this list (others, e.g. "Controversial social media post", "Late for anti-doping control", are excluded):
+**Data source:** Power BI data model — `FactSanction`, `DimClub`, `DimPlayer` (Position), `DimMatch`, `DimDate`.
 
-- Abusive language in mixed zone  
-- Accumulation of yellow cards  
-- Deliberate elbow strike  
-- Inappropriate gesture towards an opponent  
-- Insulting the referee  
-- On-field brawl  
-- Red card - last man foul  
-- Repeated protesting  
-- Simulation  
-- Spitting  
-- Straight red card - dangerous tackle  
-- Unsportsmanlike conduct  
+---
 
-Use the measure **Sanction Count (selected reasons)** below wherever a sanction count is needed; for home/away (section D) the same filter is applied in the iteration.
+## Scope — selected reasons (optional)
 
-**Base measure (use in visuals)**
+If you count only certain sanction reasons (e.g. exclude “Controversial social media post”, “Late for anti-doping control”), use a measure that filters on `FactSanction[Reason]`. The visuals below can use either **total sanctions** or **Sanction Count (selected reasons)**; the exact list of reasons is defined in the model.
+
+**Example base measure:**
 
 ```dax
 Sanction Count (selected reasons) =
@@ -26,205 +18,56 @@ CALCULATE(
     COUNTROWS(FactSanction),
     FILTER(
         FactSanction,
-        FactSanction[Reason] = "Abusive language in mixed zone"
-            || FactSanction[Reason] = "Accumulation of yellow cards"
-            || FactSanction[Reason] = "Deliberate elbow strike"
-            || FactSanction[Reason] = "Inappropriate gesture towards an opponent"
-            || FactSanction[Reason] = "Insulting the referee"
-            || FactSanction[Reason] = "On-field brawl"
-            || FactSanction[Reason] = "Red card - last man foul"
-            || FactSanction[Reason] = "Repeated protesting"
-            || FactSanction[Reason] = "Simulation"
-            || FactSanction[Reason] = "Spitting"
-            || FactSanction[Reason] = "Straight red card - dangerous tackle"
-            || FactSanction[Reason] = "Unsportsmanlike conduct"
+        FactSanction[Reason] IN { "Abusive language in mixed zone", "Accumulation of yellow cards",
+            "Deliberate elbow strike", "Inappropriate gesture towards an opponent",
+            "Insulting the referee", "On-field brawl", "Red card - last man foul",
+            "Repeated protesting", "Simulation", "Spitting",
+            "Straight red card - dangerous tackle", "Unsportsmanlike conduct" }
     )
 )
 ```
 
-Ensure spelling and case match `FactSanction[Reason]` in your model (e.g. "Unsportsmanlike conduct" vs "unsportsmanlike conduct").
+Use this measure (or a simple `COUNTROWS(FactSanction)`) in the visuals as needed.
 
 ---
 
-## A. Sanctions by club (stacked by reason)
+## 1. Bar chart — Red cards by club (Position as legend)
 
-**Visual type:** Stacked bar chart
+**Visual type:** Bar chart
 
-**Purpose:** Show total number of sanctions per club (all clubs in the league) with the possibility to see the breakdown by **reason** (each bar is stacked by sanction reason). Compare discipline across clubs and identify which reasons are most frequent per club or overall.
+**Purpose:** Show **red cards** per club, broken down by **player position** (Position). Helps explore whether certain positions (e.g. Defender, Midfielder) are more associated with red cards and how each club behaves in terms of red cards by position.
 
-**Axes and legend:**
+| Role      | Field / measure                    | Notes |
+|-----------|------------------------------------|-------|
+| **Axis (category)** | `DimClub[ClubName]`         | One bar per club (or Y-axis for horizontal bars). |
+| **Value** | Red card count                    | Count of red-card sanctions per club (e.g. filter FactSanction by SanctionType or Reason for red cards). |
+| **Legend**| `DimPlayer[Position]`             | Segment or series by **player position** (poste). Requires linking sanctions to players (FactSanction[PlayerKey] → DimPlayer). |
 
-| Role | Field | Notes |
-|------|--------|--------|
-| **Axis (category)** | `DimClub[ClubName]` | One bar per club (or use **Y-axis** for horizontal bars). |
-| **Value** | Count of sanctions | Number of rows in FactSanction per club (and per reason for the stack). |
-| **Legend** | `FactSanction[Reason]` | Stack segments by reason; each segment colour = one reason. |
+**Data:** `FactSanction` (ClubKey, PlayerKey, Reason/SanctionType), `DimClub`, `DimPlayer` (Position). If red cards are identified by Reason (e.g. “Straight red card - dangerous tackle”, “Red card - last man foul”) or by SanctionType, use a measure that counts only those rows per club and, for the legend, use `DimPlayer[Position]` so that each bar is split or coloured by position.
 
-**Data source:** `FactSanction`, `DimClub`. FactSanction must have a **Reason** (or similar) column from `disciplinary_sanctions.csv` (reason).
-
-**DAX measure:** Use **Sanction Count (selected reasons)** (defined at the top of this doc) in the **Value** well so only the selected reasons are counted. Power BI will aggregate by Club (axis) and by Reason (legend), so you get one bar per club and segments per reason (only the 12 reasons above appear).
-
-**Power BI setup:**
-
-1. Add a **Stacked bar chart** (Barres empilées) visual.
-2. **Axis** (Y for horizontal bars): `DimClub[ClubName]`.
-3. **Value** (Length): `[Sanction Count (selected reasons)]`.
-4. **Legend**: `FactSanction[Reason]` (or the column that stores the sanction reason in your model). This creates the stack: each reason is one segment.
-5. **Sort:** Optionally sort bars by total sanctions (descending) so the most sanctioned clubs appear first.
-6. Apply **Visual Charter** colours for clubs if the chart uses club on axis; for the legend (reasons), use a distinct palette so each reason is readable. Optionally use a single colour for “total” view and distinct colours per reason for the stack.
-7. **Tooltips:** Add ClubName, Reason, Sanction Count (and optionally SanctionType, SuspensionMatches, FineEuros) so users can see details on hover.
-
-**Variants:**
-
-- **100% stacked bar:** Format → set “Show as percentage of total” (or use a measure that divides count by total per club) so each bar shows the **share** of each reason per club instead of absolute counts.
-- **Drill-down:** Enable drill-down on the axis (Club) so users can drill to a lower level if you add one later (e.g. player); or add a **slicer** on Reason to filter to one or several reasons.
+**Power BI:** Bar chart → **Axis** = DimClub[ClubName], **Values** = measure (e.g. count of red-card sanctions per club), **Legend** = DimPlayer[Position]. Sort by value descending if needed.
 
 ---
 
-## B. Cumulative sanction count by matchday (line chart)
+## 2. Bar chart — Total sanctions: home vs away (all clubs)
 
-**Visual type:** Line chart (Graphique en lignes)
+**Visual type:** Bar chart
 
-**Purpose:** Show the **cumulative** number of sanctions over the season: X = matchday (1–38), Y = total sanctions counted up to that matchday. Highlights how discipline incidents accumulate across the season (league-wide or per club if filtered).
+**Purpose:** Compare **total sanctions at home** vs **away** (league-wide, all clubs). Shows whether sanctions are more frequent in home or away matches overall.
 
-**Axes:**
+| Role      | Field / measure                    | Notes |
+|-----------|------------------------------------|-------|
+| **Category** | Two categories: Home, Away       | E.g. via a small table or “Measure names” with two measures. |
+| **Value** | Home sanction count, Away sanction count | One bar for total home sanctions, one for total away sanctions. |
 
-| Role | Field | Notes |
-|------|--------|--------|
-| **X-axis** | Matchday (1–38) | One point per matchday. Use **`DimMatch[Matchday]`** on the axis; Power BI shows one category per distinct value (38 points). No need for a separate Matchday table. |
-| **Y-axis** | Cumulative sanction count | Number of sanctions with `SanctionDateKey` ≤ end of that matchday. |
+**Data:** Each sanction is attributed to the **last match of that club on or before the sanction date**; then home/away is taken from that match (DimMatch: HomeClubKey, AwayClubKey). See DAX below.
 
-**Data source:** `FactSanction` (SanctionDateKey → DimDate), `DimMatch` (Matchday, DateKey → DimDate). There is no direct relationship between FactSanction and DimMatch; use the date of the match(es) on that matchday as cutoff. Per 0_markdown.md, DimMatch has **DateKey** (FK to DimDate). To get "end of matchday N", use `MAX(DimMatch[DateKey])` for that Matchday.
-
-**Option A — Use DimMatch for the axis (recommended)**
-
-Put **`DimMatch[Matchday]`** on the X-axis. Power BI groups by distinct Matchday, so you get 38 points. For each point, the measure gets the end date of that matchday from `DimMatch` (DateKey is the match date per schema), then counts sanctions up to that date:
+**DAX (example — adapt Reason filter to your model):**
 
 ```dax
-Cumulative Sanction Count =
-VAR MatchdayVal = MAX(DimMatch[Matchday])
-VAR EndDate =
-    CALCULATE(
-        MAX(DimMatch[DateKey]),
-        ALL(DimMatch),
-        DimMatch[Matchday] = MatchdayVal
-    )
-RETURN
-    CALCULATE(
-        [Sanction Count (selected reasons)],
-        FactSanction[SanctionDateKey] <= EndDate,
-        ALL(FactSanction[SanctionDateKey])
-    )
-```
-
-**X-axis:** `DimMatch[Matchday]`. **Y-axis:** `[Cumulative Sanction Count]`. The measure above uses **Sanction Count (selected reasons)** so only the 12 reasons are cumulated. No extra table needed.
-
-*Optional:* If you prefer a dedicated dimension with exactly one row per matchday (1–38), create a small table **DimMatchday** with column **Matchday**, use it on the X-axis, and in the measure use `MAX(DimMatchday[Matchday])` instead of `MAX(DimMatch[Matchday])`; the rest of the measure stays the same.
-
-**Option B — Assign sanction to matchday in the model**
-
-In Power Query or with a calculated column, add **Matchday** to `FactSanction` by matching `SanctionDateKey` to the matchday whose match date is the first ≥ sanction date (or "end of matchday" logic). Then use a simple running total:
-
-```dax
-Cumulative Sanction Count = 
-VAR MatchdayVal = MAX(FactSanction[Matchday])
-RETURN
-    CALCULATE(
-        COUNTROWS(FactSanction),
-        FactSanction[Matchday] <= MatchdayVal,
-        ALLSELECTED(FactSanction[Matchday])
-    )
-```
-
-X-axis: the Matchday column (from a table that has one row per matchday, e.g. DimMatchday or summarized FactSanction by Matchday). Y-axis: this measure.
-
-**Power BI setup:**
-
-1. Add a **Line chart** (Graphique en lignes).
-2. **X-axis:** `DimMatch[Matchday]` (Option A) or Matchday from DimMatchday / FactSanction (Option B); ensure **one point per matchday** and sort by Matchday ascending.
-3. **Y-axis:** `[Cumulative Sanction Count]`.
-4. **Legend (optional):** Add `DimClub[ClubName]` if you want one line per club (cumulative per club); otherwise one line for the whole league.
-5. **Format:** Y-axis = Whole number; no decimals. X-axis min/max 1–38 if needed.
-6. **Tooltips:** Matchday, Cumulative Sanction Count (and ClubName if by club).
-
-**Alternating between total and breakdown (by reason / by club):**
-
-Allow users to switch between a single line (total cumulative sanctions) and multiple lines (cumulative by reason or by club) without changing the DAX measure.
-
-- **Total view:** Same line chart with **no field in Legend** → one line for league-wide cumulative count.
-- **Breakdown view:** Same line chart with **Legend** = `FactSanction[Reason]` (one line per reason) or **Legend** = `DimClub[ClubName]` (one line per club).
-
-**Implementation — Buttons + bookmarks (recommended):**
-
-1. Create the line chart in **total** mode (Legend well empty). Create a **bookmark** (e.g. "Cumul total"); in Bookmark pane, uncheck "Data" if you want the bookmark to only capture visual state.
-2. Add **Reason** (or **ClubName**) to the chart **Legend**. Create a second **bookmark** (e.g. "Cumul par raison" or "Cumul par club").
-3. Add **buttons** (Insert → Boutons) or a simple shape/segment: e.g. "Total" and "Par raison" (or "Par club"). Set each button's action to **Bookmark** → select the corresponding bookmark.
-4. Optional: add a **slicer** on Reason (or Club) so that in breakdown view users can filter to specific reasons or clubs; the cumulative measure will respect filters.
-
-No change to the cumulative measure is required; only the Legend configuration and bookmarks/buttons define the two (or more) display modes.
-
----
-
-## C. Sanction count by reason (donut chart)
-
-**Visual type:** Donut chart (Graphique en anneau)
-
-**Purpose:** Show the **distribution** of sanctions by reason across the league: one segment per reason, value = number of sanctions for that reason. Highlights which types of incidents (e.g. red cards, accumulation of yellows, simulation, unsportsmanlike conduct) are most frequent overall.
-
-**Roles:**
-
-| Role | Field | Notes |
-|------|--------|--------|
-| **Legend** (or **Axis**) | `FactSanction[Reason]` | One segment per distinct reason. |
-| **Values** | Sanction count | Number of rows in FactSanction per reason. |
-
-
-**Data source:** `FactSanction`. Use the existing **Reason** column. To restrict to the **selected reasons** only, use **Sanction Count (selected reasons)** (defined at the top of this doc) so the donut shows only those 12 reasons and their counts.
-
-**Power BI setup:**
-
-1. Add a **Donut chart** (Graphique en anneau).
-2. **Legend** (or **Axis**): `FactSanction[Reason]`.
-3. **Values:** `[Sanction Count (selected reasons)]`.
-4. **Sort:** Optionally sort by value descending so the most frequent reasons appear first.
-5. Use a **distinct palette** for reasons so each segment is readable (avoid club colours here; this is reason-based).
-6. **Tooltips:** Reason, Sanction Count, and optionally percentage of total.
-7. **Center label (optional):** Show total sanction count or "Sanctions par raison" in the center.
-
-**Note:** If there are many distinct reasons, consider showing only the top N (e.g. filter or "Top 10" in the visual) or use a slicer on Reason so users can focus on a subset.
-
----
-
-## D. Sanctions at home vs away (bar chart)
-
-**Visual type:** Bar chart (Graphique à barres) — one visual with two bars: Domicile and Extérieur.
-
-**Purpose:** Compare the **number of sanctions at home** vs **away** (league-wide or per club if filtered). No change to the data model: home/away is derived from **DimMatch** (HomeClubKey / AwayClubKey) in DAX only.
-
-**Data source:** `FactSanction` (ClubKey, SanctionDateKey), `DimMatch` (DateKey, HomeClubKey, AwayClubKey). In the source CSV, **sanction_date** is often the *decision* date (e.g. 2023-12-25, 2024-01-17), not the match date, so matching “sanction date = match date” only counts sanctions that fall exactly on a match day and gives very low totals (e.g. 5+5). We therefore attribute each sanction to the **last match of that club on or before the sanction date**, and use home/away from that match.
-
-**DAX measures (no new columns, no new tables)**
-
-Same **selected reasons** filter as at the top of this doc. For each sanction in that set we take the club’s **last match date ≤ SanctionDateKey**, then check if the club was Home or Away in that match. The iteration is over `FILTER(FactSanction, Reason = … || …)` with the same 12 reasons.
-
-```dax
-Sanctions Domicile =
+Sanctions Home =
 SUMX(
-    FILTER(
-        FactSanction,
-        FactSanction[Reason] = "Abusive language in mixed zone"
-            || FactSanction[Reason] = "Accumulation of yellow cards"
-            || FactSanction[Reason] = "Deliberate elbow strike"
-            || FactSanction[Reason] = "Inappropriate gesture towards an opponent"
-            || FactSanction[Reason] = "Insulting the referee"
-            || FactSanction[Reason] = "On-field brawl"
-            || FactSanction[Reason] = "Red card - last man foul"
-            || FactSanction[Reason] = "Repeated protesting"
-            || FactSanction[Reason] = "Simulation"
-            || FactSanction[Reason] = "Spitting"
-            || FactSanction[Reason] = "Straight red card - dangerous tackle"
-            || FactSanction[Reason] = "Unsportsmanlike conduct"
-    ),
+    FILTER(FactSanction, FactSanction[Reason] IN { "…", "…" }),  // your selected reasons or remove filter for total
     VAR LastMatchDate =
         CALCULATE(
             MAX(DimMatch[DateKey]),
@@ -238,68 +81,99 @@ SUMX(
     VAR IsHome =
         NOT ISBLANK(LastMatchDate)
         && COUNTROWS(
-            FILTER(
-                DimMatch,
+            FILTER(DimMatch,
                 DimMatch[DateKey] = LastMatchDate
-                    && DimMatch[HomeClubKey] = FactSanction[ClubKey]
-            )
+                    && DimMatch[HomeClubKey] = FactSanction[ClubKey])
         ) > 0
     RETURN IF(IsHome, 1, 0)
 )
 
-Sanctions Extérieur =
+Sanctions Away =
 SUMX(
-    FILTER(
-        FactSanction,
-        FactSanction[Reason] = "Abusive language in mixed zone"
-            || FactSanction[Reason] = "Accumulation of yellow cards"
-            || FactSanction[Reason] = "Deliberate elbow strike"
-            || FactSanction[Reason] = "Inappropriate gesture towards an opponent"
-            || FactSanction[Reason] = "Insulting the referee"
-            || FactSanction[Reason] = "On-field brawl"
-            || FactSanction[Reason] = "Red card - last man foul"
-            || FactSanction[Reason] = "Repeated protesting"
-            || FactSanction[Reason] = "Simulation"
-            || FactSanction[Reason] = "Spitting"
-            || FactSanction[Reason] = "Straight red card - dangerous tackle"
-            || FactSanction[Reason] = "Unsportsmanlike conduct"
-    ),
-    VAR LastMatchDate =
-        CALCULATE(
-            MAX(DimMatch[DateKey]),
-            FILTER(
-                DimMatch,
-                DimMatch[DateKey] <= FactSanction[SanctionDateKey]
-                    && (DimMatch[HomeClubKey] = FactSanction[ClubKey]
-                        || DimMatch[AwayClubKey] = FactSanction[ClubKey])
-            )
-        )
-    VAR IsAway =
-        NOT ISBLANK(LastMatchDate)
-        && COUNTROWS(
-            FILTER(
-                DimMatch,
-                DimMatch[DateKey] = LastMatchDate
-                    && DimMatch[AwayClubKey] = FactSanction[ClubKey]
-            )
-        ) > 0
+    FILTER(FactSanction, FactSanction[Reason] IN { "…", "…" }),
+    VAR LastMatchDate = …
+    VAR IsAway = …  // same logic with AwayClubKey
     RETURN IF(IsAway, 1, 0)
 )
 ```
 
-**Note:** If a sanction date is before the club’s first match, `LastMatchDate` is blank and that sanction is not counted in either bar. The sum of the two measures can be less than total sanctions in that case.
-
-**Power BI setup (one graph)**
-
-1. Add a **Bar chart** (Graphique à barres).
-2. **Y-axis (Category):** Add **Measure names** (Noms des mesures) — Power BI exposes this when you use several measures. This gives two categories: "Sanctions Domicile" and "Sanctions Extérieur".
-3. **X-axis (Value):** Add both measures **`[Sanctions Domicile]`** and **`[Sanctions Extérieur]`** in the **Values** well. You get one bar per measure in the same chart.
-4. **Format:** Whole numbers; optional data labels on the bars. Optionally rename the measure display names (Format → Data labels or Legend) to "Domicile" and "Extérieur".
-5. **Tooltips:** Measure name and value; optionally ClubName if a club slicer is used.
-6. **Slicer:** Add a **Club** slicer to show home/away for a selected club, or leave unfiltered for league totals.
+**Power BI:** Bar chart → **Category** = use a table with "Home" and "Away" or **Measure names** with **[Sanctions Home]** and **[Sanctions Away]**; **Values** = those two measures. One bar for home total, one for away total (all clubs).
 
 ---
 
-## E. Sanctions vs stadium fill rate (scatter plot)
+## 3. Line chart — Cumulative sanctions by matchday
 
-Ce graphique (nuage de points : sanctions vs taux de remplissage du stade, un point par match) doit être réalisé en dessous. Aucune modification de la modélisation n’est demandée.
+**Visual type:** Line chart
+
+**Purpose:** Show the **cumulative** number of sanctions over the season (X = matchday 1–38, Y = total sanctions up to that matchday). Highlights how discipline incidents accumulate as the competition progresses (e.g. tension rising with matchday).
+
+| Role      | Field / measure                    | Notes |
+|-----------|------------------------------------|-------|
+| **X-axis**| `DimMatch[Matchday]`              | One point per matchday (1–38). |
+| **Y-axis**| Cumulative sanction count          | Sanctions with SanctionDateKey ≤ end of that matchday. |
+
+**DAX (example):**
+
+```dax
+Cumulative Sanction Count =
+VAR MatchdayVal = MAX(DimMatch[Matchday])
+VAR EndDate =
+    CALCULATE(
+        MAX(DimMatch[DateKey]),
+        ALL(DimMatch),
+        DimMatch[Matchday] = MatchdayVal
+    )
+RETURN
+    CALCULATE(
+        [Sanction Count (selected reasons)],   // or COUNTROWS(FactSanction)
+        FactSanction[SanctionDateKey] <= EndDate,
+        ALL(FactSanction[SanctionDateKey])
+    )
+```
+
+**Power BI:** Line chart → **X-axis** = DimMatch[Matchday], **Y-axis** = [Cumulative Sanction Count]. Sort matchday ascending. Optional: **Legend** = DimClub[ClubName] for one line per club.
+
+---
+
+## 4. Stacked bar chart — Sanctions by club and reason
+
+**Visual type:** Stacked bar chart
+
+**Purpose:** Show **total sanctions per club** with a **breakdown by reason** (legend). Compare discipline across clubs and see which reasons (e.g. red cards, simulation, unsportsmanlike conduct) dominate per club.
+
+| Role      | Field / measure                    | Notes |
+|-----------|------------------------------------|-------|
+| **Axis (category)** | `DimClub[ClubName]`         | One bar per club. |
+| **Value** | Sanction count                    | Total sanctions per club (and per reason for the stack). |
+| **Legend**| `FactSanction[Reason]`            | Stack segments by sanction reason. |
+
+**Power BI:** Stacked bar chart → **Axis** = DimClub[ClubName], **Values** = sanction count measure (e.g. [Sanction Count (selected reasons)] or COUNTROWS(FactSanction)), **Legend** = FactSanction[Reason]. Sort by total descending if needed. Tooltips: ClubName, Reason, count.
+
+---
+
+## 5. Donut chart — Distribution of sanctions by reason
+
+**Visual type:** Donut chart
+
+**Purpose:** Show the **distribution** of the number of sanctions **by reason** (one segment per reason). Highlights which types of incidents (e.g. accumulation of yellows, red cards, simulation) are most frequent overall.
+
+| Role      | Field / measure                    | Notes |
+|-----------|------------------------------------|-------|
+| **Legend (or Axis)** | `FactSanction[Reason]`     | One segment per reason. |
+| **Values**| Sanction count                    | Number of sanctions per reason. |
+
+**Power BI:** Donut chart → **Legend** (or **Axis**) = FactSanction[Reason], **Values** = sanction count measure. Optional: sort by value descending, tooltips with reason and count (and % of total). Center label: total count or “Sanctions by reason”.
+
+---
+
+## Summary
+
+| # | Visual                    | Type               | Purpose |
+|---|---------------------------|--------------------|---------|
+| 1 | Red cards by club         | Bar chart          | Red cards per club, **Position** as legend (player position vs red cards). |
+| 2 | Home vs away              | Bar chart          | Total sanctions **home vs away** (all clubs). |
+| 3 | Cumulative by matchday    | Line chart         | **Cumulative** sanctions by matchday (competition progress). |
+| 4 | Sanctions by club & reason| Stacked bar chart  | Sanctions by **club**, stacked by **reason**. |
+| 5 | Distribution by reason    | Donut chart        | **Distribution** of sanction count **by reason**. |
+
+Together, these visuals support exploring factors that may influence sanctions (matchday, position, home/away) and each club’s overall sanction behaviour.

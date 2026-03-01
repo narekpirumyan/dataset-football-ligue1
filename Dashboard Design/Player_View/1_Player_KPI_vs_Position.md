@@ -1,57 +1,76 @@
-# Player View — Fiche joueur : KPIs vs moyenne du poste
+# Player View — Player card: KPIs vs position average
 
-**Objectif :** Afficher une **fiche** avec les KPIs d’un **joueur sélectionné** mis en face des **mêmes KPIs** avec comme valeur la **moyenne des joueurs qui ont le même poste** (Position). Permet de comparer le joueur à la moyenne de son poste (Forward, Central midfielder, etc.).
+**Purpose:** Display **9 gauge charts** that show the **sum** of each metric for the **selected player**, compared to a **reference line (target)**:
+- **Default:** The reference is the **average of all players** (displayed as the target on the gauge).
+- **With position filter:** If the user applies a **position filter** (e.g. selects "Forward"), the reference becomes the **average of players with the same position** as the selected player.
 
-**Tables :** `DimPlayer` (PlayerKey, FullName, **Position**), `FactPlayerSeason` (PlayerKey, ClubKey, Goals, Assists, MinutesPlayed, MatchesPlayed, Starts, YellowCards, RedCards, Shots, ShotsOnTarget, CleanSheets, Saves, etc.). Référence schéma : Ligue-Wide_View / 0_markdown.md.
+This allows comparing the player’s totals to the league average or to the average of their position (Forward, Central midfielder, etc.).
 
----
-
-## 1. Sélection du joueur
-
-- **Slicer** sur `DimPlayer[FullName]` (ou `DimPlayer[PlayerKey]`) avec **sélection unique** : l’utilisateur choisit un joueur.
-- Tous les visuels de la fiche sont filtrés par ce slicer (contexte = un seul joueur).
+**Tables:** `DimPlayer` (PlayerKey, FullName, **Position**), `FactPlayerSeason` (PlayerKey, ClubKey, Goals, Assists, Shots, ShotsOnTarget, Saves, RedCards, SuccessfulDribbles, Interceptions, SuccessfulTackles, etc.). Reference schema: Ligue-Wide_View / 0_markdown.md.
 
 ---
 
-## 2. KPIs à afficher (exemples)
+## 1. Player selection
 
-Choisir les indicateurs pertinents dans **FactPlayerSeason** (une ligne par joueur par saison), par exemple :
-
-| KPI | Champ FactPlayerSeason | Unité |
-|-----|------------------------|-------|
-| Buts | Goals | entier |
-| Passes décisives | Assists | entier |
-| Minutes jouées | MinutesPlayed | entier |
-| Matchs joués | MatchesPlayed | entier |
-| Titularisations | Starts | entier |
-| Cartons jaunes | YellowCards | entier |
-| Cartons rouges | RedCards | entier |
-| Tirs | Shots | entier |
-| Tirs cadrés | ShotsOnTarget | entier |
-| Clean sheets | CleanSheets | entier (gardien) |
-| Arrêts | Saves | entier (gardien) |
-| Dribbles réussis | SuccessfulDribbles | décimal |
-| Interceptions | Interceptions | décimal |
-| Tacles réussis | SuccessfulTackles | décimal |
+- **Slicer** on `DimPlayer[FullName]` (or `DimPlayer[PlayerKey]`) with **single selection**: the user selects one player.
+- All visuals on the card are filtered by this slicer (context = one player).
+- **Optional:** A **position filter** (slicer or filter on `DimPlayer[Position]`). When the user applies it, the gauge min, max, and target (reference line) use **same-position** averages and bounds instead of **all-players**.
 
 ---
 
-## 3. Mesures DAX
+## 2. The 9 gauge charts (metrics)
 
-Pour chaque KPI, il faut **deux mesures** : une pour la **valeur du joueur sélectionné**, une pour la **moyenne du poste**.
+There are **9 gauge charts**, one per metric. Each gauge shows:
 
-**Valeur du joueur (contexte = 1 joueur sélectionné)**  
-En contexte d’un seul joueur, les mesures standards suffisent (le filtre du slicer restreint déjà à ce joueur) :
+- **Value (needle):** The **sum** of that metric for the **selected player** over the filtered period (e.g. season).
+- **Target (reference line):** The **average** of that metric — either over **all players** or over **players with the same position** if the position filter is applied. This average is displayed as the “target” on the gauge for visual comparison (it is a reference, not a goal to reach).
+- **Min / Max (scale):** The scale bounds — either **global** (min/max over all players) or **same position** (min/max over players with the same position), consistent with the target.
+
+| # | Metric           | FactPlayerSeason field   | Gauge value (player) | Target (reference)      |
+|---|------------------|---------------------------|-----------------------|--------------------------|
+| 1 | Saves            | Saves                     | SUM (selected player) | Avg all / same position  |
+| 2 | Interceptions    | Interceptions             | SUM (selected player) | Avg all / same position  |
+| 3 | Shots            | Shots                     | SUM (selected player) | Avg all / same position  |
+| 4 | Shots on target  | ShotsOnTarget             | SUM (selected player) | Avg all / same position  |
+| 5 | Goals            | Goals                     | SUM (selected player) | Avg all / same position  |
+| 6 | Assists          | Assists                   | SUM (selected player) | Avg all / same position  |
+| 7 | Dribbles         | SuccessfulDribbles        | SUM (selected player) | Avg all / same position  |
+| 8 | Tackles          | SuccessfulTackles         | SUM (selected player) | Avg all / same position  |
+| 9 | Red cards        | RedCards                  | SUM (selected player) | Avg all / same position  |
+
+---
+
+## 3. DAX measures
+
+For each of the 9 metrics, you need:
+
+1. **Player value (gauge value):** Sum of the metric for the selected player.
+2. **Average (target / reference line):** Average over all players, or over same-position players when the position filter is applied.
+3. **Min / Max (gauge scale):** Global or same-position, depending on the same logic.
+
+**Player value (context = 1 player selected)** — use as the gauge **Value**:
 
 ```dax
-Player Goals = SUM(FactPlayerSeason[Goals])
-Player Assists = SUM(FactPlayerSeason[Assists])
-Player MinutesPlayed = SUM(FactPlayerSeason[MinutesPlayed])
-// … idem pour les autres KPIs (SUM pour les totaux saison)
+Player Saves     = SUM(FactPlayerSeason[Saves])
+Player Interceptions = SUM(FactPlayerSeason[Interceptions])
+Player Shots     = SUM(FactPlayerSeason[Shots])
+Player ShotsOnTarget = SUM(FactPlayerSeason[ShotsOnTarget])
+Player Goals     = SUM(FactPlayerSeason[Goals])
+Player Assists   = SUM(FactPlayerSeason[Assists])
+Player Dribbles  = SUM(FactPlayerSeason[SuccessfulDribbles])
+Player Tackles   = SUM(FactPlayerSeason[SuccessfulTackles])
+Player RedCards  = SUM(FactPlayerSeason[RedCards])
 ```
 
-**Moyenne du poste (même Position que le joueur sélectionné)**  
-On calcule la moyenne du KPI sur **tous les joueurs ayant le même poste** que le joueur sélectionné (y compris le joueur lui‑même, pour une moyenne « du poste »). On retire le filtre joueur puis on filtre par Position :
+**Average — all players (target when no position filter):**
+
+```dax
+Avg Saves All = CALCULATE(AVERAGE(FactPlayerSeason[Saves]), ALL(DimPlayer))
+Avg Interceptions All = CALCULATE(AVERAGE(FactPlayerSeason[Interceptions]), ALL(DimPlayer))
+// … same pattern for Shots, ShotsOnTarget, Goals, Assists, SuccessfulDribbles, SuccessfulTackles, RedCards
+```
+
+**Average — same position (target when position filter is applied):**
 
 ```dax
 Avg Goals Same Position =
@@ -67,91 +86,58 @@ RETURN
     )
 ```
 
-*Explication :* `SELECTEDVALUE(DimPlayer[Position])` donne le poste du joueur sélectionné. `CALCULATE(AVERAGE(…), FILTER(DimPlayer, DimPlayer[Position] = CurrentPosition))` supprime le filtre « un seul joueur » et ne garde que le filtre « même poste », donc on moyenne sur tous les joueurs de ce poste (FactPlayerSeason a une ligne par joueur par saison, donc AVERAGE par joueur puis moyenne entre joueurs selon le grain — si une ligne par joueur/saison, AVERAGE(FactPlayerSeason[Goals]) sur ce filtre donne la moyenne des Goals par joueur de ce poste).
+Repeat the same pattern for each of the 9 metrics (Saves, Interceptions, Shots, ShotsOnTarget, Goals, Assists, SuccessfulDribbles, SuccessfulTackles, RedCards). You can use one parameter or two measures (Avg … All vs Avg … Same Position) and choose the target in the gauge based on whether a position filter is active.
 
-Si **FactPlayerSeason** a une ligne par joueur par saison, la moyenne « par poste » peut être :
-- **Moyenne des totaux joueur** : `AVERAGEX(VALUES(DimPlayer[PlayerKey]), CALCULATE(SUM(FactPlayerSeason[Goals])))` dans le contexte FILTER(DimPlayer, Position = CurrentPosition), ou plus simple si une ligne par joueur : `CALCULATE(AVERAGE(FactPlayerSeason[Goals]), FILTER(DimPlayer, DimPlayer[Position] = CurrentPosition))` (chaque ligne FactPlayerSeason = un joueur, donc AVERAGE = moyenne des Goals des joueurs du poste).
+**Min / Max for gauge scale:**
 
-Exemple pour les autres KPIs :
+- **Global:** e.g. `Min Goals All = CALCULATE(MIN(FactPlayerSeason[Goals]), ALL(DimPlayer))`, `Max Goals All = CALCULATE(MAX(FactPlayerSeason[Goals]), ALL(DimPlayer))`.
+- **Same position:** e.g. `Min Goals Same Position = CALCULATE(MIN(FactPlayerSeason[Goals]), FILTER(DimPlayer, DimPlayer[Position] = SELECTEDVALUE(DimPlayer[Position])))`, and similarly for Max.
 
-```dax
-Avg Assists Same Position =
-VAR CurrentPosition = SELECTEDVALUE(DimPlayer[Position])
-RETURN
-    IF(ISBLANK(CurrentPosition), BLANK(),
-        CALCULATE(AVERAGE(FactPlayerSeason[Assists]),
-            FILTER(DimPlayer, DimPlayer[Position] = CurrentPosition)))
-
-Avg MinutesPlayed Same Position =
-VAR CurrentPosition = SELECTEDVALUE(DimPlayer[Position])
-RETURN
-    IF(ISBLANK(CurrentPosition), BLANK(),
-        CALCULATE(AVERAGE(FactPlayerSeason[MinutesPlayed]),
-            FILTER(DimPlayer, DimPlayer[Position] = CurrentPosition)))
-```
-
-Répéter le même pattern pour chaque KPI (Starts, YellowCards, Shots, etc.).
+Use the same logic for all 9 metrics so that when the user applies the position filter, the gauge scale and target switch to same-position min/max and average.
 
 ---
 
-## 4. Jauges par KPI (min, max, moyenne en repère)
+## 4. Gauge chart configuration (per metric)
 
-Pour chaque KPI, une **jauge** affiche la valeur du joueur sélectionné avec un repère visuel par rapport à l’échelle et à la moyenne.
+For **each of the 9 gauges**:
 
-**Comportement des jauges :**
+| Gauge element   | Role |
+|-----------------|------|
+| **Value**       | Player measure (sum for selected player): e.g. `[Player Goals]`, `[Player Saves]`, etc. |
+| **Target**      | Average used as reference line: **average of all players** by default, or **average of same position** when the position filter is applied. |
+| **Min**         | Min of the metric — global or same position (same choice as target). |
+| **Max**         | Max of the metric — global or same position (same choice as target). |
 
-- **Valeur affichée :** celle du joueur (mesures « Player … », ex. `[Player Goals]`).
-- **Min et Max de l’échelle :** définissent les bornes de la jauge. Deux modes possibles (paramétrable, ex. slicer ou paramètre) :
-  - **Global :** min et max calculés sur **tous les joueurs** (ex. `MIN(FactPlayerSeason[Goals])` et `MAX(FactPlayerSeason[Goals])` en `ALL(DimPlayer)` ou équivalent).
-  - **Même poste :** min et max calculés uniquement parmi les joueurs ayant le **même poste** que le joueur sélectionné (même logique que les mesures « Avg … Same Position », avec `MIN` / `MAX` au lieu de `AVERAGE`).
-- **Ligne « objectif » (repère) :** la **moyenne** (globale ou du poste, selon le même choix que min/max) est affichée comme **ligne de référence** (constant line / objectif) sur la jauge. Ce n’est **pas un objectif à atteindre** : le but est d’avoir un **trait comme repère** pour comparer visuellement la valeur du joueur à cette moyenne.
-
-**Résumé :**
-
-| Élément jauge | Option « Global » | Option « Même poste » |
-|---------------|-------------------|------------------------|
-| Min | Min du KPI sur tous les joueurs | Min du KPI sur les joueurs du même poste |
-| Max | Max du KPI sur tous les joueurs | Max du KPI sur les joueurs du même poste |
-| Ligne repère | Moyenne du KPI (tous les joueurs) | Moyenne du KPI (même poste) — ex. `[Avg Goals Same Position]` |
-
-**Mesures DAX suggérées pour min/max :** même pattern que les moyennes, en remplaçant `AVERAGE` par `MIN` et `MAX`, avec `ALL(DimPlayer)` pour le global et `FILTER(DimPlayer, DimPlayer[Position] = CurrentPosition)` pour le poste.
+The target is shown as a **constant line / goal** on the gauge so users can compare the player’s value to the average at a glance. It is a **reference**, not a mandatory target.
 
 ---
 
-## 5. Mise en page Power BI (fiche côte à côte)
+## 5. Power BI layout
 
-- **Une jauge par KPI** (cf. section 4) : valeur = joueur ; min/max = global ou même poste ; ligne repère = moyenne (affichée comme « objectif » sans être un objectif).
-- **Deux colonnes** (ou deux blocs) sur la même page :
-  - **Colonne 1 — Joueur sélectionné :** titre « [Nom du joueur] » ou « Joueur ». Cartes KPI ou jauges : `[Player Goals]`, `[Player Assists]`, `[Player MinutesPlayed]`, etc.
-  - **Colonne 2 — Moyenne du poste :** titre « Moyenne [Position] » (ex. « Moyenne Forward »). Cartes KPI : `[Avg Goals Same Position]`, etc., ou repère intégré dans les jauges.
-- **Choix min/max :** slicer ou paramètre pour basculer entre **min/max global** (tous les joueurs) et **min/max même poste**.
-- **Slicer** : `DimPlayer[FullName]` (sélection unique), placé en haut ou à gauche ; il filtre toute la page.
-
-**Résumé visuel :**
-
-| KPI      | Joueur (sélectionné) | Moyenne poste |
-|----------|----------------------|---------------|
-| Buts     | [Player Goals]       | [Avg Goals Same Position] |
-| Passes   | [Player Assists]     | [Avg Assists Same Position] |
-| Minutes  | [Player MinutesPlayed] | [Avg MinutesPlayed Same Position] |
-| …        | …                    | … |
+- **9 gauge visuals**, one per metric: Saves, Interceptions, Shots, Shots on target, Goals, Assists, Dribbles, Tackles, Red cards.
+- **Value** of each gauge = the corresponding “Player …” measure (sum for the selected player).
+- **Target** of each gauge = the average measure (all players or same position, depending on the position filter).
+- **Min / Max** of each gauge = the chosen min/max measures (global or same position).
+- **Slicer:** `DimPlayer[FullName]` (single selection) at the top or side; it filters the whole page.
+- **Position filter (optional):** When the user applies a filter on `DimPlayer[Position]`, all 9 gauges use same-position average as target and same-position min/max for the scale.
 
 ---
 
-## 6. Option : titre dynamique « Moyenne [Position] »
+## 6. Summary
 
-Pour afficher le libellé du poste dans le titre du bloc « Moyenne poste » :
+| Metric           | Gauge value (player) | Target (reference)     |
+|------------------|----------------------|------------------------|
+| Saves            | SUM(Saves)           | Avg all / same position |
+| Interceptions    | SUM(Interceptions)   | Avg all / same position |
+| Shots            | SUM(Shots)           | Avg all / same position |
+| Shots on target  | SUM(ShotsOnTarget)   | Avg all / same position |
+| Goals            | SUM(Goals)           | Avg all / same position |
+| Assists          | SUM(Assists)         | Avg all / same position |
+| Dribbles         | SUM(SuccessfulDribbles) | Avg all / same position |
+| Tackles          | SUM(SuccessfulTackles)  | Avg all / same position |
+| Red cards        | SUM(RedCards)        | Avg all / same position |
 
-- Zone de texte avec **valeur dynamique** (si Power BI le permet) ou mesure texte :
-- `Position Label = SELECTEDVALUE(DimPlayer[Position]) & " (moyenne)"`
-- Utiliser cette mesure dans un visuel titre ou une carte pour afficher « Forward (moyenne) », etc.
+- **Default:** Target = average of **all players**; min/max = global.
+- **With position filter:** Target = average of **players with the same position**; min/max = same position.
 
----
-
-## 7. Précisions
-
-- **Un seul joueur sélectionné :** les mesures « Player … » donnent les totaux de ce joueur ; les mesures « Avg … Same Position » donnent la moyenne des joueurs du même poste (tous, sans exclure le joueur sélectionné). Pour une moyenne **hors ce joueur**, utiliser `FILTER(DimPlayer, DimPlayer[Position] = CurrentPosition && DimPlayer[PlayerKey] <> SELECTEDVALUE(DimPlayer[PlayerKey]))` dans le CALCULATE.
-- **Grain FactPlayerSeason :** une ligne par joueur par saison ; si plusieurs saisons, SUM sur la page donne le total multi-saisons du joueur. Pour la **moyenne du poste** :
-  - **Une saison filtrée** : `CALCULATE(AVERAGE(FactPlayerSeason[Goals]), FILTER(DimPlayer, …))` = moyenne des buts des joueurs du poste sur la saison.
-  - **Plusieurs saisons (totaux joueur)** : pour comparer au total du joueur (SUM sur toutes ses saisons), préférer la moyenne des **totaux par joueur** :  
-    `AVERAGEX(VALUES(DimPlayer[PlayerKey]), CALCULATE(SUM(FactPlayerSeason[Goals]), FILTER(DimPlayer, DimPlayer[Position] = CurrentPosition)))` (en gardant la variable `CurrentPosition`).
+All text and behaviour are described in English and aligned with the 9 gauge charts listed above.
