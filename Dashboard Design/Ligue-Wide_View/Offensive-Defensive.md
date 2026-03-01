@@ -23,7 +23,7 @@
 | **X-axis** | Goals for per match                    | Average goals scored per match (GoalsFor / Match). |
 | **Y-axis** | Goals against per match (inverted)     | Average goals conceded per match. Invert axis or use a “defence score” so **high = better** (e.g. Y = −GoalsAgainst/Match, or invert the Y-axis in the visual so top = fewer goals against). |
 | **Size**   | Points                                 | Bubble size = total points (or points per match). |
-| **Legend / category** | Club (DimClub[ClubName])     | One point per club; use **club_colors.json** for consistent colours. |
+| **Legend / category** | Club (DimClub[ClubName])     | One point per club; colours from report theme palette. |
 
 **DAX measures (league-wide, one value per club):**
 

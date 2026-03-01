@@ -1,8 +1,8 @@
 # Power BI Star Schema Design — Ligue 1 Dashboard 2023–2024
 
-**Purpose:** Define the final star schema (tables, relationships, measures) to build in Power BI so that all 5 dashboard pages can be implemented. The model is loadable via **Power Query** from the existing CSV/TSV sources, **players.xlsx**, and **clubs.xlsx** (when present in the dataset), with clear transformation steps.
+**Purpose:** Define the star schema (tables, relationships, measures) used in Power BI for the Ligue 1 dashboard. This document is aligned with **Data_Model.bim**, which is the **source of truth** for table and column definitions.
 
-**Reference:** [0_POWER_BI_DASHBOARD_SPECIFICATION.md](./0_POWER_BI_DASHBOARD_SPECIFICATION.md)
+**References:** [0_POWER_BI_DASHBOARD_SPECIFICATION.md](./0_POWER_BI_DASHBOARD_SPECIFICATION.md), [0_markdown.md](./0_markdown.md) (schema detail). The model is loadable via **Power Query** from CSV/TSV sources, **players.xlsx**, and **clubs.xlsx** (when present), with transformation steps described below.
 
 ---
 
@@ -20,10 +20,13 @@
 
 ## 2. High-level diagram (star schema)
 
+**Source of truth:** Column names and types below match **Data_Model.bim**. DimMatch uses **DateKey** (FK to DimDate); FactAttendance and FactSanction use **DateKey** / **SanctionDateKey** as Text in the model. **RivalryPair** is a calculated table (no relationship lines).
+
 ```mermaid
 erDiagram
     DimClub ||--o{ FactClubMatch : "ClubKey"
     DimMatch ||--o{ FactClubMatch : "MatchKey"
+    DimDate ||--o{ DimMatch : "DateKey"
     DimClub ||--o{ FactPlayerSeason : "ClubKey"
     DimPlayer ||--o{ FactPlayerSeason : "PlayerKey"
     DimClub ||--o{ FactTransfer : "DepartureClubKey / ArrivalClubKey"
@@ -34,13 +37,22 @@ erDiagram
     DimDate ||--o{ FactSanction : "SanctionDateKey"
     DimClub ||--o{ FactAttendance : "ClubKey"
     DimDate ||--o{ FactAttendance : "DateKey"
-    DimMatch ||--o| FactAttendance : "MatchKey (optional)"
+    DimMatch ||--o{ FactAttendance : "MatchKey"
 
     DimClub {
         int ClubKey PK
+        string club_id
         string ClubName
-        string StadiumName
-        int Capacity
+        string city
+        string stadium
+        string capacity
+        string founded
+        string president
+        string coach
+        string budget_ME
+        string colors
+        bool External
+        string Club_URL
     }
 
     DimPlayer {
@@ -48,39 +60,42 @@ erDiagram
         string PlayerId
         string FullName
         string Position
-        int Age "optional"
-        string Nationality "optional"
-        currency Salary "optional"
-        currency MarketValue "optional"
+        datetime DateOfBirth
+        string Nationality
+        double MarketValue
+        int Age
     }
 
     DimDate {
-        date DateKey PK
-        date Date
+        string DateKey PK
+        datetime Date
         int Year
         int Month
         int Day
     }
 
     DimMatch {
-        string MatchKey PK "match_id"
+        string MatchKey PK
         int Matchday
-        date MatchDate
         int HomeClubKey FK
         int AwayClubKey FK
         string Stadium
         string Referee
-        int Attendance "optional"
+        int Attendance
+        string DateKey FK
+        string HomeClubName "calc"
+        string AwayClubName "calc"
     }
 
     FactClubMatch {
         string MatchKey FK
         int ClubKey FK
-        bit IsHome
+        bool IsHome
         int Points
         int GoalsFor
         int GoalsAgainst
-        string Result "W/D/L"
+        string Result
+        int Goal_difference "calc"
     }
 
     FactPlayerSeason {
@@ -90,7 +105,7 @@ erDiagram
         int Assists
         int MinutesPlayed
         int MatchesPlayed
-        int MatchesMissed
+        string MatchesMissed
         int Starts
         int YellowCards
         int RedCards
@@ -98,19 +113,18 @@ erDiagram
         int ShotsOnTarget
         int CleanSheets
         int Saves
-        decimal SuccessfulDribbles
-        decimal Interceptions
-        decimal SuccessfulTackles
+        int SuccessfulDribbles
+        int Interceptions
+        int SuccessfulTackles
     }
 
     FactTransfer {
-        string TransferKey PK "transfer_id"
+        string TransferKey PK
         int PlayerKey FK
-        string PlayerName "from source"
         int DepartureClubKey FK
         int ArrivalClubKey FK
-        date TransferDateKey FK
-        decimal AmountME
+        string TransferDateKey FK
+        double AmountME
         string TransferType
         string Agent
     }
@@ -118,26 +132,31 @@ erDiagram
     FactSanction {
         string SanctionKey PK
         int PlayerKey FK
-        string PlayerName "from source"
         int ClubKey FK
-        date SanctionDateKey FK
+        string SanctionDateKey FK
         string SanctionType
         string Reason
         int SuspensionMatches
-        currency FineEuros
+        int FineEuros
     }
 
     FactAttendance {
         int ClubKey FK
         int Matchday
-        date DateKey FK
-        string MatchKey FK "optional"
+        string DateKey FK
+        string MatchKey FK
         string Opponent
         int Attendance
         int StadiumCapacity
-        decimal FillRatePct
+        double FillRatePct
         string Weather
-        decimal TemperatureC
+        int TemperatureC
+    }
+
+    RivalryPair {
+        int ClubKey1
+        int ClubKey2
+        string PairLabel
     }
 ```
 
@@ -158,21 +177,31 @@ The schema uses every file in the dataset. The following sources feed dimensions
 | **clubs.xlsx** (when present) | Excel | club name, stadium, capacity (primary for DimClub) |
 | **season_report_2023_2024.pdf** | PDF | Reference only; not loaded into the model (narrative, standings summary). |
 
-Every column listed above is retained in the model: dimensions and facts keep all source attributes (e.g. transfers.**player** → FactTransfer.PlayerName; disciplinary_sanctions.**player** → FactSanction.PlayerName).
+**Source of truth:** Table and column names in the model match **Data_Model.bim**. FactTransfer and FactSanction do not expose a PlayerName column; use DimPlayer (via PlayerKey) for player names.
 
 ---
 
 ### 3.1 DimClub
 
+**Aligned with Data_Model.bim.** Stores static information about each football club.
+
 | Column | Type | Source | Notes |
 |--------|------|--------|--------|
-| **ClubKey** | Whole number (PK) | PQ: index | Surrogate key; use for relationships. |
-| **ClubName** | Text | **Primary:** `clubs.xlsx` (Staging_Clubs). **Fallback:** distinct from match_results, player_stats, transfers, stadium_attendance, sanctions | When clubs.xlsx is present, use it as single source of truth; trim and align names. |
-| **StadiumName** | Text | **Primary:** clubs.xlsx. **Fallback:** match_results.stadium or stadium_attendance | One stadium per club. |
-| **Capacity** | Whole number | **Primary:** clubs.xlsx. **Fallback:** stadium_attendance.stadium_capacity | Max capacity per club. |
+| **ClubKey** | Integer (PK) | PQ: index | Surrogate key; use for relationships. |
+| **club_id** | Text | Source (e.g. clubs.xlsx) | Natural identifier. |
+| **ClubName** | Text | **Primary:** clubs.xlsx. **Fallback:** distinct from match_results, player_stats, etc. | Single source of truth for names; trim and align. |
+| **city** | Text | Source | City where the club is located. |
+| **stadium** | Text | clubs.xlsx; fallback match_results.stadium | Stadium name (model uses "stadium", not StadiumName). |
+| **capacity** | Text | Source (Data_Model.bim: Text) | Stadium capacity. |
+| **founded** | Text | Source (Data_Model.bim: Text) | Year founded. |
+| **president** | Text | Source | Club president. |
+| **coach** | Text | Source | Head coach. |
+| **budget_ME** | Text | Source (Data_Model.bim: Text) | Budget in millions of euros. |
+| **colors** | Text | Source | Club colors. |
+| **External** | Boolean | PQ: added (e.g. false for Ligue 1) | Flag for external/non-Ligue 1 clubs. |
+| **Club_URL** | Text | Optional (e.g. club_logos.json) | URL for club logo. |
 
-**Power Query:**  
-- **When `clubs.xlsx` is present:** Load as **Staging_Clubs** (trim club name; map columns to ClubName, StadiumName, Capacity). Add `ClubKey` (e.g. `Table.AddIndexColumn(..., 1, 1)`). Optionally append any distinct club names from other sources not in Staging_Clubs (e.g. "External" for non-Ligue 1 transfer clubs) so all facts resolve.  
+**Power Query:** When clubs.xlsx is present, load as Staging_Clubs and map to the columns above; add ClubKey. When absent, collect distinct ClubName from other sources; add ClubKey.  
 - **When `clubs.xlsx` is absent:** Collect distinct `ClubName` from match_results, player_stats, transfers, stadium_attendance, sanctions; remove duplicates; add ClubKey. Optionally merge stadium/capacity from stadium_attendance (Group By club, take Max capacity, First stadium).
 
 **Design choice:** One dimension for clubs ensures the same name is used everywhere and filters (e.g. “Paris SG”) Using clubs.xlsx when available gives a single source of truth for club list and attributes (stadium, capacity).
@@ -181,16 +210,18 @@ Every column listed above is retained in the model: dimensions and facts keep al
 
 ### 3.2 DimPlayer
 
+**Aligned with Data_Model.bim.** Stores static information about individual players.
+
 | Column | Type | Source | Notes |
 |--------|------|--------|--------|
-| **PlayerKey** | Whole number (PK) | PQ: index | Surrogate key. |
+| **PlayerKey** | Integer (PK) | PQ: index | Surrogate key. |
 | **PlayerId** | Text | player_stats.player_id | Natural key; must be unique. |
-| **FullName** | Text | player_stats.full_name | Master from player_stats. |
-| **Position** | Text | player_stats.position | From player_stats_season; trim and standardise (e.g. Left back, Forward, Goalkeeper). |
-| **Age** | Whole number | players.xlsx (Staging_Players), when present | Leave null if not in Excel. |
-| **Nationality** | Text | players.xlsx (Staging_Players), when present | Leave null if not in Excel. |
-| **Salary** | Currency | players.xlsx (Staging_Players), when present | Leave null if not in Excel. |
-| **MarketValue** | Currency | players.xlsx (Staging_Players), when present | Leave null if not in Excel. |
+| **FullName** | Text | player_stats.full_name | Unique per player; duplicates may include nationality in parentheses (PQ dedup). |
+| **Position** | Text | player_stats.position | Trim and standardise (e.g. Forward, Goalkeeper). |
+| **DateOfBirth** | DateTime | players.xlsx when present | Player date of birth. |
+| **Nationality** | Text | players.xlsx when present | Player nationality. |
+| **MarketValue** | Double | players.xlsx when present | Player market value (aggregatable). |
+| **Age** | Integer | Source or from DateOfBirth | Player age. |
 
 **Power Query:**  
 - Start from `player_stats_season`: distinct `player_id`, `full_name`, `position`; add `PlayerKey`; rename position to **Position**.  
@@ -202,21 +233,17 @@ Every column listed above is retained in the model: dimensions and facts keep al
 
 ### 3.3 DimDate
 
+**Aligned with Data_Model.bim.** Standard date dimension for time-based analysis. In the model, **DateKey** is stored as **Text** (PK); use for relationships with Fact and DimMatch.
 
 | Column | Type | Source | Notes |
 |--------|------|--------|-------|
-| **DateKey** | Date (PK) | PQ: list of dates | Use as relationship key (Date data type). |
-| **Date** | Date | Same | For display. |
-| **Year** | Whole number | From Date | For grouping. |
-| **Month** | Whole number | From Date | For grouping. |
-| **Day** | Whole number | From Date | Optional. |
+| **DateKey** | Text (PK) | PQ: list of dates (e.g. as text) | Relationship key; Data_Model.bim uses Text. |
+| **Date** | DateTime | Same | For display. |
+| **Year** | Integer | From Date | For grouping. |
+| **Month** | Integer | From Date | For grouping. |
+| **Day** | Integer | From Date | Day of month. |
 
-**Power Query:**  
-- Build a calendar from the min/max dates present in match_results, transfers, sanctions, stadium_attendance (e.g. 2023-07-01 to 2024-08-31).  
-- `List.Dates(...)` then `Table.FromList`; add Year/Month/Day columns.  
-- Use for relationships: FactTransfer[TransferDateKey], FactSanction[SanctionDateKey], FactAttendance[DateKey]; optionally DimMatch[MatchDate] as date for display only (or add MatchDateKey to DimMatch if you want time intelligence on matches).
-
-**Design choice:** A single calendar dimension supports time-based reporting and future time intelligence (YTD, prior year) if needed.
+**Power Query:** Build calendar from min/max dates in sources; add Year, Month, Day. Use for FactTransfer[TransferDateKey], FactSanction[SanctionDateKey], FactAttendance[DateKey], and DimMatch[DateKey].
 
 ---
 
@@ -225,13 +252,15 @@ Every column listed above is retained in the model: dimensions and facts keep al
 | Column | Type | Source | Notes |
 |--------|------|--------|-------|
 | **MatchKey** | Text (PK) | match_results.match_id | Natural key; one row per match. |
-| **Matchday** | Whole number | match_results.matchday | 1–38; used for rank evolution and form. |
-| **MatchDate** | Date | match_results.match_date (normalised) | Normalise all date formats in PQ. |
-| **HomeClubKey** | Whole number (FK) | Resolve home_team → DimClub.ClubKey | |
-| **AwayClubKey** | Whole number (FK) | Resolve away_team → DimClub.ClubKey | |
+| **Matchday** | Integer | match_results.matchday | 1–38; used for rank evolution and form. |
+| **HomeClubKey** | Integer (FK) | Resolve home_team → DimClub.ClubKey | |
+| **AwayClubKey** | Integer (FK) | Resolve away_team → DimClub.ClubKey | |
 | **Stadium** | Text | match_results.stadium | From source. |
 | **Referee** | Text | match_results.referee | From source. |
-| **Attendance** | Whole number | match_results.attendance | From source; null if empty. |
+| **Attendance** | Integer | match_results.attendance | Descriptive attribute; null if empty. |
+| **DateKey** | Text (FK) | match_results.match_date → DimDate.DateKey | Links to DimDate (Data_Model.bim). |
+| **HomeClubName** | Text (calculated) | DAX: LOOKUPVALUE(DimClub[ClubName], DimClub[ClubKey], HomeClubKey) | For rivalry history. |
+| **AwayClubName** | Text (calculated) | DAX: LOOKUPVALUE(DimClub[ClubName], DimClub[ClubKey], AwayClubKey) | For rivalry history. |
 
 **Power Query:**  
 - Load `match_results_2023_2024.csv`; normalise `match_date` to a single Date type (handle “2023-08-12”, “19 Aug 2023”, “18/08/2023”).  
@@ -257,6 +286,7 @@ Every column listed above is retained in the model: dimensions and facts keep al
 | **GoalsFor** | Whole number | home_score for home row, away_score for away row | |
 | **GoalsAgainst** | Whole number | away_score for home row, home_score for away row | |
 | **Result** | Text | "W" / "D" / "L" | For W/D/L split and form. |
+| **Goal difference** | Integer (calculated) | DAX: GoalsFor − GoalsAgainst | Data_Model.bim: calculated column. |
 
 **Power Query:**  
 1. Load match_results; normalise dates; add HomeClubKey, AwayClubKey via DimClub.  
@@ -281,7 +311,7 @@ Every column listed above is retained in the model: dimensions and facts keep al
 | **Assists** | Whole number | player_stats.assists (clean spaces) | |
 | **MinutesPlayed** | Whole number | player_stats.minutes_played (strip " min", number) | |
 | **MatchesPlayed** | Whole number | player_stats.matches_played | |
-| **MatchesMissed** | Whole number | PQ: 38 - MatchesPlayed (or blank for GK) | For “matches missed” visual. |
+| **MatchesMissed** | Text | Source (Data_Model.bim: Text) | For “matches missed” visual. |
 | **Starts** | Whole number | player_stats.starts | |
 | **YellowCards** | Whole number | player_stats.yellow_cards | |
 | **RedCards** | Whole number | player_stats.red_cards | |
@@ -289,9 +319,9 @@ Every column listed above is retained in the model: dimensions and facts keep al
 | **ShotsOnTarget** | Whole number | player_stats.shots_on_target | From source. |
 | **CleanSheets** | Whole number | player_stats.clean_sheets | From source; null for non-GK. |
 | **Saves** | Whole number | player_stats.saves | From source; null for non-GK. |
-| **SuccessfulDribbles** | Decimal | player_stats.successful_dribbles | From source. |
-| **Interceptions** | Decimal | player_stats.interceptions | From source. |
-| **SuccessfulTackles** | Decimal | player_stats.successful_tackles | From source. |
+| **SuccessfulDribbles** | Integer | player_stats.successful_dribbles (Data_Model.bim: int64) | From source. |
+| **Interceptions** | Integer | player_stats.interceptions (Data_Model.bim: int64) | From source. |
+| **SuccessfulTackles** | Integer | player_stats.successful_tackles (Data_Model.bim: int64) | From source. |
 
 **Power Query:**  
 - Load player_stats_season; normalise numeric columns (trim, replace " min", fix decimals).  
@@ -308,19 +338,18 @@ Every column listed above is retained in the model: dimensions and facts keep al
 | Column | Type | Source | Notes |
 |--------|------|--------|-------|
 | **TransferKey** | Text (PK) | transfer_id | |
-| **PlayerKey** | Whole number (FK) | player_id → DimPlayer.PlayerKey | |
-| **PlayerName** | Text | transfers.player | From source; preserve raw player name as in file. |
-| **DepartureClubKey** | Whole number (FK) | departure_club → DimClub; use 0 or blank for “external” | Ligue 1 clubs only in DimClub; external clubs can map to a single “External” club or null. |
-| **ArrivalClubKey** | Whole number (FK) | arrival_club → DimClub | |
-| **TransferDateKey** | Date (FK) | transfer_date (normalised) | Must exist in DimDate. |
-| **AmountME** | Decimal | amount_ME (normalised to numeric, e.g. M€) | Parse "56.9M€", "67.3 M" in PQ. |
+| **PlayerKey** | Integer (FK) | player_id → DimPlayer.PlayerKey | |
+| **DepartureClubKey** | Integer (FK) | departure_club → DimClub; use 0 or blank for “external” | Ligue 1 clubs only in DimClub; external clubs can map to a single “External” club or null. |
+| **ArrivalClubKey** | Integer (FK) | arrival_club → DimClub | |
+| **TransferDateKey** | Text (FK) | transfer_date (normalised); Data_Model.bim: Text | Must align with DimDate.DateKey. |
+| **AmountME** | Double | amount_ME (normalised); Data_Model.bim: double | Parse in PQ. |
 | **TransferType** | Text | transfer_type (Purchase, Loan, Free transfer, etc.) | From source. |
 | **Agent** | Text | transfers.agent | From source. |
 
 **Power Query:**  
 - Load transfers (tab delimiter); normalise `transfer_date`; parse `amount_ME` (remove "M€", " M", spaces; then Number.From).  
 - Merge player_id → DimPlayer; departure_club and arrival_club → DimClub (add row “External” in DimClub for non-Ligue 1 if desired).  
-- Add TransferDateKey as the date used for DimDate relationship. Keep **player** (as PlayerName), **agent**, and all other source columns.
+- Add TransferDateKey as the date used for DimDate relationship. Data_Model.bim does not store PlayerName in FactTransfer; use DimPlayer via PlayerKey for player names. Keep Agent and all other source columns.
 
 **Design choice:** One row per transfer supports “transfers in/out by club”, “new signings contribution” (join to FactPlayerSeason by PlayerKey + ArrivalClubKey = ClubKey), and “cost per point” (spend by club / points from FactClubMatch).
 
@@ -331,17 +360,16 @@ Every column listed above is retained in the model: dimensions and facts keep al
 | Column | Type | Source | Notes |
 |--------|------|--------|-------|
 | **SanctionKey** | Text (PK) | sanction_id | From source. |
-| **PlayerKey** | Whole number (FK) | player_id → DimPlayer.PlayerKey | |
-| **PlayerName** | Text | disciplinary_sanctions.player | From source; preserve raw player name as in file. |
-| **ClubKey** | Whole number (FK) | club → DimClub.ClubKey | |
-| **SanctionDateKey** | Date (FK) | sanction_date (normalised) | |
+| **PlayerKey** | Integer (FK) | player_id → DimPlayer.PlayerKey | |
+| **ClubKey** | Integer (FK) | club → DimClub.ClubKey | |
+| **SanctionDateKey** | Text (FK) | sanction_date (normalised); Data_Model.bim uses Text | Must align with DimDate.DateKey. |
 | **SanctionType** | Text | sanction_type | From source. |
 | **Reason** | Text | reason | From source. |
-| **SuspensionMatches** | Whole number | suspension_matches (null → 0 or blank) | From source. |
-| **FineEuros** | Currency | fine_euros (null → blank) | From source. |
+| **SuspensionMatches** | Integer | suspension_matches (null → 0 or blank) | From source. |
+| **FineEuros** | Integer | fine_euros (Data_Model.bim: int64) | From source. |
 
 **Power Query:**  
-- Load disciplinary_sanctions; normalise sanction_date; merge player_id → DimPlayer, club → DimClub; add SanctionDateKey for DimDate. Keep **player** (as PlayerName), Reason, and all other source attributes.
+- Load disciplinary_sanctions; normalise sanction_date; merge player_id → DimPlayer, club → DimClub; add SanctionDateKey for DimDate. Data_Model.bim does not store PlayerName in FactSanction; use DimPlayer via PlayerKey. Keep Reason and all other source attributes.
 
 **Design choice:** Sanctions as a fact allow “cards and impact” and “suspensions” visuals; “matches missed” remains primarily from FactPlayerSeason (MatchesMissed).
 
@@ -353,22 +381,36 @@ Every column listed above is retained in the model: dimensions and facts keep al
 
 | Column | Type | Source | Notes |
 |--------|------|--------|-------|
-| **ClubKey** | Whole number (FK) | club → DimClub.ClubKey | Home team. |
-| **Matchday** | Whole number | matchday | 1–38. |
-| **DateKey** | Date (FK) | date (normalised) | For DimDate; same date as match. |
-| **MatchKey** | Text (FK) | Optional: match from match_results (home_team + matchday + date) | Enables link to DimMatch/FactClubMatch if needed. |
+| **ClubKey** | Integer (FK) | club → DimClub.ClubKey | Home team. |
+| **Matchday** | Integer | matchday | 1–38. |
+| **DateKey** | Text (FK) | date (normalised); Data_Model.bim uses Text | For DimDate; same date as match. |
+| **MatchKey** | Text (FK) | From join with DimMatch (HomeClubKey, Matchday, DateKey) | Links to DimMatch. |
 | **Opponent** | Text | stadium_attendance.opponent | From source. |
-| **Attendance** | Whole number | attendance | From source. |
-| **StadiumCapacity** | Whole number | stadium_capacity | |
-| **FillRatePct** | Decimal | fill_rate (replace comma by dot; e.g. 96,6 → 96.6) | For capacity utilization %. |
+| **Attendance** | Integer | attendance | From source. |
+| **StadiumCapacity** | Integer | stadium_capacity | |
+| **FillRatePct** | Double | fill_rate (replace comma by dot; e.g. 96,6 → 96.6) | For capacity utilization %. Data_Model.bim: double. |
 | **Weather** | Text | weather | Optional. |
-| **TemperatureC** | Number | temperature_c | Optional. |
+| **TemperatureC** | Integer | temperature_c (Data_Model.bim: int64) | Optional. |
 
 **Power Query:**  
 - Load stadium_attendance (semicolon delimiter); normalise date and FillRate (replace "," by "."); merge club → DimClub → ClubKey.  
 - Optionally: merge (ClubKey, Matchday, Date) to match_results (HomeClubKey, Matchday, MatchDate) to get MatchKey and add to FactAttendance for a single “match” context.
 
 **Design choice:** One row per home match is the natural grain of the source; linking to DimDate allows attendance trend and capacity utilization by date/matchday.
+
+---
+
+## 4.6 RivalryPair (calculated table; no physical relationships)
+
+**Aligned with Data_Model.bim.** One row per **unordered pair** of clubs that have played each other. Used for rivalry visuals (attendance, fill rate, sanctions, head-to-head). Built in DAX; no FK relationships — filter context and measures use ClubKey1 and ClubKey2.
+
+| Column | Type | Source | Notes |
+|--------|------|--------|-------|
+| **ClubKey1** | Integer | DAX: MIN(HomeClubKey, AwayClubKey) per pair | Smaller of the two club keys. |
+| **ClubKey2** | Integer | DAX: MAX(HomeClubKey, AwayClubKey) per pair | Larger of the two club keys. |
+| **PairLabel** | Text | DAX: LOOKUPVALUE(ClubName, ClubKey, ClubKey1) & " – " & LOOKUPVALUE(ClubName, ClubKey, ClubKey2) | Display label for the rivalry. |
+
+**DAX (calculated table):** From DimMatch, SUMMARIZE distinct (ClubKey1, ClubKey2) with ClubKey1 &lt; ClubKey2; ADDCOLUMNS to add PairLabel. See Rivalities.md or Data_Model.bim for full expression.
 
 ---
 
@@ -389,7 +431,8 @@ Every column listed above is retained in the model: dimensions and facts keep al
 | FactSanction[SanctionDateKey] | DimDate[DateKey] | Many → One | Single | |
 | FactAttendance[ClubKey] | DimClub[ClubKey] | Many → One | Single | |
 | FactAttendance[DateKey] | DimDate[DateKey] | Many → One | Single | |
-| FactAttendance[MatchKey] | DimMatch[MatchKey] | Many → One | Single (optional) | Only if MatchKey is populated. |
+| FactAttendance[MatchKey] | DimMatch[MatchKey] | Many → One | Single | When MatchKey is populated from join. |
+| DimMatch[DateKey] | DimDate[DateKey] | Many → One | Single | Match date; dimension-to-dimension. |
 
 **Design choice:** All filter directions “Single” from dimension to fact keep filter propagation simple (e.g. select a club → all facts for that club filter). No many-to-many required if club names are unified in DimClub.
 
@@ -494,8 +537,8 @@ Recommended order so dependencies resolve:
 4. **DimMatch** — from match_results; normalise date; resolve HomeClubKey, AwayClubKey; MatchKey = match_id; keep Stadium, Referee, Attendance.  
 5. **FactClubMatch** — from match_results; duplicate rows for home/away; add Points, GoalsFor, GoalsAgainst, Result; resolve ClubKey, MatchKey.  
 6. **FactPlayerSeason** — from player_stats; normalise numbers; resolve ClubKey, PlayerKey; add MatchesMissed; keep all source columns (Shots, CleanSheets, Saves, etc.).  
-7. **FactTransfer** — from transfers; normalise amount_ME and date; resolve PlayerKey, DepartureClubKey, ArrivalClubKey, TransferDateKey; keep PlayerName (transfers.player), Agent, and all source columns.
-8. **FactSanction** — from disciplinary_sanctions; resolve PlayerKey, ClubKey, SanctionDateKey; keep PlayerName (sanctions.player), Reason, and all source columns.
+7. **FactTransfer** — from transfers; normalise amount_ME and date; resolve PlayerKey, DepartureClubKey, ArrivalClubKey, TransferDateKey; keep Agent and all source columns (no PlayerName in model; use DimPlayer).
+8. **FactSanction** — from disciplinary_sanctions; resolve PlayerKey, ClubKey, SanctionDateKey; keep Reason and all source columns (no PlayerName in model; use DimPlayer).
 9. **FactAttendance** — from stadium_attendance; normalise fill_rate and date; resolve ClubKey, DateKey; keep Opponent, Weather, TemperatureC; optionally MatchKey.  
 10. **StandingsByMatchday** (optional) — in PQ: from FactClubMatch + DimMatch, group by ClubKey and Matchday, compute running sum of Points, then Rank per matchday; or create as a calculated table in DAX.
 
@@ -512,4 +555,4 @@ Recommended order so dependencies resolve:
 | **Measures** | Concentrate logic in DAX; facts store only additive values. |
 | **Power Query** | All tables and keys can be built in PQ with normalisation (dates, amounts, text) and merges to dimensions; optional calculated table for standings/form. |
 
-This design supports the 5 dashboard pages from [0_POWER_BI_DASHBOARD_SPECIFICATION.md](./0_POWER_BI_DASHBOARD_SPECIFICATION.md). Salary, MarketValue, and wage bill (sum of salaries by club) are available from **players.xlsx** (Staging_Players → DimPlayer) when the file is present in the dataset; revenue remains a gap unless a separate source (e.g. club_finances) is added.
+This design supports the dashboard pages from [0_POWER_BI_DASHBOARD_SPECIFICATION.md](./0_POWER_BI_DASHBOARD_SPECIFICATION.md). **Source of truth:** Table and column definitions are aligned with **Data_Model.bim**; for the full schema (all attributes, types, calculated columns, RivalryPair), see [0_markdown.md](./0_markdown.md). MarketValue is in DimPlayer when **players.xlsx** is present; Salary is not in the current model. Revenue remains a gap unless a separate source is added.
