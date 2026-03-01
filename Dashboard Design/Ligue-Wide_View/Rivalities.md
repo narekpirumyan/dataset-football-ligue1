@@ -112,7 +112,7 @@ RETURN
 ```
 
 **Visuel HTML Content (cartes W–D–L + total buts en une seule visualisation)**  
-Une seule mesure renvoie le HTML affichant **5 cartes** : Matchs, Victoires Club 1, Victoires Club 2, Nuls, **Total buts**. À utiliser dans un visuel **HTML Content**. Pour éviter l’affichage « - » ou vide lorsqu’une valeur est 0, chaque valeur est gérée avec `COALESCE(..., 0)` et un affichage explicite de `"0"` quand la valeur est 0. Si moins de 2 ou plus de 2 clubs sont sélectionnés, un message invite à sélectionner exactement 2 clubs.
+Une seule mesure renvoie le HTML affichant **5 cartes** : Matchs, Victoires Club 1, Victoires Club 2, Nuls, **Total buts**. À utiliser dans un visuel **HTML Content**. Les cartes utilisent une **grille CSS** (`grid-template-columns: repeat(5, 1fr)`) et `width: 100%` pour **s’adapter à la taille du visuel**. Trois couleurs distinctes : **Matchs** = gris (#E8E8E8 / #9e9e9e), **Victoires Club 1, Victoires Club 2, Nuls** = bleu (#E3F2FD / #0066CC), **Total buts** = vert (#E8F5E9 / #1AAB40). Pour éviter l’affichage « - » ou vide lorsqu’une valeur est 0, chaque valeur est gérée avec `COALESCE(..., 0)` et un affichage explicite de `"0"`. Si moins de 2 ou plus de 2 clubs sont sélectionnés, un message invite à sélectionner exactement 2 clubs.
 
 ```dax
 Rivalry Head-to-Head Cards HTML =
@@ -132,13 +132,13 @@ RETURN
     IF(
         COUNTROWS(VALUES(DimClub[ClubKey])) <> 2,
         "<div style='font-family:Segoe UI;padding:12px;color:#808080;'>Sélectionnez exactement 2 clubs</div>",
-        "<style>...</style>"
+        "<style>.rival-cards{display:grid;grid-template-columns:repeat(5,1fr);...}.rival-card-matchs{...}.rival-card-wdl{...}.rival-card-goals{...}</style>"
         & "<div class='rival-cards'>"
-        & "<div class='rival-card'><div class='val'>" & vMc & "</div><div class='lbl'>Matchs</div></div>"
-        & "<div class='rival-card'><div class='val'>" & vW1 & "</div><div class='lbl'>Victoires Club 1</div></div>"
-        & "<div class='rival-card'><div class='val'>" & vW2 & "</div><div class='lbl'>Victoires Club 2</div></div>"
-        & "<div class='rival-card'><div class='val'>" & vDr & "</div><div class='lbl'>Nuls</div></div>"
-        & "<div class='rival-card'><div class='val'>" & vTg & "</div><div class='lbl'>Total buts</div></div>"
+        & "<div class='rival-card rival-card-matchs'>...Matchs...</div>"
+        & "<div class='rival-card rival-card-wdl'>...Victoires Club 1...</div>"
+        & "<div class='rival-card rival-card-wdl'>...Victoires Club 2...</div>"
+        & "<div class='rival-card rival-card-wdl'>...Nuls...</div>"
+        & "<div class='rival-card rival-card-goals'>...Total buts...</div>"
         & "</div>"
     )
 ```
